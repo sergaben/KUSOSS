@@ -20,7 +20,7 @@ class StudentController @Inject()(students:Students, cc:ControllerComponents)
   })
 
   def index = Action{
-    Ok(views.html.index("Hello world!"))
+    Ok(views.html.index("Hello world"))
   }
 //  private val Students = TableQuery[Students]
 //
