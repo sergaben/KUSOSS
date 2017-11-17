@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -agentlib:TakipiAgent -jar target/dependency/jetty-runner.jar --port $PORT target/*.war
+web: java -agentlib:TakipiAgent -jar target/universal/stage/bin/backend -Dhttp.port=${PORT} -Dplay.evolutions.db.default.autoApply=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.url=${DATABASE_URL}
