@@ -1,8 +1,9 @@
 import { Promise } from 'es6-promise'
 import $ from 'jquery'
 
-function generateUrl(url,) {
-  return `localhost:9000/${url}`;
+function generateUrl(url) {
+  //return `localhost:9000/${url}`;
+  return `https://kussos-backend.herokuapp.com/${url}`;
 }
 
 export default function(url, type, options = {}) {
