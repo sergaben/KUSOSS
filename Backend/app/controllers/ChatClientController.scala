@@ -10,7 +10,7 @@ import play.api.mvc._
 
 class ChatClientController @Inject()(cc:ControllerComponents,ws:WSClient)()extends AbstractController(cc){
 
-  val postInstance = Post(23, 45, "fsadf asdf ",Calendar.getInstance.getTime)
+  val postInstance = Post(23, 45, "fsadf",Calendar.getInstance.getTime)
   val student = KingstonStudent(Seq(Post(23,234,"fsadfsd",Calendar.getInstance().getTime)))
   val postOne = student.selectOnePost(postInstance.postId)
 

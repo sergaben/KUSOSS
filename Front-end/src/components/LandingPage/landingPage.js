@@ -1,35 +1,35 @@
 import React, { Component } from 'react';
 import Styles from './circleStyle.css';
-//import axios from 'axios';
+import axios from 'axios';
 //import { Promise } from 'es6-promise'
-import $ from 'jquery'
+// import $ from 'jquery'
 class LandingPage extends Component {
-    // constructor(){
-    //     super()
-    //     //this.handleClick.bind(this.handleClick)
-    // }
-    componentDidMount(){
-        $.ajax({
-            type:'GET',
-            dataType:'text',
-            url:'localhost:9000/connectionBetweenBackendFrontend',
-            success: console.log("the connection is working"),
-            error:console.log("connection is not working")
-        })
-
+    constructor(){
+        super()
+        //this.handleClick.bind(this.handleClick)
     }
-//    handleClick = () =>{
-//         axios({
-//             method:'get',
-//             url:'localhost:9000/connectionBetweenBackendFrontend',
-//            })
-//         .then(function (response){
-//             console.log(response);
-//         })
-//         .catch(function(error){
-//             console.log(error);
-//         })
-//    }
+    // componentDidMount(){
+    //     $.ajax({
+    //         type:'GET',
+    //         dataType:'text',
+    //         url:'localhost:9000/connectionBetweenBackendFrontend',
+    //         success: console.log("the connection is working"),
+    //         error:console.log("connection is not working")
+    //     })
+
+    // }
+   handleClick = () =>{
+        axios({
+            method:'get',
+            url:'https://kussos-backend.herokuapp.com/connectionBetweenBackendFrontend',
+           })
+        .then(function (response){
+            console.log(response);
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+   }
     render() {
         // let post = {
         //     id:231,
@@ -114,7 +114,7 @@ class LandingPage extends Component {
                     <div className="col-sm col-md-4 col-lg-3">
                         <div className={Styles.circleMainStyle}>
                             <div className={Styles.wrapContent}>
-                                <button type="button" className="btn btn-primary" >Send data to backend</button>
+                                <button type="button" className="btn btn-primary" onClick={this.handleClick}>Send data to backend</button>
                             </div>
                         </div>
                 </div>
