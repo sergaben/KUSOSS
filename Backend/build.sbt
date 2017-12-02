@@ -16,12 +16,16 @@ libraryDependencies ++= Seq(
   ws ,
   specs2 % Test ,
   guice,
+  filters,
   // https://mvnrepository.com/artifact/postgresql/postgresql
   "org.postgresql" % "postgresql" % "42.1.3",
   "com.typesafe.play" %% "play-slick" % "3.0.1",
   "com.typesafe.slick" %% "slick" % "3.2.1",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
-  "com.typesafe.slick" %% "slick-hikaricp" % "3.2.1"
+  "com.typesafe.slick" %% "slick-hikaricp" % "3.2.1",
+  "org.webjars" % "flot" % "0.8.3",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % "test",
+  "com.rabbitmq" % "amqp-client" % "5.0.0"
   )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  

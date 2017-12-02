@@ -4,7 +4,10 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.StudentController.index
+GET     /                           controllers.ChatRoomController.index
+GET     /chat                       controllers.ChatRoomController.chat
+# Trying connection between backend and frontend
+GET    /connectionBetweenBackendFrontend             controllers.ChatClientController.connectionBetweenBackendFrontend
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

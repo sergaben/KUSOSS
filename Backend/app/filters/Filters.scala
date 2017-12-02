@@ -2,11 +2,7 @@ package filters
 
 import javax.inject.Inject
 
-import play.api.http.DefaultHttpFilters
-import play.filters.hosts.AllowedHostsFilter
-
-class Filters @Inject() (allowedHostsFilter:AllowedHostsFilter) extends DefaultHttpFilters{
-
-
-
-}
+import play.api.http.{DefaultHttpFilters, EnabledFilters}
+import play.filters.cors.CORSFilter
+class Filters @Inject()(enabledFilters: EnabledFilters, corsFilter: CORSFilter)
+  extends DefaultHttpFilters(enabledFilters.filters :+ corsFilter: _*)
