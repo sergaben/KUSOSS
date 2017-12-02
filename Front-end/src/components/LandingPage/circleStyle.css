@@ -1,0 +1,21 @@
+.circleMainStyle{
+    padding: 8%;
+    text-align: center;
+    top:0;
+    bottom: 0;
+    right:0;
+    left:0;
+    display: block;
+    border-radius: 50%;
+    background-color: #0000ff;
+    color: white;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 5%;
+    margin-top:5%;
+    font-size:1vw;
+}
+.wrapContent{
+    display: inline-block;
+    vertical-align: middle;
+}

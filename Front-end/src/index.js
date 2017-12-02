@@ -6,6 +6,8 @@ import React from 'react'
 
 import App from './containers/App'
 import configure from './store'
+import Chat from './components/Chat'
+import '../node_modules/draft-js/dist/Draft.css';
 
 const store = configure();
 const history = syncHistoryWithStore(browserHistory, store);
@@ -14,6 +16,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}/>
+      <Route path="/chat" component={Chat}/>
     </Router>
   </Provider>,
   document.getElementById('root')

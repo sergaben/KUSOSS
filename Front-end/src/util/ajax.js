@@ -1,8 +1,8 @@
 import { Promise } from 'es6-promise'
 import $ from 'jquery'
 
-function generateUrl(url) {
-  return `https://olep-api.herokuapp.com${url}`;
+function generateUrl(url,) {
+  return `localhost:9000/${url}`;
 }
 
 export default function(url, type, options = {}) {
@@ -11,7 +11,7 @@ export default function(url, type, options = {}) {
       type: type,
       url: generateUrl(url),
       data: options,
-      success: (data) => resolved(JSON.parse(data)),
+      success: (data) =>{ resolved(JSON.parse(data))},
       error: (data) => rejected(data)
     });
   });
