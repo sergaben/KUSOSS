@@ -24,8 +24,8 @@ class ChatClientController @Inject()(cc:ControllerComponents,ws:WSClient)()exten
 //    }
 //  }
 
-  def connectionBetweenBackendFrontend = Action {
-      Ok(postOne.toString)
+  def connectionBetweenBackendFrontend(someText:String)= Action {
+      Ok(someText)
   }
 
 }
