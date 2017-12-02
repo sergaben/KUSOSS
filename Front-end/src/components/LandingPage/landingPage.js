@@ -16,7 +16,6 @@ class LandingPage extends Component {
     //         success: console.log("the connection is working"),
     //         error:console.log("connection is not working")
     //     })
-
     // }
    handleClick = () =>{
         axios({

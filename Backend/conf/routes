@@ -4,7 +4,7 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.ChatRoomController.index
+GET     /                           controllers.HomeController.index
 GET     /chat                       controllers.ChatRoomController.chat
 # Trying connection between backend and frontend
 GET    /connectionBetweenBackendFrontend             controllers.ChatClientController.connectionBetweenBackendFrontend
