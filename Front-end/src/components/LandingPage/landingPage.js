@@ -32,12 +32,12 @@ class LandingPage extends Component {
         // })
    }
     render() {
-        // let post = {
-        //     id:231,
-        //     studentId:234,
-        //     content:"fajskdf jaksdflkaj ljl",
-        //     createdAt: new Date()
-        // }
+        let post = {
+            id:231,
+            studentId:234,
+            content:"fajskdf jaksdflkaj ljl",
+            createdAt: new Date()
+        }
         return (
             <div>
                 <section id="app_header" className="jumbotron text-center">
@@ -115,7 +115,7 @@ class LandingPage extends Component {
                     <div className="col-sm col-md-4 col-lg-3">
                         <div className={Styles.circleMainStyle}>
                             <div className={Styles.wrapContent}>
-                                <button type="button" className="btn btn-primary" onClick={this.handleClick("connectionBetweenBackendFrontend/whatisgoingon?","get","hola como estamos")}>Send data to backend</button>
+                                <button type="button" className="btn btn-primary" onClick={this.handleClick(`connectionBetweenBackendFrontend/${post}`,"get","hola como estamos")}>Send data to backend</button>
                             </div>
                         </div>
                 </div>
