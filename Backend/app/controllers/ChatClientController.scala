@@ -1,10 +1,11 @@
 package controllers
 
-import java.util.Calendar
+import java.util.{Calendar, Date}
 import javax.inject.Inject
 
 import models.{KingstonStudent, Post}
 import play.api.Logger
+import play.api.libs.json._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 
@@ -23,9 +24,23 @@ class ChatClientController @Inject()(cc:ControllerComponents,ws:WSClient)()exten
 //      Ok(postOne.toString)
 //    }
 //  }
+  implicit val postWrites: Reads[Post] = (
+    (JsPath \ "postId").read[Int] and
+    (JsPath \ "studentId").read[Int] and
+    (JsPath \ "content").read[String] and
+    (JsPath \ "createdAt").read[Date]
+)(Post.apply _)
 
-  def connectionBetweenBackendFrontend(someText:String)= Action {
-      Ok(someText)
+  def connectionBetweenBackendFrontend= Action(parse.json) { req =>
+      val post = req.body.validate[Post]
+      post.fold(
+        errors => {
+          BadRequest(Json.obj("Status"->"KO","Message"->JsError.toJson(errors)))
+        },
+        post => {
+          Ok(Json.obj("Status"->"OK","message"->("Post' content: "+post.content)))
+        }
+      )
   }
 
 }
