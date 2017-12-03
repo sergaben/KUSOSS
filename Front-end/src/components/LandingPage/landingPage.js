@@ -11,14 +11,14 @@ class LandingPage extends Component {
     }
     handleClick = (url,type,data) => {    
 
-        const urlLocalhost = `localhost:9000/${url}`
-        //const urlRealServer = `https://kussos-backend.herokuapp.com/${url}`
+        //const urlLocalhost = `localhost:9000/${url}`
+        const urlRealServer = `https://kussos-backend.herokuapp.com/${url}`
 
         axios({
             method:type,
-            url:urlLocalhost,
+            url:urlRealServer,
             data,
-            headers:{'Access-Control-Allow-Origin':'*'}
+            //headers:{'Access-Control-Allow-Origin':'*'}
            })
         .then(function (response){
             console.log(response);
