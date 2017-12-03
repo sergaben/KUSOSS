@@ -1,13 +1,31 @@
 import React, { Component } from 'react';
 import Styles from './circleStyle.css';
 import axios from 'axios';
-import ajaxFunction from '../../util/ajax';
+//import { ajax } from '../../util/ajax';
 //import { Promise } from 'es6-promise'
 // import $ from 'jquery'
 class LandingPage extends Component {
     constructor(){
         super()
         this.handleClick.bind(this.handleClick)
+    }
+    handleClick = (url,type,data) => {    
+
+        const urlLocalhost = `localhost:9000/${url}`
+        //const urlRealServer = `https://kussos-backend.herokuapp.com/${url}`
+
+        axios({
+            method:type,
+            url:urlLocalhost,
+            data,
+            headers:{'Access-Control-Allow-Origin':'*'}
+           })
+        .then(function (response){
+            console.log(response);
+        })
+        .catch(function(error){
+            console.log(error);
+        })
     }
     // componentDidMount(){
     //     $.ajax({
@@ -18,8 +36,7 @@ class LandingPage extends Component {
     //         error:console.log("connection is not working")
     //     })
     // }
-   handleClick = (url,type,data) =>{
-       ajaxFunction(url,type,data);
+
         // axios({
         //     method:'get',
         //     url:'https://kussos-backend.herokuapp.com/connectionBetweenBackendFrontend',
@@ -30,13 +47,14 @@ class LandingPage extends Component {
         // .catch(function(error){
         //     console.log(error);
         // })
-   }
+   
     render() {
-        let post = {
-            id:231,
-            studentId:234,
-            content:"fajskdf jaksdflkaj ljl",
-            createdAt: new Date()
+        let student = {
+            "nickname":"Sergio",
+            "password":"fasdfsdf",
+            "email":"alkdfjkl@fasdf.com",
+            "subject":"fjksladfjl",
+            "typeOfStudy":"fasdfsadf"
         }
         return (
             <div>
@@ -115,7 +133,7 @@ class LandingPage extends Component {
                     <div className="col-sm col-md-4 col-lg-3">
                         <div className={Styles.circleMainStyle}>
                             <div className={Styles.wrapContent}>
-                                <button type="button" className="btn btn-primary" onClick={this.handleClick(`connectionBetweenBackendFrontend`,"get",post)}>Send data to backend</button>
+                                <button type="button" className="btn btn-primary" onClick={this.handleClick("registerKStudents","post",student)}>Send data to backend</button>
                             </div>
                         </div>
                 </div>

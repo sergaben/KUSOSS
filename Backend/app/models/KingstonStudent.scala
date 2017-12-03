@@ -1,25 +1,38 @@
 package models
 
-// simple case class for a student
-case class KingstonStudent(posts:Seq[Post]) extends Student{
-  val id = 2343
-  val nickname = "fsafds"
-  val password = "fasdfsadf"
-  val email = "fasdf@fasdfs"
-  val chatRoom = Seq(ChatRoom(23,"fasdf",234))
-  val subject = Subject(12,"fasfsd",Course(234,"fasdfs","Afsdf"))
-  val typeOfStudy = TypeOfStudy(34,"Undergraduate")
+import play.api.libs.json._
 
-  def selectOnePost(idStudent:Int):Any = {
-    posts.map(Post=>
-      if(Post.studentId.equals(idStudent)){
-         Post
-      }
-    )
+// simple case class for a student
+case class KingstonStudent(nickname:String,password:String,email:String,subject:String,typeOfStudy:String) {}
+
+// companion object of KingstonStudent
+object KingstonStudent{
+  //This object is going to be used to format the class to json or from json to the class
+  implicit object KingstonStudentFormat extends Format[KingstonStudent] {
+
+    def reads(json: JsValue): JsResult[KingstonStudent] = {
+      // the Vals below hold all the parameters for the KingstonStudent class
+      val nickname = (json \ "nickname").as[String]
+      val password = (json \ "password").as[String]
+      val email = (json \ "email").as[String]
+      val subject = (json \ "subject").as[String]
+      val typeOfStudy = (json \ "typeOfStudy").as[String]
+      // The line below returns a KingstonStudent object
+      JsSuccess(KingstonStudent(nickname, password, email, subject, typeOfStudy))
+    }
+
+    def writes(student: KingstonStudent): JsValue = {
+      // the Seq below creates a json object
+      val studentAsList = Seq("nickname" -> JsString(student.nickname),
+        "password" -> JsString(student.password),
+        "email" -> JsString(student.email),
+        "subject" -> JsString(student.subject),
+        "typeOfStudy" -> JsString(student.typeOfStudy))
+      //The line below returns a json object
+      JsObject(studentAsList)
+    }
   }
 }
-
-
 
 // a id for a student
 // a nickname for the student

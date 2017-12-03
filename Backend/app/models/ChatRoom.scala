@@ -1,7 +1,7 @@
 package models
 
 // Simple case class for a general chat room
-case class ChatRoom(id: Int, name:String, nOfUsers:Int){
+case class ChatRoom(name:String, nOfUsers:Int){
 
 }
 
