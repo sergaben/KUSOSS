@@ -32,8 +32,7 @@ class Chat extends Component {
   render() {
     return (
       <div>
-        <Launcher
-/>
+        <Launcher/>
       </div>
       // <div id="chat-container" className="container-fluid" >
       //   <div className="row">
