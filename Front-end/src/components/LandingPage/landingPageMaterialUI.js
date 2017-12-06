@@ -46,7 +46,9 @@ class LandingPageMaterialUI extends Component{
             margin:'50'
         }
         let cardBoxShadow = {
-            boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 10px 6px, rgba(0, 0, 0, 0.23) 0px 3px 10px'
+            boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 10px 6px, rgba(0, 0, 0, 0.23) 0px 3px 10px',
+            marginTop:'2%',
+            marginBottom:'2%'
         }
         let gridStyle = {
             padding:0
