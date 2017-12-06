@@ -1,79 +1,96 @@
-import React from 'react';
+import React, {Component} from 'react';
+//import {connect} from 'react-redux';
 import { Field,reduxForm } from 'redux-form';
-import Styles from './forms.css';
+//import Styles from './forms.css';
+//import { FlatButton } from 'material-ui';
+import {TextField, SelectField} from 'redux-form-material-ui';
+import MenuItem from 'material-ui/MenuItem';
 
-const BasicForm = props =>{
-    const { handleSubmit, pristine, reset, submitting } = props;
-    return(
-    <div>
-        <form onSubmit={handleSubmit} style={{marginTop:'3%'}}>
-            <div>
-                <label>Nickname</label>
-                <div className={Styles.formGroup}>
-                    <Field className="form-control"
+class BasicForm extends Component{
+    // componentDidMount(){
+    //     this.refs.name
+    //         .getRenderedComponent()
+    //         .getRenderedComponent()
+    //         .focus();
+    // }
+    render(){
+        const { handleSubmit} = this.props;
+        const formStyle = {
+            marginTop:'3%',
+            marginRight:'10%',
+            marginLeft:'10%'
+        }
+        const fieldStyle = {
+            width:'100%'
+        }
+        return(
+            <form onSubmit={handleSubmit} style={formStyle}>
+                <div>
+                    <Field
+                        style={fieldStyle}
                         name="nickname"
-                        component="input"
-                        type="text"
-                        placeholder="Nickname"
-                    />
+                        component={TextField}
+                        hintText="Nickname"   
+                        floatingLabelText="Nickname"
+                        
+                        />
                 </div>
-            </div>
-            <div >
-                <label>Email</label>
-                <div  className={Styles.formGroup}>
-                    <Field className="form-control"
+                <div>
+                    <Field 
+                        style={fieldStyle}
                         name="email"
-                        component="input"
-                        type="email"
-                        placeholder="Email"
-                    />
+                        component={TextField}
+                        hintText="Email"
+                        floatingLabelText="Email"
+                        />
                 </div>
-            </div>
-            <div>
-                <label>Password</label>
-                <div className={Styles.formGroup}>
-                    <Field className="form-control"
+                <div>
+                    <Field 
+                        style={fieldStyle}
                         name="password"
-                        component="input"
+                        component={TextField}
                         type="password"
-                        placeholder="Password"
+                        hintText="Password"
+                        floatingLabelText="Password"
                     />
                 </div>
-            </div>
-            <div>
-                <label>Subject</label>
-                <div className={Styles.formGroup}>
-                    <Field className="form-control"
+                <div>
+                    <Field
+                        style={fieldStyle}
                         name="subject"
-                        component="input"
-                        type="text"
-                        placeholder="Subject"
-                    />
+                        component={SelectField}
+                        hintText="Subject"
+                        floatingLabelText="Subject"
+                    >
+                        <MenuItem value="Computer Science" primaryText="Computer Science"/>
+                        <MenuItem value="Medicine" primaryText="Medicine"/>
+                        <MenuItem value="Mathematics" primaryText="Mathematics"/>
+
+                    </Field>
                 </div>
-            </div>
-            <div>
-                <label>Type of study</label>
-                <div className={Styles.formGroup}>
-                    <Field className="form-control"
+                <div>
+                    <Field
+                        style={fieldStyle}
                         name="typeOfStudy"
-                        component="input"
-                        type="text"
-                        placeholder="Type of study"
-                    />
+                        component={SelectField}
+                        hintText="Type of Study"
+                        floatingLabelText="Type of Study"
+                    >
+                        <MenuItem value="undergraduate" primaryText="Undergraduate"/>
+                        <MenuItem value="postgraduate" primaryText="Postgraduate"/>
+                        <MenuItem value="PhD" primaryText="PhD"/>
+                        <MenuItem value="foundation" primaryText="Foundation"/>
+                    </Field>
                 </div>
-            </div>
-            <div>
-                <button className="btn btn-success"  style={{marginRight:'3%'}} data-toggle="modal" data-target="#successfulModal" type="button" disabled={pristine || submitting}>Submit</button>
-                <button className="btn btn-danger" type="button" disabled={pristine || submitting} onClick={reset}>Clear Values</button>
-            </div>
-        </form>
-        
+                
+            </form>
 
-        
-    </div>
-    )
-
+        )
+    }
 }
 
+BasicForm = reduxForm({
+    form:'basicForm'
+})(BasicForm) 
 
-export default reduxForm({form:'basic'})(BasicForm);
+export default BasicForm;

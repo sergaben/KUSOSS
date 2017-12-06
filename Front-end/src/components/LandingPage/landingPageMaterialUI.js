@@ -14,6 +14,8 @@ import realTime from '../../../public/images/RealTime.jpg';
 import usefulLinks from '../../../public/images/links.png';
 import Dialog from 'material-ui/Dialog';
 import { Toolbar,ToolbarGroup } from 'material-ui/Toolbar';
+import BasicForm from '../Forms/BasicForm';
+import handleResults from '../Forms/handleResults';
 
 class LandingPageMaterialUI extends Component{
     state = {
@@ -107,6 +109,12 @@ class LandingPageMaterialUI extends Component{
                 disabled={true}
                 onClick={this.handleCloseSignUp}
             />,
+            <FlatButton
+                label="Reset"
+                secondary={true}
+                disabled={false}
+               
+            />
         ];
         const logInIcon = <FontIcon className="material-icons">lock_open</FontIcon>;
         const signInIcon = <FontIcon className="material-icons">person_add</FontIcon>;
@@ -150,6 +158,7 @@ class LandingPageMaterialUI extends Component{
                                             open={this.state.openLogIn}
                                         >
                                             Log In Form goes here
+                                            
                                         </Dialog>
                                         <Dialog
                                             title="Sign Up"
@@ -157,7 +166,7 @@ class LandingPageMaterialUI extends Component{
                                             modal={true}
                                             open={this.state.openSignUp}
                                         >
-                                            Sign up Form goes here
+                                            <BasicForm onSubmit={handleResults}/>
                                         </Dialog>
                                     </BottomNavigation>
                             </MuiThemeProvider>
