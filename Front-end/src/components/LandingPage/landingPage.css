@@ -1,0 +1,47 @@
+.circleMainStyle{
+    padding: 8%;
+    text-align: center;
+    top:0;
+    bottom: 0;
+    right:0;
+    left:0;
+    display: block;
+    border-radius: 50%;
+    background-color: #0000ff;
+    color: white;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 5%;
+    margin-top:5%;
+    font-size:1vw;
+}
+.jumbotron{
+    composes: jumbotron from '../../../node_modules/bootstrap-css-modules/css/jumbotron.css';
+    margin-top:2%;
+    background-color: #0ea2f9;
+}
+.wrapContent{
+    display: inline-block;
+    vertical-align: middle;
+}
+.textSizeJumbotron{
+    font-size: 4em;
+}
+
+.imgthumbnail{
+    composes: imgThumbnail from '../../../node_modules/bootstrap-css-modules/css/images.css';
+    background-color: #07d5df;
+    padding:35px;
+    box-shadow:rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+    -webkit-transition: box-shadow .1s ease-in-out;
+    transition: box-shadow .1s ease-in-out;
+}
+.imgthumbnail:hover{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+}
+.displayNone{
+    display:none;
+}
+.textAlign{
+    text-align: center;
+}
