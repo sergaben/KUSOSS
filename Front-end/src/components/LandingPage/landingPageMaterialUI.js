@@ -127,7 +127,7 @@ class LandingPageMaterialUI extends Component{
                     <MuiThemeProvider>
                         <AppBar title="KUSSOS" 
                             className={styles.textAlign}
-                            iconClassNameLeft={styles.displayNone}
+                            showMenuIconButton={false}
                             titleStyle={textAlign}>
                         </AppBar>
                     </MuiThemeProvider>
