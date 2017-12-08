@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './app.css';
-import LandingPage from '../../components/LandingPage/landingPage';
 import LandingPageMaterialUI from '../../components/LandingPage/landingPageMaterialUI';
 
 class App extends Component {
