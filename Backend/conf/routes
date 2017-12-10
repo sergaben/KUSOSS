@@ -8,6 +8,7 @@ GET     /                        controllers.HomeController.index
 # Trying connection between backend and frontend
 POST    /registerKStudents       controllers.RegistrationKSController.registerKStudents
 #GET    /connectionBetweenBackendFrontend       controllers.ChatClientController.connectionBetweenBackendFrontend
+GET     /fromDatabase           controllers.FromDatabaseController.fromDatabase
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code

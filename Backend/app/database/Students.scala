@@ -5,7 +5,7 @@ import javax.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent._
 
 
 class Students @Inject() (protected val dbConfigProvider:DatabaseConfigProvider)
@@ -15,7 +15,7 @@ class Students @Inject() (protected val dbConfigProvider:DatabaseConfigProvider)
 //  private val Students = TableQuery[StudentsTable]
 //
 //  def all(): Future[Seq[KingstonStudent]] = db.run(Students.result)
-
+//
 //  private class StudentsTable(tag: Tag) extends Table[KingstonStudent](tag, "Ku_student") {
 //    def id = column[Int]("id_student", O.PrimaryKey, O.AutoInc)
 //    def nickname = column[String]("nickname")
