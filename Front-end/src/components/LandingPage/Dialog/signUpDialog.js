@@ -26,8 +26,9 @@ class LoginDialog extends Component{
         componentDidMount(){
             axios({
                 method:'get',
-                url:this.generateURL(true,'getSubjectsNames')
+                url:'https://kussos-backend.herokuapp.com/getSubjectsNames'
             }).then((response)=>{
+                console.log(response.data);
                 this.setState(()=>{
                     return{
                         subject:response.data
