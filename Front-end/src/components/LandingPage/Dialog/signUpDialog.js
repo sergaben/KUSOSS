@@ -12,9 +12,20 @@ class LoginDialog extends Component{
                 nickname:'',
                 email:'',
                 password:'',
-                subject:'',
+                subject:[],
                 typeOfStudy:''
             }
+        }
+        componentDidMount(){
+            Axios('get',true,'getSubjectsNames').then((response)=>{
+                this.setState(()=>{
+                    return{
+                        subject:response.data
+                    }
+                })
+            }).catch((error)=>{
+                console.log(error);
+            })
         }
         onChange = (e) =>{
             const state = this.state;
@@ -24,7 +35,11 @@ class LoginDialog extends Component{
         onSubmit = (e) =>{
             e.preventDefault();
             const { nickname,email,password,subject,typeOfStudy } = this.state;
-            Axios('post',true,'registerKStudents',{ nickname, email, password, subject, typeOfStudy });
+            Axios('post',true,'registerKStudents',{ nickname, email, password, subject, typeOfStudy }).then((response)=>{
+                console.log(response);
+            }).catch((error)=>{
+                console.log(error);
+            });
         }
         render(){
             const { handleSubmit, open, close } = this.props;
