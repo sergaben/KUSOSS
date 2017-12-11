@@ -109,10 +109,9 @@ class LoginDialog extends Component{
                                 floatingLabelText="Subject"
                                 onChange={this.onChange}
                             >
-                                <MenuItem value="Computer Science" primaryText="Computer Science"/>
-                                <MenuItem value="Medicine" primaryText="Medicine"/>
-                                <MenuItem value="Mathematics" primaryText="Mathematics"/>
-        
+                            {this.state.subject.map((key,value)=>{
+                                <MenuItem value={value} primaryText={value}/>
+                            })}
                             </Field>
                         </div>
                         <div>
@@ -123,8 +122,7 @@ class LoginDialog extends Component{
                                 hintText="Type of Study"
                                 floatingLabelText="Type of Study"
                                 onChange={this.onChange}
-                            >
-                                <MenuItem value="undergraduate" primaryText="Undergraduate"/>
+                            >      
                                 <MenuItem value="postgraduate" primaryText="Postgraduate"/>
                                 <MenuItem value="PhD" primaryText="PhD"/>
                                 <MenuItem value="foundation" primaryText="Foundation"/>
