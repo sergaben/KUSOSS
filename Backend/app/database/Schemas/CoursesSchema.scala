@@ -7,12 +7,13 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 import scala.concurrent.ExecutionContext
 
+// This class creates a new table thats reflects the structure of the PostreSQL Database
 class CoursesSchema @Inject ()(protected val dbConfigProvider:DatabaseConfigProvider)
                               (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
   class CourseTable (tag: Tag) extends Table[Course](tag,"Courses"){
-
+    def course_id = column[Int]("course_id")
     def course_name = column [String]("course_name")
     def subject_name = column [String]("subject")
     def type_of_study = column [String]("type_of_study")
