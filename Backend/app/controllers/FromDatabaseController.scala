@@ -5,9 +5,10 @@ import javax.inject.Inject
 import database.CourseRepositoryImpl
 import play.api.mvc.{AbstractController, ControllerComponents}
 
+import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-class FromDatabaseController @Inject()(cc:ControllerComponents,courseRepositoryImpl: CourseRepositoryImpl) extends AbstractController(cc){
+class FromDatabaseController @Inject()(cc:ControllerComponents,courseRepositoryImpl: CourseRepositoryImpl)(implicit executionContext: ExecutionContext) extends AbstractController(cc){
 
   def fromDatabase = Action{
     val allCourses = courseRepositoryImpl.getAll()
