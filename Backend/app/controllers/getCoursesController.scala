@@ -7,7 +7,8 @@ import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
-//TODO - ADD COMMIT TO GIT AND PUSH IT
+//TODO - ADD COMMIT AND PUSH TO GITHUB
+//TODO - SENDING THE COURSES AS JSON
 //Getting courses from database
 class getCoursesController @Inject()(cc:ControllerComponents, courseRepositoryImpl: CourseRepositoryImpl)
                                     (implicit executionContext: ExecutionContext) extends AbstractController(cc){

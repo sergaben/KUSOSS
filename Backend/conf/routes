@@ -5,10 +5,12 @@
 
 # An example controller showing a sample home page
 GET     /                        controllers.HomeController.index
-# Trying connection between backend and frontend
+# Trying connection register kstudents
 POST    /registerKStudents       controllers.RegistrationKSController.registerKStudents
-#GET    /connectionBetweenBackendFrontend       controllers.ChatClientController.connectionBetweenBackendFrontend
+#Getting courses from databases and converting them into scala objects
 GET     /getCourses           controllers.getCoursesController.getCourses
+#Getting subjects from database and converting them into scala objects
+GET     /getSubjectsNames      controllers.getSubjectsController.getSubjectsNames
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 

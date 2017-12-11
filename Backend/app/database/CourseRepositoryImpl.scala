@@ -21,11 +21,11 @@ class CourseRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConf
   // It will get all the courses
   override def getAll(): Future[Seq[Course]] = db.run(courses.result)
   // It will add a new course to the course table in database
-  override def add(course: Course) = Future()
+  override def add(course: Course) = ???
   // It will update a new course in the database
-  override def update(course: Course) = Future()
+  override def update(course: Course) = ???
   // It will delete an existing course in the database
-  override def delete(course: Course) = Future()
+  override def delete(course: Course) = ???
   // It will get a course depending on the id
   override def getById(id: Int) = ???
 }
