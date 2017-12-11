@@ -14,6 +14,6 @@ class SubjectSchema @Inject ()(protected val dbConfigProvider:DatabaseConfigProv
 
   class SubjectTable (tag: Tag) extends Table[Subject](tag,"subject"){
     def subject_name = column [String]("subject_name")
-    def * = subject_name <> (Subject,Subject.unapply _)
+    def * = subject_name <> (Subject.apply _, Subject.unapply)
   }
 }
