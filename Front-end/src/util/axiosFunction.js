@@ -12,5 +12,9 @@ export default function(type,mode,url,data = {}){
         method:type,
         url:generateURL(mode,url),
         data,
+    }).then((response)=>{
+        console.log(response);
+    }).catch((error)=>{
+        console.log(error);
     })
 }

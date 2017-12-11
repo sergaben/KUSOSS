@@ -4,6 +4,7 @@ import { Field,reduxForm } from 'redux-form';
 import {FlatButton} from 'material-ui';
 import {TextField, SelectField} from 'redux-form-material-ui';
 import MenuItem from 'material-ui/MenuItem';
+import axios from 'axios';
 import Axios from '../../../util/axiosFunction';
 class LoginDialog extends Component{
         constructor(){
@@ -16,8 +17,17 @@ class LoginDialog extends Component{
                 typeOfStudy:''
             }
         }
+        generateURL= (prodMode, url)=>{
+            if(!prodMode){
+                return `localhost:9000/${url}`;
+            }
+            return `https://kussos-backend.herokuapp.com/${url}`;
+        }
         componentDidMount(){
-            Axios('get',true,'getSubjectsNames').then((response)=>{
+            axios({
+                method:'get',
+                url:this.generateURL(true,'getSubjectsNames')
+            }).then((response)=>{
                 this.setState(()=>{
                     return{
                         subject:response.data
