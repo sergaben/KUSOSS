@@ -8,7 +8,7 @@ import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContext
 
-class SubjectSchema @Inject ()(val dbConfigProvider:DatabaseConfigProvider)
+class SubjectSchema @Inject ()(protected val dbConfigProvider:DatabaseConfigProvider)
                               (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
