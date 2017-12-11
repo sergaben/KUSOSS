@@ -8,19 +8,16 @@ import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
 //TODO - SEND SUBJECT NAMES AS JSON TO THE FRONT END
 //TODO - ADD COMMIT AND PUSH TO GITHUB
 
 class getSubjectsController @Inject()(cc:ControllerComponents, subjectRepositoryImpl: SubjectRepositoryImpl)
                                      (implicit executionContext: ExecutionContext) extends AbstractController(cc) {
 
-  def getSubjectsNames = Action {
-    getSubjectNamesAsJson onComplete {
-      case Success(subject) => for (oneSubject <- subject) Ok(Json.toJson(oneSubject))
-      case Failure(f) => println("An error has occured " + f.getMessage)
+  def getSubjectsNames = Action.async { request =>
+    getSubjectNamesAsJson.map { result =>
+      Ok(Json.toJson(result))
     }
-    Ok
   }
 
   def getSubjectNamesAsJson: Future[Seq[Subject]] = {
