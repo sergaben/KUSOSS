@@ -110,7 +110,7 @@ class LoginDialog extends Component{
                                 onChange={this.onChange}
                             >
                             {this.state.subject.map((key,value)=>{
-                                <MenuItem value={value} primaryText={value}/>
+                                <MenuItem value={key} primaryText={key}/>
                             })}
                             </Field>
                         </div>
