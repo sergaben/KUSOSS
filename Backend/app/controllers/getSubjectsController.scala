@@ -16,10 +16,7 @@ class getSubjectsController @Inject()(cc:ControllerComponents, subjectRepository
   //send Json data to front End
   def getSubjectsNamesAsJson = Action.async { request =>
     subjectRepositoryImpl.getAll().map { result =>
-      result.foreach(subject =>{
-        Ok(Json.toJson(subject.name))
-      })
-      Ok(Json.toJson(result.))
+      Ok(Json.toJson(result))
     }
   }
 
