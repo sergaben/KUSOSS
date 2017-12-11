@@ -14,7 +14,7 @@ class SubjectRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseCon
                                      (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with ISubjectRepository{
   import profile.api._
 
-  private val subjects = TableQuery[subjectSchema.SubjectTable]
+  val subjects = subjectSchema.subjects
 
   override def getAll() = db.run(subjects.result)
 

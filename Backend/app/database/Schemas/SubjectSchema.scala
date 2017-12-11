@@ -16,4 +16,6 @@ class SubjectSchema @Inject ()(val dbConfigProvider:DatabaseConfigProvider)
     def subject_name = column [String]("subject_name")
     def * = subject_name <> (Subject.apply _, Subject.unapply)
   }
+
+  val subjects = TableQuery[SubjectTable]
 }
