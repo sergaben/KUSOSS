@@ -10,7 +10,7 @@ POST    /registerKStudents       controllers.RegistrationKSController.registerKS
 #Getting courses from databases and converting them into scala objects
 GET     /getCourses           controllers.getCoursesController.getCourses
 #Getting subjects from database and converting them into scala objects
-GET     /getSubjectsNames      controllers.getSubjectsController.getSubjectsNames
+GET     /getSubjectsNamesAsJson      controllers.getSubjectsController.getSubjectsNamesAsJson
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
