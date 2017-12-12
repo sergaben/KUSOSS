@@ -8,6 +8,7 @@ import slick.jdbc.JdbcProfile
 
 import scala.concurrent.ExecutionContext
 
+// a class that represents the schema of the Subject Table in the database
 class SubjectSchema @Inject ()(protected val dbConfigProvider:DatabaseConfigProvider)
                               (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
@@ -17,5 +18,5 @@ class SubjectSchema @Inject ()(protected val dbConfigProvider:DatabaseConfigProv
     def * = subject_name <> (Subject.apply _, Subject.unapply)
   }
 
-  val subjects = TableQuery[SubjectTable]
+  val subjects = TableQuery[SubjectTable] // represents a database table
 }

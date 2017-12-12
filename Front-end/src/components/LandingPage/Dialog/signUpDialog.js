@@ -28,7 +28,7 @@ class LoginDialog extends Component{
                 method:'get',
                 url:'https://kussos-backend.herokuapp.com/getSubjectsNamesAsJson'
             }).then((response)=>{
-                console.log(response.data);
+                //console.log(response.data);
                 this.setState(()=>{
                     return{
                         subject:response.data
@@ -42,6 +42,16 @@ class LoginDialog extends Component{
             const state = this.state;
             state[e.target.name] = e.target.value;
             this.setState(state);
+        }
+        generateMenuItems = () =>{
+            let menuItems = [] // empty array which will hold all the values from the database
+            this.state.subject.map((array,index)=>{
+                menuItems.push(<MenuItem key={index} value={array.name} primaryText={array.name}/>); // this will put all the menuItems in the array
+            })
+            return menuItems;
+        }
+        onDropdownSelected = (e)=>{
+            console.log("The val",e.target.value);
         }
         onSubmit = (e) =>{
             e.preventDefault();
@@ -106,12 +116,10 @@ class LoginDialog extends Component{
                                 name="subject"
                                 component={SelectField}
                                 hintText="Subject"
-                                floatingLabelText="Subject"
-                                onChange={this.onChange}
+                                floatingLabelText="Subject"     
                             >
-                            {this.state.subject.map((key,value)=>{
-                                <MenuItem value={key} primaryText={key}/>
-                            })}
+                            {this.generateMenuItems()}
+                            
                             </Field>
                         </div>
                         <div>

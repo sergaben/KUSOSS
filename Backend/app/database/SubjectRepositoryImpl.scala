@@ -10,6 +10,7 @@ import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 
+// A repository implementation of all the possible queries that can be run in the Subject table
 class SubjectRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfigProvider,subjectSchema:SubjectSchema)
                                      (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with ISubjectRepository{
 
