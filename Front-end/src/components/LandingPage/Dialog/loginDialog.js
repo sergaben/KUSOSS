@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import Dialog from 'material-ui/Dialog';
 import { Field,reduxForm } from 'redux-form';
-import { TextField, FlatButton } from 'material-ui';
+import { TextField, FlatButton, Dialog } from 'material-ui';
 import Axios from '../../../util/axiosFunction';
 class LoginDialog extends Component{
         constructor(){

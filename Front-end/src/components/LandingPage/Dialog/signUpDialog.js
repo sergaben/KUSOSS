@@ -116,7 +116,8 @@ class LoginDialog extends Component{
                                 name="subject"
                                 component={SelectField}
                                 hintText="Subject"
-                                floatingLabelText="Subject"     
+                                floatingLabelText="Subject"  
+                               
                             >
                             {this.generateMenuItems()}
                             
