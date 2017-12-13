@@ -18,13 +18,13 @@ class SubjectRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseCon
 
   private val subjects = subjectSchema.subjects
 
-  override def add(subject: Subject)(implicit e: ExecutionContext) = ???
+  override def add(subject: Subject) = ???
 
-  override def update(subject: Subject)(implicit e: ExecutionContext) = ???
+  override def update(subject: Subject) = ???
 
-  override def delete(subject: Subject)(implicit e: ExecutionContext) = ???
+  override def delete(subject: Subject)= ???
 
-  override def getAll()(implicit e: ExecutionContext) :Future[Seq[Subject]] = db.run(subjects.result)
+  override def getAll() :Future[Seq[Subject]] = db.run(subjects.result)
 
-  override def getById(id: Int)(implicit e: ExecutionContext) = ???
+  override def getById(id: Int) = ???
 }
