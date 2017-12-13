@@ -55,8 +55,8 @@ class LoginDialog extends Component{
         }
         onSubmit = (e) =>{
             e.preventDefault();
-            const { nickname,email,password,typeOfStudy } = this.state;
-            Axios('post',true,'registerKStudents',{ nickname, email, password, typeOfStudy })
+            const { nickname,email,password} = this.state;
+            Axios('post',true,'registerKStudents',{ nickname, email, password})
         }
         render(){
             const { handleSubmit, open, close } = this.props;
