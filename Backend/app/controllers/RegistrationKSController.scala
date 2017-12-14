@@ -33,6 +33,7 @@ class RegistrationKSController @Inject()(cc:ControllerComponents,kingstonStudent
        val kStudent = json.as[KingstonStudent]
        val hashedPassword = BCrypt.hashpw(kStudent.password,BCrypt.gensalt())
        val kStudentWithHashedPassword = kStudent.copy(password = hashedPassword)
+       println(kStudentWithHashedPassword)
        insertKStudentIntoDatabase(kStudentWithHashedPassword)
        Ok
     }
