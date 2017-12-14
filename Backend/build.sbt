@@ -25,8 +25,11 @@ libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick-hikaricp" % "3.2.1",
   "org.webjars" % "flot" % "0.8.3",
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % "test",
-  "com.rabbitmq" % "amqp-client" % "5.0.0"
-  )
+  "com.rabbitmq" % "amqp-client" % "5.0.0",
+    // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+  "org.mindrot" % "jbcrypt" % "0.3m"
+
+)
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 

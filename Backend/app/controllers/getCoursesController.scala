@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 import database.CourseRepositoryImpl
 import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 
 import scala.concurrent.ExecutionContext
 //TODO - ADD COMMIT AND PUSH TO GITHUB
@@ -13,11 +13,9 @@ import scala.concurrent.ExecutionContext
 class getCoursesController @Inject()(cc:ControllerComponents, courseRepositoryImpl: CourseRepositoryImpl)
                                     (implicit executionContext: ExecutionContext) extends AbstractController(cc){
 
-  def getCourses = Action.async{ request => {
-    courseRepositoryImpl.getAll().map(course => {
+  def getCourses: Action[AnyContent] = Action.async{
+    courseRepositoryImpl.getAll().map { course =>
       Ok(Json.toJson(course))
-    })
-   }
+    }
   }
-
 }

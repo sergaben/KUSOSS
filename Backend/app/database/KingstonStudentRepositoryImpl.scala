@@ -21,12 +21,6 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     val inserts = KStudents += kingstonStudent
     val seqOfQuery = DBIO.seq(inserts)
     db.run(seqOfQuery)
-//    db.run(inserts).map{=>
-//      case 1 =>println("Success")
-//      case _ => println("Something failed!!!!")
-//
-//    }
-
   }
 
   override def update(kingstonStudent: KingstonStudent) = ???
