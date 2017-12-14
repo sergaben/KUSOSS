@@ -24,7 +24,8 @@ object KingstonStudent{
 
     def writes(student: KingstonStudent): JsValue = {
       // the Seq below creates a json object
-      val studentAsList = Seq("nickname" -> JsString(student.nickname),
+      val studentAsList = Seq(
+        "nickname" -> JsString(student.nickname),
         "password" -> JsString(student.password),
         "email" -> JsString(student.email),
         "subject" -> JsString(student.subject),

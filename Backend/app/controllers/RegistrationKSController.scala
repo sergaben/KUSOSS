@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import database.KingstonStudentRepositoryImpl
 import models.KingstonStudent
+import org.mindrot.jbcrypt.BCrypt
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext
@@ -30,10 +31,10 @@ class RegistrationKSController @Inject()(cc:ControllerComponents,kingstonStudent
     def registerKStudents = Action{ req => // does this runs this query in blocking mode?
        val json = req.body.asJson.get
        val kStudent = json.as[KingstonStudent]
-//       val hashedPassword = BCrypt.hashpw(kStudent.password,BCrypt.gensalt())
-//       val kStudentWithHashedPassword = kStudent.copy(password = hashedPassword)
-//       println(kStudentWithHashedPassword)
-       insertKStudentIntoDatabase(kStudent)
+       val hashedPassword = BCrypt.hashpw(kStudent.password,BCrypt.gensalt())
+       val kStudentWithHashedPassword = kStudent.copy(password = hashedPassword)
+       println(kStudentWithHashedPassword)
+       insertKStudentIntoDatabase(kStudentWithHashedPassword)
        Ok
     }
   // then convert object to table sql
