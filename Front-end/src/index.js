@@ -16,7 +16,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}/>
-      <Route path="/chat" component={Chat}/>
+      <Route path="/mainPage" component={Chat}/>
     </Router>
   </Provider>,
   document.getElementById('root')
