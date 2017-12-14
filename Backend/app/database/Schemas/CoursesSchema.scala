@@ -19,4 +19,6 @@ class CoursesSchema @Inject ()(protected val dbConfigProvider:DatabaseConfigProv
     def * = (course_name, subject_name, type_of_study) <> ((Course.apply _).tupled,Course.unapply)
 
   }
+
+  val courses = TableQuery[CourseTable]
 }

@@ -2,11 +2,15 @@ package controllers
 
 import javax.inject.Inject
 
+import database.KingstonStudentRepositoryImpl
 import models.KingstonStudent
 import play.api.mvc.{AbstractController, ControllerComponents}
 
+import scala.concurrent.ExecutionContext
 
-class RegistrationKSController @Inject()(cc:ControllerComponents) extends AbstractController(cc){
+
+class RegistrationKSController @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
+                                        (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
 
 //  // mapping kingston student to form
@@ -26,11 +30,13 @@ class RegistrationKSController @Inject()(cc:ControllerComponents) extends Abstra
     def registerKStudents = Action{ req =>
        val json = req.body.asJson.get
        val kStudent = json.as[KingstonStudent]
-       println(kStudent)
+       insertKStudentIntoDatabase(kStudent)
        Ok
     }
   // then convert object to table sql
-
+    def insertKStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
+      kingstonStudentRepositoryImpl.add(kingstonStudent)
+    }
   // then run query insert into database
 
 }

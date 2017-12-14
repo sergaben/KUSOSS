@@ -16,7 +16,7 @@ class CourseRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConf
 
   import profile.api._
 
-  private val courses = TableQuery[coursesSchema.CourseTable]
+  private val courses = coursesSchema.courses
 
   // It will get all the courses
   override def getAll(): Future[Seq[Course]] = db.run(courses.result)

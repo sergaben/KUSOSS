@@ -3,7 +3,7 @@ package models
 import play.api.libs.json._
 
 // simple case class for a student
-case class KingstonStudent(nickname:String,password:String,email:String,subject:String,typeOfStudy:String) {}
+case class KingstonStudent(nickname:String,password:String,email:String,subject:String,typeOfStudy:String,fromKingston:Boolean) {}
 
 // companion object of KingstonStudent
 object KingstonStudent{
@@ -17,8 +17,9 @@ object KingstonStudent{
       val email = (json \ "email").as[String]
       val subject = (json \ "subject").as[String]
       val typeOfStudy = (json \ "typeOfStudy").as[String]
+      val fromKingston = (json \ "from_Kingston").as[Boolean]
       // The line below returns a KingstonStudent object
-      JsSuccess(KingstonStudent(nickname, password, email, subject, typeOfStudy))
+      JsSuccess(KingstonStudent(nickname, password, email, subject, typeOfStudy,fromKingston))
     }
 
     def writes(student: KingstonStudent): JsValue = {
@@ -27,7 +28,8 @@ object KingstonStudent{
         "password" -> JsString(student.password),
         "email" -> JsString(student.email),
         "subject" -> JsString(student.subject),
-        "typeOfStudy" -> JsString(student.typeOfStudy))
+        "typeOfStudy" -> JsString(student.typeOfStudy),
+        "from_Kingston" -> JsBoolean(student.fromKingston))
       //The line below returns a json object
       JsObject(studentAsList)
     }
