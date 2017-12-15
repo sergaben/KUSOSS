@@ -27,7 +27,11 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % "test",
   "com.rabbitmq" % "amqp-client" % "5.0.0",
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
-  "org.mindrot" % "jbcrypt" % "0.3m"
+  "org.mindrot" % "jbcrypt" % "0.3m",
+    // https://mvnrepository.com/artifact/com.typesafe.play/play-json-joda
+  "com.typesafe.play" %% "play-json-joda" % "2.6.0-RC1",
+  "com.github.tototoshi" %% "slick-joda-mapper" % "2.3.0"
+
 
 )
 

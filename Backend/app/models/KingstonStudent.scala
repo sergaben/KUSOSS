@@ -1,36 +1,43 @@
 package models
 
+import org.joda.time.DateTime
 import play.api.libs.json._
 
 // simple case class for a student
-case class KingstonStudent(nickname:String,password:String,email:String,subject:String,typeOfStudy:String,fromKingston:Boolean) {}
+case class KingstonStudent(nickname:String,email:String,password:String,fromKingston:Boolean,expirationTimeOfUser:Option[DateTime], subject:String,typeOfStudy:String) {}
 
 // companion object of KingstonStudent
 object KingstonStudent{
   //This object is going to be used to format the class to json or from json to the class
   implicit object KingstonStudentFormat extends Format[KingstonStudent] {
 
+    implicit val dateTimeWriter: Writes[DateTime] = JodaWrites.jodaDateWrites("dd/MM/yyyy HH:mm:ss")
+    implicit val dateTimeJsReader: Reads[DateTime] = JodaReads.jodaDateReads("yyyyMMddHHmmss")
+
     def reads(json: JsValue): JsResult[KingstonStudent] = {
       // the Vals below hold all the parameters for the KingstonStudent class
       val nickname = (json \ "nickname").as[String]
-      val password = (json \ "password").as[String]
       val email = (json \ "email").as[String]
+      val password = (json \ "password").as[String]
+      val fromKingston = (json \ "from_Kingston").as[Boolean]
+      val expirationTimeOfUSer = (json \ "Expiration_time_of_user").asOpt[DateTime]
       val subject = (json \ "subject").as[String]
       val typeOfStudy = (json \ "typeOfStudy").as[String]
-      val fromKingston = (json \ "from_Kingston").as[Boolean]
       // The line below returns a KingstonStudent object
-      JsSuccess(KingstonStudent(nickname, password, email, subject, typeOfStudy,fromKingston))
+      JsSuccess(KingstonStudent(nickname, email,password,fromKingston,expirationTimeOfUSer, subject, typeOfStudy))
     }
 
     def writes(student: KingstonStudent): JsValue = {
       // the Seq below creates a json object
       val studentAsList = Seq(
         "nickname" -> JsString(student.nickname),
-        "password" -> JsString(student.password),
         "email" -> JsString(student.email),
+        "password" -> JsString(student.password),
+        "from_Kingston" -> JsBoolean(student.fromKingston),
+        "Expiration_time_of_user"-> Json.toJson(student.expirationTimeOfUser), // TODO - FIX THE DATE ISSUE
         "subject" -> JsString(student.subject),
         "typeOfStudy" -> JsString(student.typeOfStudy),
-        "from_Kingston" -> JsBoolean(student.fromKingston))
+      )
       //The line below returns a json object
       JsObject(studentAsList)
     }
