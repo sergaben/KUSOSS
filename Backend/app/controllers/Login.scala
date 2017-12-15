@@ -17,8 +17,8 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // if it matches then send true otherwise send false
     val nickname = (req.body \ "nickname").as[String]
     val password = (req.body \ "matchPassword").as[String]
-    println(nickname,password)
-    Ok
+    println(nickname)
+    Ok(nickname)
   }
 
 }

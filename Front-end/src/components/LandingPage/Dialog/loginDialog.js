@@ -19,7 +19,7 @@ class LoginDialog extends Component{
         onSubmit = (e) =>{
             e.preventDefault();
             const { nickname,matchPassword} = this.state;
-            Axios('post',true,'login',{nickname,matchPassword})
+            Axios('post',true,'login',{nickname,matchPassword});
         }
         render(){
             const { open, close } = this.props;
