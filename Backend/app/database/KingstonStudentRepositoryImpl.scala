@@ -29,5 +29,8 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
 
   override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result)
 
-  override def getById(id: Int) = ???
+  override def getByNickname(nickname: String) = {
+    val q = KStudents.filter(_.nickname === nickname).result.head
+    db.run(q)
+  }
 }

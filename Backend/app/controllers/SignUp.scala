@@ -10,8 +10,8 @@ import play.api.mvc.{AbstractController, ControllerComponents}
 import scala.concurrent.ExecutionContext
 
 
-class RegistrationKSController @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
-                                        (implicit executionContext:ExecutionContext) extends AbstractController(cc){
+class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
+                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
 
 //  // mapping kingston student to form
@@ -28,17 +28,17 @@ class RegistrationKSController @Inject()(cc:ControllerComponents,kingstonStudent
 //           Some(kingstonStudent.nickname,kingstonStudent.password,kingstonStudent.email,kingstonStudent.subject,kingstonStudent.typeOfStudy))
 //      )
   // convert the json request body to scala object
-    def registerKStudents = Action{ req => // does this runs this query in blocking mode?
+    def signup = Action{ req => // does this runs this query in blocking mode?
        val json = req.body.asJson.get
        val kStudent = json.as[KingstonStudent]
        val hashedPassword = BCrypt.hashpw(kStudent.password,BCrypt.gensalt())
        val kStudentWithHashedPassword = kStudent.copy(password = hashedPassword)
        println(kStudentWithHashedPassword)
-       insertKStudentIntoDatabase(kStudentWithHashedPassword)
+       insertStudentIntoDatabase(kStudentWithHashedPassword)
        Ok
     }
   // then convert object to table sql
-    def insertKStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
+    private def insertStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
       kingstonStudentRepositoryImpl.add(kingstonStudent)
     }
   // then run query insert into database
