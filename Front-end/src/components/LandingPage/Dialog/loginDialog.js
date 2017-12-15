@@ -8,12 +8,21 @@ class LoginDialog extends Component{
             this.state = {
                 nickname:'',
                 password:'',
-                
+                matchPassword:'',   
             }
         }
-        
+        onChange = (e) =>{
+            const state = this.state;
+            state[e.target.name] = e.target.value;
+            this.setState(state);
+        }
+        onSubmit = (e) =>{
+            e.preventDefault();
+            const { nickname,matchPassword} = this.state;
+            Axios('post',true,'login',{password,matchPassword})
+        }
         render(){
-            const { handleSubmit, open, close } = this.props;
+            const { open, close } = this.props;
             const formStyle = {
                 marginTop:'3%',
                 marginRight:'10%',
@@ -22,13 +31,13 @@ class LoginDialog extends Component{
             const fieldStyle = {
                 width:'100%'
             }
-            const kuStudent = {
-                "nickname":"Sergio",
-                "password":"fjadkfjklsd",
-                "email":"fasdf@Fadsfsd.com",
-                "subject":"fjksladfl",
-                "typeOfStudy":"fasfafsfasdfsdf"
-            }
+            // const kuStudent = {
+            //     "nickname":"Sergio",
+            //     "password":"fjadkfjklsd",
+            //     "email":"fasdf@Fadsfsd.com",
+            //     "subject":"fjksladfl",
+            //     "typeOfStudy":"fasfafsfasdfsdf"
+            // }
             return(
                 <Dialog
                     title="Log In"
@@ -36,7 +45,7 @@ class LoginDialog extends Component{
                     modal={true}
                     open={open}
                 >
-                    <form onSubmit={handleSubmit} style={formStyle}>
+                    <form onSubmit={this.onSubmit} style={formStyle}>
                         <div>
                             <Field
                                 style={fieldStyle}
@@ -44,6 +53,7 @@ class LoginDialog extends Component{
                                 component={TextField}
                                 hintText="Nickname"   
                                 floatingLabelText="Nickname"
+                                onChange={this.onChange}
                                 />
                         </div>
                         <div>
@@ -54,6 +64,7 @@ class LoginDialog extends Component{
                                 type="password"
                                 hintText="Password"
                                 floatingLabelText="Password"
+                                onChange={this.onChange}
                             />
                         </div>
                         <div>
@@ -64,6 +75,7 @@ class LoginDialog extends Component{
                                 type="password"
                                 hintText="Password"
                                 floatingLabelText="Re-enter Password"
+                                onChange={this.onChange}
                             />
                         </div>
                         <div>
@@ -76,7 +88,7 @@ class LoginDialog extends Component{
                                 label="Submit"
                                 primary={true}
                                 disabled={false}
-                                onClick={(e)=>(Axios('POST',true,'registerKStudents',kuStudent))}
+                                // onClick={(e)=>(Axios('POST',true,'login',kuStudent))}
                             />
                             <FlatButton
                                 label="Reset"
