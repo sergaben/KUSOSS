@@ -16,7 +16,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
     val nickname = (req.body \ "nickname").as[String].map{
-      name => Ok(name)
+      name => Ok(name.toString)
     }
     val password = (req.body \ "matchPassword").as[String]
     Ok
