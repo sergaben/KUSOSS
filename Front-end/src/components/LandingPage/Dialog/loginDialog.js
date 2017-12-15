@@ -88,6 +88,7 @@ class LoginDialog extends Component{
                                 label="Submit"
                                 primary={true}
                                 disabled={false}
+                                type="submit"
                                 // onClick={(e)=>(Axios('POST',true,'login',kuStudent))}
                             />
                             <FlatButton
