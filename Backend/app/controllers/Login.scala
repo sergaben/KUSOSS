@@ -8,6 +8,7 @@ import play.api.libs.functional.syntax._
 import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success}
 
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
@@ -40,7 +41,10 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 
   def getStudent(nickname:String)={
     val result = kingstonStudentRepositoryImpl.getByNickname(nickname)
-    println(result)
+    result onComplete{
+      case Success(student) => println(student)
+      case Failure(f) => println(f.getMessage)
+    }
   }
 
 }
