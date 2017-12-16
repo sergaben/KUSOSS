@@ -1,0 +1,1 @@
+export const RESET_VALUES = 'reset_values_of_form';

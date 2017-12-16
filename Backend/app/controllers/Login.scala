@@ -33,8 +33,14 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // if it matches then send true otherwise send false
     val json = req.body.asJson.get
     val loginRequest = json.as[LoginRequest]
-    println(loginRequest.nickname)
-    Ok(loginRequest.nickname)
+    getStudent(loginRequest.nickname)
+    //println(loginRequest.nickname)
+    Ok
+  }
+
+  def getStudent(nickname:String)={
+    val result = kingstonStudentRepositoryImpl.getByNickname(nickname)
+    println(result)
   }
 
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Field,reduxForm } from 'redux-form';
-import { TextField, FlatButton, Dialog } from 'material-ui';
+import {FlatButton, Dialog } from 'material-ui';
+import { TextField } from 'redux-form-material-ui';
 import Axios from '../../../util/axiosFunction';
 class LoginDialog extends Component{
         constructor(){
@@ -11,6 +12,7 @@ class LoginDialog extends Component{
                 matchPassword:'',   
             }
         }
+        
         onChange = (e) =>{
             const state = this.state;
             state[e.target.name] = e.target.value;
@@ -20,9 +22,13 @@ class LoginDialog extends Component{
             e.preventDefault();
             const { nickname,matchPassword} = this.state;
             Axios('post',true,'login',{nickname,matchPassword});
+            const { resetForm } = this.props;
+            resetForm();
         }
+        
+
         render(){
-            const { open, close } = this.props;
+            const { open, close,reset } = this.props;
             const formStyle = {
                 marginTop:'3%',
                 marginRight:'10%',
@@ -30,6 +36,11 @@ class LoginDialog extends Component{
             }
             const fieldStyle = {
                 width:'100%'
+            }
+            const newstate = {
+                nickname:'',
+                password:'',
+                matchPassword:'',   
             }
             // const kuStudent = {
             //     "nickname":"Sergio",
