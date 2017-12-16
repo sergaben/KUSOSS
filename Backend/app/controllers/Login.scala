@@ -42,7 +42,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   def getStudent(nickname:String)={
     val result = kingstonStudentRepositoryImpl.getByNickname(nickname)
     result onComplete{
-      case Success(student) => println(student)
+      case Success(student) => println(student.nickname)
       case Failure(f) => println(f.getMessage)
     }
   }
