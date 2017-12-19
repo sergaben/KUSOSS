@@ -3,11 +3,12 @@ package controllers
 import javax.inject.Inject
 
 import database.KingstonStudentRepositoryImpl
-import play.api.libs.json._
+import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
@@ -34,17 +35,25 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // if it matches then send true otherwise send false
     val json = req.body.asJson.get
     val loginRequest = json.as[LoginRequest]
-    getStudent(loginRequest.nickname)
+    val requestedLogin = getStudent(loginRequest.nickname)
+    requestedLogin onComplete{
+      case Success(request) =>  {
+        println(BCrypt.checkpw(loginRequest.password,request.password))
+      }
+      case Failure(f) =>{
+        println(f.getMessage)
+      }
+    }
     //println(loginRequest.nickname)
     Ok
   }
 
-  def getStudent(nickname:String)={
-    val result = kingstonStudentRepositoryImpl.getByNickname(nickname)
-    result onComplete{
-      case Success(student) => println(student.nickname)
-      case Failure(f) => println(f.getMessage)
-    }
+  def getStudent(nickname:String):Future[LoginRequest]={
+    val result = for {
+      student<- kingstonStudentRepositoryImpl.getByNickname(nickname)
+    }yield new LoginRequest(student.nickname,student.password)
+
+    result
   }
 
 }
