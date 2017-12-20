@@ -51,7 +51,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   def getStudent(nickname:String):Future[LoginRequest]={
     val result = for {
       student<- kingstonStudentRepositoryImpl.getByNickname(nickname)
-    }yield new LoginRequest(student.nickname,student.password)
+    }yield new LoginRequest(student.get.nickname,student.get.password)
 
     result
   }
