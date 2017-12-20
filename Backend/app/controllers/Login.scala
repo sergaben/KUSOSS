@@ -42,7 +42,8 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
         if(foundNickname) Ok(Json.toJson(foundNickname.toString)) else Ok(Json.toJson(foundNickname.toString))
       }
       case Failure(f) =>{
-        Ok(Json.toJson(f.getMessage))
+        println(f.getMessage)
+        NotFound
       }
     }
     //println(loginRequest.nickname)
