@@ -41,7 +41,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
         println(BCrypt.checkpw(loginRequest.password,request.password))
       }
       case Failure(f) =>{
-        println(f.getMessage)
+        println(f.getCause)
       }
     }
     //println(loginRequest.nickname)
@@ -51,7 +51,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   def getStudent(nickname:String):Future[LoginRequest]={
     val result = for {
       student<- kingstonStudentRepositoryImpl.getByNickname(nickname)
-    }yield new LoginRequest(student.get.nickname,student.get.password)
+    }yield LoginRequest(student.get.nickname,student.get.password)
 
     result
   }
