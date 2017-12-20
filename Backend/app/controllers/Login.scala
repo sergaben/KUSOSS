@@ -38,10 +38,12 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     val requestedLogin = getStudent(loginRequest.nickname)
     requestedLogin onComplete{
       case Success(request) =>  {
-        println(BCrypt.checkpw(loginRequest.password,request.password))
+        val foundNickname = BCrypt.checkpw(loginRequest.password,request.password)
+        Ok(Json.toJson(foundNickname))
       }
       case Failure(f) =>{
-        println(f.getCause)
+        val failureCause = f.getCause
+        Ok(Json.toJson(failureCause))
       }
     }
     //println(loginRequest.nickname)
@@ -50,7 +52,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 
   def getStudent(nickname:String):Future[LoginRequest]={
     val result = for {
-      student<- kingstonStudentRepositoryImpl.getByNickname(nickname)
+      student<- kingstonStudentRepositoryImpl.getByNickname(nickname) // Future[Option[KingstonStudent]]
     }yield LoginRequest(student.get.nickname,student.get.password)
 
     result
