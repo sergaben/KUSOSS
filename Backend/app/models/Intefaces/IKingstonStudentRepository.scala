@@ -10,6 +10,6 @@ trait IKingstonStudentRepository {
   def update(kingstonStudent:KingstonStudent):Future[Unit]
   def delete(kingstonStudent:KingstonStudent):Future[Unit]
   def getAll():Future[Seq[KingstonStudent]]
-  def getByNickname(nickname:String):Future[KingstonStudent]
+  def getByNickname(nickname:String):Future[Option[KingstonStudent]]
 
 }
