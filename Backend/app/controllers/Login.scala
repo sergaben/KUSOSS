@@ -43,6 +43,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 
     requestedLogin onComplete{
       case Success(request) =>  {
+        println(request)
         val foundStudent = BCrypt.checkpw(loginRequest.password,request.password)
         val loginSuccessful = if(foundStudent) Ok(Json.toJson(foundStudent.toString)) else Ok(Json.toJson(foundStudent.toString))
       }
