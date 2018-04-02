@@ -33,24 +33,27 @@ class LandingPageMaterialUI extends Component{
         let gridStyle = {
             padding:0
         }
+        let rowStyle = {
+            margin:0
+        }
         let colPaddingStyle = {
             padding:'5%'
         }
         return(
         <div>
             <Grid fluid style={gridStyle}>
-                <Row>
+                <Row style={rowStyle}>
                     <Header titleHeader="KUSSOS" showMenuIcon={false} 
                             subtitle="A social space for learning and exchanging knowledge between students of all career paths"/>
                 </Row>
-                <Row>
+                <Row style={rowStyle}>
                     <SignUpLogInHeader handleOpenLogInFunction={this.handleOpenLogIn} handleOpenSignUpFunction={this.handleOpenSignUp} 
                                        handleCloseSignUpFunction={this.handleCloseSignUp} handleCloseLogInFunction={this.handleCloseLogIn} 
                                        openLogInState={this.state.openLogIn} openSignUpState={this.state.openSignUp}/>
                      </Row>
             </Grid>
             <Grid fluid style={gridStyle}>  
-                    <Row>
+                    <Row style={rowStyle}>
                         <Col xs={12} sm={6} md={6} lg={4} style={colPaddingStyle}>
                             <CustomCard titleHeader="Create chat rooms" overlayHeader={<CardTitle title="Create chat rooms" subtitle="Up to 6"/>} 
                                         srcImage={chat} altImage="imageOne" 

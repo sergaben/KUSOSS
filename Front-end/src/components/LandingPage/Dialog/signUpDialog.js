@@ -79,6 +79,7 @@ class LoginDialog extends Component{
                     //actions={actionsLogIn}
                     modal={true}
                     open={open}
+                    onRequestClose={close}
                 >
                     <form onSubmit={this.onSubmit} style={formStyle}>
                         <div>

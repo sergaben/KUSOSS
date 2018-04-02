@@ -6,7 +6,8 @@ import React from 'react'
 
 import App from './containers/App'
 import configure from './store'
-import Chat from './components/Chat'
+import Chat from './components/Chat';
+import MainPage from './components/MainPage/mainPage';
 import '../node_modules/draft-js/dist/Draft.css';
 
 const store = configure();
@@ -16,7 +17,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}/>
-      <Route path="/mainPage" component={Chat}/>
+      <Route path="/main" component={MainPage}/>
     </Router>
   </Provider>,
   document.getElementById('root')

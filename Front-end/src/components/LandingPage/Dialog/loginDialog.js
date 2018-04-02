@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Field,reduxForm } from 'redux-form';
 import {FlatButton, Dialog } from 'material-ui';
 import { TextField } from 'redux-form-material-ui';
+import { browserHistory } from 'react-router';
 import Axios from '../../../util/axiosFunction';
 class LoginDialog extends Component{
         constructor(){
@@ -21,7 +22,10 @@ class LoginDialog extends Component{
         onSubmit = (e) =>{
             e.preventDefault();
             const { nickname,matchPassword} = this.state;
-            Axios('post',true,'login',{nickname,matchPassword});
+            const headers = {
+                'Content-Type':'application/json'
+            }
+            Axios('post',true,'login',{nickname,matchPassword},headers);
             const { resetForm } = this.props;
             resetForm();
         }
@@ -53,8 +57,9 @@ class LoginDialog extends Component{
                 <Dialog
                     title="Log In"
                     //actions={actionsLogIn}
-                    modal={true}
+                    modal={false}
                     open={open}
+                    onRequestClose={close}
                 >
                     <form onSubmit={this.onSubmit} style={formStyle}>
                         <div>
@@ -100,6 +105,7 @@ class LoginDialog extends Component{
                                 primary={true}
                                 disabled={false}
                                 type="submit"
+                                onClick={this.mainPage}
                                 // onClick={(e)=>(Axios('POST',true,'login',kuStudent))}
                             />
                             <FlatButton
@@ -114,9 +120,13 @@ class LoginDialog extends Component{
             )
         }
 
-
+        mainPage = () =>{
+            browserHistory.push('/main');
+        }
 
 }
+
+
 
 LoginDialog= reduxForm({
     form:'logInForm'

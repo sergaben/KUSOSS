@@ -7,11 +7,12 @@ function generateURL(prodMode, url){
     return `https://kussos-backend.herokuapp.com/${url}`;
 }
 
-export default function(type,mode,url,data = {}){
+export default function(type,mode,url,data = {},headers = {}){
     axios({
         method:type,
         url:generateURL(mode,url),
         data,
+        headers,
     }).then((response)=>{
         console.log(response);
     }).catch((error)=>{
