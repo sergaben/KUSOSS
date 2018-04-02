@@ -1,17 +1,15 @@
 package controllers
 
-import javax.inject.Inject
 import database.KingstonStudentRepositoryImpl
-import models.KingstonStudent
-import utils.FutureUtils._
+import javax.inject.Inject
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.FutureUtils._
 import utils.{AuthErrors, CommonErrors, OtherErrors}
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext
 
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
@@ -78,12 +76,12 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     println(loginSuccessful)
   }
 
-  def getStudent(nickname:String):Future[Option[LoginRequest]]={
-    val result = for {
-      student<- kingstonStudentRepositoryImpl.getByNickname(nickname) // Future[Option[KingstonStudent]]
-    }yield LoginRequest(student.get.nickname,student.get.password)
-
-    result
-  }
+//  def getStudent(nickname:String):Future[Option[LoginRequest]]={
+//    val result = for {
+//      student<- kingstonStudentRepositoryImpl.getByNickname(nickname) // Future[Option[KingstonStudent]]
+//    }yield LoginRequest(student.get.nickname,student.get.password)
+//
+//    result
+//  }
 
 }
