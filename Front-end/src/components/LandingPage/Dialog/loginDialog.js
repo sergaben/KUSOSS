@@ -19,7 +19,8 @@ class LoginDialog extends Component{
             state[e.target.name] = e.target.value;
             this.setState(state);
         }
-        onSubmit = (e) =>{
+       
+        onSubmit= (e) =>{
             e.preventDefault();
             const { nickname,matchPassword} = this.state;
             const headers = {
@@ -105,7 +106,7 @@ class LoginDialog extends Component{
                                 primary={true}
                                 disabled={false}
                                 type="submit"
-                                onClick={this.mainPage}
+                                // onClick={this.mainPage}
                                 // onClick={(e)=>(Axios('POST',true,'login',kuStudent))}
                             />
                             <FlatButton
@@ -120,9 +121,9 @@ class LoginDialog extends Component{
             )
         }
 
-        mainPage = () =>{
-            browserHistory.push('/main');
-        }
+        // mainPage = () =>{
+        //     browserHistory.push('/main');
+        // }
 
 }
 
