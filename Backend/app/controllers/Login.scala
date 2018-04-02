@@ -1,8 +1,9 @@
 package controllers
 
 import javax.inject.Inject
-
 import database.KingstonStudentRepositoryImpl
+import models.KingstonStudent
+import utils.FutureUtils._
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -23,7 +24,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     )(LoginRequest.apply _)
 
   implicit val LoginRequestWrites = new Writes[LoginRequest] {
-    def writes(loginRequest: LoginRequest) = Json.obj(
+    def writes(loginRequest: LoginRequest): JsObject = Json.obj(
       "nickname" -> loginRequest.nickname,
       "matchPassword" -> loginRequest.password
     )
@@ -37,29 +38,47 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // if it matches then send true otherwise send false
     val json = req.body.asJson.get
     val loginRequest = json.as[LoginRequest]
-    val requestedLogin = getStudent(loginRequest.nickname)
-
-//    println(requestedLogin)
-
-    requestedLogin onComplete{
-      case Success(request) =>  {
-//        println(request)
-        val foundStudent = BCrypt.checkpw(loginRequest.password,request.password)
-        val loginSuccessful = if(foundStudent) Ok(Json.toJson(foundStudent.toString)) else Ok(Json.toJson(foundStudent.toString))
-        println(loginSuccessful)
-      }
-      case Failure(e:Exception) =>{
-        println("The request did not go through")
-        println(e.getMessage)
-        errors.toResult(e)
-//        println(e.getMessage)
-      }
+    val result = for {
+      student <- kingstonStudentRepositoryImpl.getByNickname(loginRequest.nickname) whenUndefined "The username could not be found"
+    } yield{
+      println("The user was found")
+      LoginRequest(student.nickname,student.password)
     }
+
+    result.recover {
+      case fpe: FutureProcessingException => BadRequest(fpe.getMessage)
+      case t: Throwable => InternalServerError
+    }
+    // val requestedLogin = getStudent(loginRequest.nickname)
+
+////    println(requestedLogin)
+//    val validRequest: Future[Option[KingstonStudent]] = requestedLogin.flatMap{
+//      case Some(request) => checkPasswordValidation(loginRequest.password,request.password)
+//      case None => Future.successful(None)
+//    }
+//    requestedLogin onComplete{
+//      case Success(request) =>  {
+////        println(request)
+//
+//      }
+//      case Failure(e:Exception) =>{
+//        println("The request did not go through")
+//        println(e.getMessage)
+//        errors.toResult(e)
+////        println(e.getMessage)
+//      }
+//    }
     Ok
 
   }
 
-  def getStudent(nickname:String):Future[LoginRequest]={
+  def checkPasswordValidation(loginRequest: LoginRequest,passwordToCheck:String): Unit ={
+    val foundStudent = BCrypt.checkpw(loginRequest.password,passwordToCheck)
+    val loginSuccessful = if(foundStudent) Ok(Json.toJson(foundStudent.toString)) else Ok(Json.toJson(foundStudent.toString))
+    println(loginSuccessful)
+  }
+
+  def getStudent(nickname:String):Future[Option[LoginRequest]]={
     val result = for {
       student<- kingstonStudentRepositoryImpl.getByNickname(nickname) // Future[Option[KingstonStudent]]
     }yield LoginRequest(student.get.nickname,student.get.password)
