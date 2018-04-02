@@ -49,6 +49,8 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
         println(loginSuccessful)
       }
       case Failure(e:Exception) =>{
+        println("The request did not go through")
+        println(e.getMessage)
         errors.toResult(e)
 //        println(e.getMessage)
       }
