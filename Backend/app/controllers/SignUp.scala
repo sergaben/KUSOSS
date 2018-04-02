@@ -37,10 +37,10 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
        insertStudentIntoDatabase(kStudentWithHashedPassword)
        Ok
     }
-  // then convert object to table sql
+  // then run query insert into database
     private def insertStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
       kingstonStudentRepositoryImpl.add(kingstonStudent)
     }
-  // then run query insert into database
+
 
 }

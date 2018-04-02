@@ -46,12 +46,11 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       }
       case Failure(e:Exception) =>{
         errors.toResult(e)
-        //println(e.getMessage)
-        //
+        println(e.getMessage)
       }
     }
     Ok
-    //println(loginRequest.nickname
+
   }
 
   def getStudent(nickname:String):Future[LoginRequest]={
