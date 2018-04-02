@@ -39,7 +39,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     val loginRequest = json.as[LoginRequest]
     val requestedLogin = getStudent(loginRequest.nickname)
 
-    println(requestedLogin)
+//    println(requestedLogin)
 
     requestedLogin onComplete{
       case Success(request) =>  {
@@ -49,7 +49,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       }
       case Failure(e:Exception) =>{
         errors.toResult(e)
-        println(e.getMessage)
+//        println(e.getMessage)
       }
     }
     Ok
