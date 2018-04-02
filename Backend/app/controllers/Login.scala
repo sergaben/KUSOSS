@@ -38,6 +38,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     val loginRequest = json.as[LoginRequest]
     val result = for {
       student <- kingstonStudentRepositoryImpl.getByNickname(loginRequest.nickname) whenUndefined "The username could not be found"
+      println(student)
     } yield{
       println("The user was found")
       LoginRequest(student.nickname,student.password)
