@@ -15,7 +15,12 @@ object FutureUtils {
   protected final class OptionFutureToOptionValueFuture[T](f: Future[Option[T]]) {
     def whenUndefined(error: String)(implicit context: ExecutionContext): Future[T] = {
       f.map { value =>
-        if (value.isDefined) value.get else throw new MissingOptionValueException(error)
+        if (value.isDefined) {
+          value.get
+        } else {
+          println(error)
+          throw new MissingOptionValueException(error)
+        }
       }
     }
   }
