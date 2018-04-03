@@ -61,7 +61,6 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
         println(e.getMessage)
       }
     }
-
     result.recover {
       case fpe: FutureProcessingException => BadRequest(fpe.getMessage)
       case t: Throwable => InternalServerError
