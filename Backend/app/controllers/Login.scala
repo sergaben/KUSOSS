@@ -46,8 +46,8 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       student <- kingstonStudentRepositoryImpl.getByNickname(nickname) whenUndefined "The username could not be found" // returns a Future[Option[KingstonStudent]]
 
     } yield{
-      println("The user was found")
-      println(loginSuccess)
+//      println("The user was found")
+//      println(loginSuccess)
       loginSuccess = "true"
       LoginRequest(student.nickname,student.password)
 
@@ -87,7 +87,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //    }
 //    println(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
 //    Json.obj("status"->"KO","login Succesful" -> loginSuccess)
-    println(loginSuccess)
+//    println(loginSuccess)
     Ok
   }
 
