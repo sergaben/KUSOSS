@@ -43,7 +43,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //      println("The user was found")
       LoginRequest(student.nickname,student.password)
       if(student.!=(null)){
-        OK(Json.obj("status"->"OK"))
+        Ok(Json.obj("status"->"OK"))
       }
     }
 
@@ -71,8 +71,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //      }
 //    }
 
-    Ok()
-
+    Ok
   }
 
   def checkPasswordValidation(loginRequest: LoginRequest,passwordToCheck:String): Unit ={
