@@ -34,13 +34,17 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
+
     val json = req.body.asJson.get
     val loginRequest = json.as[LoginRequest]
     val result = for {
       student <- kingstonStudentRepositoryImpl.getByNickname(loginRequest.nickname) whenUndefined "The username could not be found"
     } yield{
-      println("The user was found")
+//      println("The user was found")
       LoginRequest(student.nickname,student.password)
+      if(student.!=(null)){
+        OK(Json.obj("status"->"OK"))
+      }
     }
 
     result.recover {
@@ -66,7 +70,8 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 ////        println(e.getMessage)
 //      }
 //    }
-    Ok
+
+    Ok()
 
   }
 

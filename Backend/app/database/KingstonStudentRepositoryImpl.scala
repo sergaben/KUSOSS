@@ -33,4 +33,5 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     val q = KStudents.filter(_.nickname === nickname).result.headOption
     db.run(q)
   }
+
 }
