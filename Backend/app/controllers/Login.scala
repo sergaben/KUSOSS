@@ -72,7 +72,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //      }
 //    }
 
-    Ok(Json.obj("login Succesful" -> loginSuccess))
+    Ok(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
   }
 
   def checkPasswordValidation(loginRequest: LoginRequest,passwordToCheck:String): Unit ={
