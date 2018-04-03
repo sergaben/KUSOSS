@@ -43,9 +43,8 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     } yield{
 //      println("The user was found")
       LoginRequest(student.nickname,student.password)
-      if(student.!=(null)){
         loginSuccess = "true"
-      }
+
     }
 
     result.recover {
