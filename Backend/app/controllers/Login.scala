@@ -37,13 +37,14 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 
     val json = req.body.asJson.get
     val loginRequest = json.as[LoginRequest]
+    var loginSuccess: String = "false"
     val result = for {
       student <- kingstonStudentRepositoryImpl.getByNickname(loginRequest.nickname) whenUndefined "The username could not be found"
     } yield{
 //      println("The user was found")
       LoginRequest(student.nickname,student.password)
       if(student.!=(null)){
-        Ok(Json.obj("status"->"OK"))
+        loginSuccess = "true"
       }
     }
 
@@ -71,7 +72,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //      }
 //    }
 
-    Ok
+    Ok(Json.obj("login Succesful" -> loginSuccess))
   }
 
   def checkPasswordValidation(loginRequest: LoginRequest,passwordToCheck:String): Unit ={
