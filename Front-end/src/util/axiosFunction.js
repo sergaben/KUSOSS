@@ -14,8 +14,8 @@ export default function(type,mode,url,data = {},headers = {}){
         data,
         headers,
     }).then((response)=>{
-        console.log(response);
+        response;
     }).catch((error)=>{
-        console.log(error);
+        error;
     })
 }

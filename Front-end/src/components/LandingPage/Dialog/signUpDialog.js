@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Dialog from 'material-ui/Dialog';
 import { Field,reduxForm } from 'redux-form';
-import {FlatButton} from 'material-ui';
+import {FlatButton,AutoComplete} from 'material-ui';
 import {TextField, SelectField} from 'redux-form-material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import axios from 'axios';
@@ -13,15 +13,16 @@ class LoginDialog extends Component{
                 nickname:'',
                 email:'',
                 password:'',
-                subject:[],
+                subjectFromAPI:[],
+                typeOfStudyArray:[
+                    "UNDERGRADUATE",
+                    "POSTGRADUATE",
+                    "PHD",
+                    "FOUNDATION"
+                ],
+                subject:'',
                 typeOfStudy:''
             }
-        }
-        generateURL= (prodMode, url)=>{
-            if(!prodMode){
-                return `localhost:9000/${url}`;
-            }
-            return `https://kussos-backend.herokuapp.com/${url}`;
         }
         componentDidMount(){
             axios({
@@ -29,9 +30,13 @@ class LoginDialog extends Component{
                 url:'https://kussos-backend.herokuapp.com/getSubjectsNamesAsJson'
             }).then((response)=>{
                 //console.log(response.data);
+                let responseAsArray = response.data.map(function(obj){
+                    return obj.name;
+                })
+                console.log(responseAsArray);
                 this.setState(()=>{
                     return{
-                        subject:response.data
+                        subjectFromAPI:responseAsArray
                     }
                 })
             }).catch((error)=>{
@@ -43,27 +48,28 @@ class LoginDialog extends Component{
             state[e.target.name] = e.target.value;
             this.setState(state);
         }
-        generateMenuItems = () =>{
-            let menuItems = [] // empty array which will hold all the values from the database
-            this.state.subject.map((array,index)=>{
-                menuItems.push(<MenuItem key={index} value={array.name} primaryText={array.name}/>); // this will put all the menuItems in the array
-            })
-            return menuItems;
-        }
-        onDropdownSelected = (e)=>{
-            console.log("The val",e.target.value);
-        }
         onSubmit = (e) =>{
             e.preventDefault();
-            const { nickname,email,password} = this.state;
-            let subject = 'Computer Science';
-            let typeOfStudy = 'postgraduate';
+            const { nickname,email,password,subject,typeOfStudy} = this.state;
             let from_Kingston = true;
             Axios('post',true,'signup',{ nickname, email, password,subject,typeOfStudy,from_Kingston});
         }
+        handleUpdateInputSubject = (inputValue) =>{
+            const self = this;
+            this.setState({
+                subject: inputValue
+            });
+        }
+        handleUpdateInputTypeOfStudy = (inputValue) =>{
+            const self = this;
+            this.setState({
+                typeOfStudy: inputValue
+            });
+        }
         render(){
             const { handleSubmit, open, close } = this.props;
-            const { nickname,email,password,subject,typeOfStudy } = this.state;
+            const { nickname,email,password,subjectFromAPI,typeOfStudyArray } = this.state;
+            // console.log(subject);
             const formStyle = {
                 marginTop:'3%',
                 marginRight:'10%',
@@ -77,7 +83,7 @@ class LoginDialog extends Component{
                 <Dialog
                     title="Sign Up"
                     //actions={actionsLogIn}
-                    modal={true}
+                    modal={false}
                     open={open}
                     onRequestClose={close}
                 >
@@ -88,8 +94,9 @@ class LoginDialog extends Component{
                                 name="nickname"
                                 component={TextField}
                                 hintText="Nickname"   
-                                floatingLabelText="Nickname"
+                                floatingLabelText="Nickname*"
                                 onChange={this.onChange}
+                                required
                                 />
                         </div>
                         <div>
@@ -99,8 +106,9 @@ class LoginDialog extends Component{
                                 component={TextField}
                                 type="email"
                                 hintText="Email"
-                                floatingLabelText="Email"
+                                floatingLabelText="Email*"
                                 onChange={this.onChange}
+                                required
                                 />
                         </div>
                         <div>
@@ -110,35 +118,40 @@ class LoginDialog extends Component{
                                 component={TextField}
                                 type="password"
                                 hintText="Password"
-                                floatingLabelText="Password"
+                                floatingLabelText="Password*"
                                 onChange={this.onChange}
+                                required
                             />
                         </div>
                         <div>
                             <Field
-                                style={fieldStyle}
+                                style = {fieldStyle}
                                 name="subject"
-                                component={SelectField}
-                                hintText="Subject"
-                                floatingLabelText="Subject"  
-                               
-                            >
-                            {this.generateMenuItems()}
+                                component={AutoComplete}
+                                hintText = "Subject"
+                                dataSource = {this.state.subjectFromAPI}
+                                filter = {AutoComplete.fuzzyFilter}
+                                // onUpdateInput = {this.handleUpdateInput}
+                                floatingLabelText = "Subject*"
+                                fullWidth = {true}
+                                onUpdateInput = {this.handleUpdateInputSubject}
+                                required
+                            />
                             
-                            </Field>
                         </div>
                         <div>
                             <Field
                                 style={fieldStyle}
                                 name="typeOfStudy"
-                                component={SelectField}
+                                component={AutoComplete}
                                 hintText="Type of Study"
-                                floatingLabelText="Type of Study"
-                                onChange={this.onChange}
+                                floatingLabelText="Type of Study*"
+                                filter = {AutoComplete.fuzzyFilter}
+                                dataSource = {this.state.typeOfStudyArray}
+                                fullWidth = {true}
+                                onUpdateInput = {this.handleUpdateInputTypeOfStudy}
+                                required
                             >      
-                                <MenuItem value="postgraduate" primaryText="Postgraduate"/>
-                                <MenuItem value="PhD" primaryText="PhD"/>
-                                <MenuItem value="foundation" primaryText="Foundation"/>
                             </Field>
                         </div>
                         <div>
@@ -165,11 +178,7 @@ class LoginDialog extends Component{
                 </Dialog>
             )
         }
-
-
-
 }
-
 LoginDialog= reduxForm({
     form:'logInForm'
 })(LoginDialog) 

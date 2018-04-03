@@ -26,11 +26,18 @@ class LoginDialog extends Component{
             const headers = {
                 'Content-Type':'application/json'
             }
-            Axios('post',true,'login',{nickname,matchPassword},headers);
+            // console.log(nickname);
+            // console.log(matchPassword);
+            let response = Axios('post',true,'login',{nickname,matchPassword},headers);
+            // this.printResponse(response);
             const { resetForm } = this.props;
-            resetForm();
+            // resetForm();
+            // this.mainPage(response);
         }
         
+        // printResponse = (response) =>{
+        //     console.log(response);
+        // }
 
         render(){
             const { open, close,reset } = this.props;
@@ -71,6 +78,7 @@ class LoginDialog extends Component{
                                 hintText="Nickname"   
                                 floatingLabelText="Nickname"
                                 onChange={this.onChange}
+                                required
                                 />
                         </div>
                         <div>
@@ -82,6 +90,7 @@ class LoginDialog extends Component{
                                 hintText="Password"
                                 floatingLabelText="Password"
                                 onChange={this.onChange}
+                                required
                             />
                         </div>
                         <div>
@@ -93,6 +102,7 @@ class LoginDialog extends Component{
                                 hintText="Password"
                                 floatingLabelText="Re-enter Password"
                                 onChange={this.onChange}
+                                required
                             />
                         </div>
                         <div>
@@ -113,7 +123,7 @@ class LoginDialog extends Component{
                                 label="Reset"
                                 secondary={true}
                                 disabled={false}
-                            
+                                onClick={()=>this.printResponse}
                             />
                         </div>
                     </form>
@@ -121,9 +131,13 @@ class LoginDialog extends Component{
             )
         }
 
-        // mainPage = () =>{
-        //     browserHistory.push('/main');
-        // }
+        mainPage = (response) =>{
+            console.log(response);
+            browserHistory.push({
+                pathname: '/main',
+                state:{something: response}
+            });
+        }
 
 }
 

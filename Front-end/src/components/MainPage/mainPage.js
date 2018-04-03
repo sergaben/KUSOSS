@@ -10,7 +10,9 @@ import ProfileViewer from './ProfileViewer/ProfileViewer';
 import MainChat from './Chat/MainChat';
 
 class MainPage extends Component {
+
     render(){
+        const { something } = this.props;
         let gridStyle = {
             padding:0
         }
@@ -21,6 +23,7 @@ class MainPage extends Component {
             <div>
                 <Grid fluid style={gridStyle}>
                     <Header titleHeader="KUSSOS" show={false}/>
+                    {console.log(something)}
                 </Grid>
                 <Grid fluid>
                     <Row center="lg" center="xs" center="sm" center="md">
