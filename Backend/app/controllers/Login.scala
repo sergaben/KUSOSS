@@ -5,11 +5,11 @@ import javax.inject.Inject
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.mvc.{AbstractController, ControllerComponents}
 import utils.FutureUtils._
-import utils.{AuthErrors, CommonErrors, OtherErrors}
+import play.api.mvc.{AbstractController, ControllerComponents}
 
 import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success}
 
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
@@ -27,25 +27,39 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       "matchPassword" -> loginRequest.password
     )
   }
-  val errors = new CommonErrors with AuthErrors with OtherErrors
+  def validateJson[A:Reads] = parse.json.validate(
+    _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
+  )
+//  val errors = new CommonErrors with AuthErrors with OtherErrors
 
-  def login = Action{ req =>
+  def login = Action(validateJson[LoginRequest]){ req =>
     // get the nickname and password from frontend
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
+//    println(req)
+    val nickname = req.body.nickname
 
-    val json = req.body.asJson.get
-    val loginRequest = json.as[LoginRequest]
     var loginSuccess: String = "false"
+
     val result = for {
-      student <- kingstonStudentRepositoryImpl.getByNickname(loginRequest.nickname) whenUndefined "The username could not be found"
+      student <- kingstonStudentRepositoryImpl.getByNickname(nickname) whenUndefined "The username could not be found" // returns a Future[Option[KingstonStudent]]
+
     } yield{
       println("The user was found")
+      println(loginSuccess)
       loginSuccess = "true"
       LoginRequest(student.nickname,student.password)
 
 
+    }
+    result onComplete {
+      case Success(request) =>{
+        println(request)
+      }
+      case Failure(e:Exception) =>{
+        println(e.getMessage)
+      }
     }
 
     result.recover {
@@ -71,8 +85,10 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 ////        println(e.getMessage)
 //      }
 //    }
-    println(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
-    Ok(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
+//    println(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
+//    Json.obj("status"->"KO","login Succesful" -> loginSuccess)
+    println(loginSuccess)
+    Ok
   }
 
   def checkPasswordValidation(loginRequest: LoginRequest,passwordToCheck:String): Unit ={
