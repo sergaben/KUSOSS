@@ -44,10 +44,10 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 
     usernameExist.future onComplete{
       case Success(student) =>{
-        println(student)
+        student.getOrElse("user does not exist")
       }
       case Failure(error) =>{
-        println(error)
+       println("Server error")
       }
     }
 //      println("The user was found")
