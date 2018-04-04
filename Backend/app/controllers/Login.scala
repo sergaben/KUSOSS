@@ -8,8 +8,7 @@ import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
 import utils.FutureO
 
-import scala.concurrent.ExecutionContext
-import scala.util.{Failure, Success}
+import scala.concurrent.{ExecutionContext, Future}
 
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
@@ -32,24 +31,32 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   )
 //  val errors = new CommonErrors with AuthErrors with OtherErrors
 
-  def login = Action(validateJson[LoginRequest]){ implicit req =>
+  def login = Action.async(validateJson[LoginRequest]){ implicit req =>
     // get the nickname and password from frontend
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
 //    println(req)
-    val usernameExist = for {
-                        nickname <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
-                      } yield nickname
-
-    usernameExist.future onComplete{
-      case Success(student) =>{
-        println(student.getOrElse("user does not exist"))
+    val userExist = for {
+                        user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
+                      } yield user
+    userExist.future.flatMap(student =>{
+      student match{
+        case Some(newStudent) => Future.successful(if(checkPasswordValidation(req.body.password,newStudent.password)) Ok(Json.obj("status"->"OK","Authenticated"->"true","nickname"->newStudent.nickname)) else Ok(Json.obj("status"->"OK","Authenticated"->"false","nickname"->"NONE")))
+        case other => Future.successful(Ok(Json.obj("status"->"NOT_FOUND","error"->"user does not exist")))
       }
-      case Failure(error) =>{
-       println("Server error")
-      }
-    }
+    })
+//    userExist.future onComplete{
+//      case Success(student) =>{
+//        student match{
+//          case Some(newStudent) => if(checkPasswordValidation(req.body.password,newStudent.password)) Ok(Json.obj("status"->"OK","Authenticated"->"true","nickname"->newStudent.nickname)) else Ok(Json.obj("status"->"OK","Authenticated"->"false","nickname"->"NONE"))
+//          case other => Ok(Json.obj("status"->"NOT_FOUND","error"->"user does not exist"))
+//        }
+//      }
+//      case Failure(error) =>{
+//       Ok(Json.obj("status"->"INTERNAL_ERROR","error"->error.getMessage))
+//      }
+//    }
 //      println("The user was found")
 //      println(loginSuccess)
 //      loginSuccess = "true"
@@ -92,13 +99,13 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //    println(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
 //    Json.obj("status"->"KO","login Succesful" -> loginSuccess)
 //    println(loginSuccess)
-    Ok
   }
 
-  def checkPasswordValidation(loginRequest: LoginRequest,passwordToCheck:String): Unit ={
-    val foundStudent = BCrypt.checkpw(loginRequest.password,passwordToCheck)
-    val loginSuccessful = if(foundStudent) Ok(Json.toJson(foundStudent.toString)) else Ok(Json.toJson(foundStudent.toString))
-    println(loginSuccessful)
+  def checkPasswordValidation(passwordFromFrontEnd:String,passwordFromDatabase:String): Boolean ={
+    val foundStudent = BCrypt.checkpw(passwordFromFrontEnd,passwordFromDatabase)
+    foundStudent
+//    val loginSuccessful = if(foundStudent) Ok(Json.toJson(foundStudent.toString)) else Ok(Json.toJson(foundStudent.toString))
+//    println(loginSuccessful)
   }
 
 //  def getStudent(nickname:String):Future[Option[LoginRequest]]={
