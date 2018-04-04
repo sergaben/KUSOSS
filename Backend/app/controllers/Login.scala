@@ -42,7 +42,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
                       } yield user
     userExist.future.flatMap(student =>{
       student match{
-        case Some(newStudent) => Future.successful(if(checkPasswordValidation(req.body.password,newStudent.password)) Ok(Json.obj("status"->"OK","Authenticated"->"true","nickname"->newStudent.nickname)) else Ok(Json.obj("status"->"OK","Authenticated"->"false","nickname"->"NONE")))
+        case Some(newStudent) => Future.successful(Ok("getting student"))
         case other => Future.successful(Ok(Json.obj("status"->"NOT_FOUND","error"->"user does not exist")))
       }
     })
