@@ -5,11 +5,10 @@ import javax.inject.Inject
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import utils.FutureUtils._
 import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.FutureO
 
 import scala.concurrent.ExecutionContext
-import scala.util.{Failure, Success}
 
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
@@ -32,39 +31,37 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   )
 //  val errors = new CommonErrors with AuthErrors with OtherErrors
 
-  def login = Action(validateJson[LoginRequest]){ req =>
+  def login = Action(validateJson[LoginRequest]){ implicit req =>
     // get the nickname and password from frontend
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
 //    println(req)
-    val nickname = req.body.nickname
+    val usernameExist = for {
+                        nickname <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
+                      } yield nickname
 
-    var loginSuccess: String = "false"
-
-    val result = for {
-      student <- kingstonStudentRepositoryImpl.getByNickname(nickname) whenUndefined "The username could not be found" // returns a Future[Option[KingstonStudent]]
-
-    } yield{
+    usernameExist.future onComplete println
 //      println("The user was found")
 //      println(loginSuccess)
-      loginSuccess = "true"
-      LoginRequest(student.nickname,student.password)
-
-
-    }
-    result onComplete {
-      case Success(request) =>{
-        println(request)
-      }
-      case Failure(e:Exception) =>{
-        println(e.getMessage)
-      }
-    }
-    result.recover {
-      case fpe: FutureProcessingException => BadRequest(fpe.getMessage)
-      case t: Throwable => InternalServerError
-    }
+//      loginSuccess = "true"
+//      LoginRequest(student.nickname,student.password)
+//
+//
+//    }
+//    val finalResult : Result = result onComplete {
+//      case Success(request) =>{
+//       Ok(Json.obj("status"->"OK","login Succesful" -> request.nickname))
+//      }
+//      case Failure(e:Exception) =>{
+//        Ok(Json.obj("status"->"KO","login Succesful" -> "User Not found"))
+//      }
+//    }
+//    finalResult
+//    result.recover {
+//      case fpe: FutureProcessingException => BadRequest(fpe.getMessage)
+//      case t: Throwable => InternalServerError
+//    }
     // val requestedLogin = getStudent(loginRequest.nickname)
 
 ////    println(requestedLogin)
@@ -87,7 +84,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //    println(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
 //    Json.obj("status"->"KO","login Succesful" -> loginSuccess)
 //    println(loginSuccess)
-    Ok(Json.obj("status"->"KO","login Succesful" -> loginSuccess))
+    Ok
   }
 
   def checkPasswordValidation(loginRequest: LoginRequest,passwordToCheck:String): Unit ={
