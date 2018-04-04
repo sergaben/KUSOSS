@@ -9,6 +9,7 @@ import play.api.mvc.{AbstractController, ControllerComponents}
 import utils.FutureO
 
 import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success}
 
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
@@ -41,7 +42,14 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
                         nickname <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
                       } yield nickname
 
-    usernameExist.future onComplete println
+    usernameExist.future onComplete{
+      case Success(student) =>{
+        println(student)
+      }
+      case Failure(error) =>{
+        println(error)
+      }
+    }
 //      println("The user was found")
 //      println(loginSuccess)
 //      loginSuccess = "true"
