@@ -6,6 +6,7 @@ import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
+import play.filters.csrf.CSRF
 import utils.FutureO
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,7 +45,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     userExist.future.flatMap(student =>{
       student match{
         case Some(newStudent) => Future.successful(if(checkPasswordValidation(req.body.password,newStudent.password))
-          Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->newStudent.nickname)) else Ok(Json.obj("status"->"OK","Authenticated"->false,"nickname"->"NONE")))
+          Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->newStudent.nickname),"authToken"->CSRF.getToken) else Ok(Json.obj("status"->"OK","Authenticated"->false,"nickname"->"NONE","authToken"->"NONE")))
         case other => Future.successful(Ok(Json.obj("status"->"NOT_FOUND","error"->"user does not exist")))
       }
     })
