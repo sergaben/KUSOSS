@@ -14,7 +14,6 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
                                              (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with IKingstonStudentRepository{
   import profile.api._
 
-
   private val KStudents = kingstonStudentSchema.Kstudents
 
   override def add(kingstonStudent: KingstonStudent) = {

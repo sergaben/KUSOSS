@@ -1,5 +1,7 @@
 package controllers
 
+import java.util.UUID
+
 import database.KingstonStudentRepositoryImpl
 import javax.inject.Inject
 import org.mindrot.jbcrypt.BCrypt
@@ -32,6 +34,10 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   )
   // TODO - add authentication token in login request and send it as json
 
+
+
+  val token = UUID.randomUUID()
+  println(token)
   def login = Action.async(validateJson[LoginRequest]){ implicit req =>
     // get the nickname and password from frontend
     // get the nickname and password from database
@@ -43,13 +49,11 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
     } yield user
 //    ,"authToken"->Json.toJsFieldJsValueWrapper(token)
-    userExist.future.flatMap(student =>{
-      student match{
-        case Some(newStudent) => Future.successful(if(checkPasswordValidation(req.body.password,newStudent.password))
-          Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->newStudent.nickname)) else Ok(Json.obj("status"->"OK","Authenticated"->false,"nickname"->"NONE")))
-        case other => Future.successful(Ok(Json.obj("status"->"NOT_FOUND","error"->"user does not exist")))
-      }
-    })
+    userExist.future.flatMap {
+      case Some(newStudent) => Future.successful(if (checkPasswordValidation(req.body.password, newStudent.password))
+        Ok(Json.obj("status" -> "OK", "authenticated" -> true, "nickname" -> newStudent.nickname)) else Ok(Json.obj("status" -> "OK", "Authenticated" -> false, "nickname" -> "NONE")))
+      case other => Future.successful(Ok(Json.obj("status" -> "NOT_FOUND", "error" -> "user does not exist")))
+    }
 
   }
 
