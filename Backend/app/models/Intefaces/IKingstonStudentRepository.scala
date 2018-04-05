@@ -11,5 +11,6 @@ trait IKingstonStudentRepository {
   def delete(kingstonStudent:KingstonStudent):Future[Unit]
   def getAll():Future[Seq[KingstonStudent]]
   def getByNickname(nickname:String):Future[Option[KingstonStudent]]
+  def getByEmail(email:String):Future[Option[KingstonStudent]]
 
 }

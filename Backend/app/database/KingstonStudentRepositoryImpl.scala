@@ -34,4 +34,9 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     db.run(q)
   }
 
+  override def getByEmail(email: String): Future[Option[KingstonStudent]] = {
+    val query = KStudents.filter(_.email === email).result.headOption
+    db.run(query)
+  }
+
 }
