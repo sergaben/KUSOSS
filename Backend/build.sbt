@@ -30,7 +30,8 @@ libraryDependencies ++= Seq(
   "org.mindrot" % "jbcrypt" % "0.3m",
     // https://mvnrepository.com/artifact/com.typesafe.play/play-json-joda
   "com.typesafe.play" %% "play-json-joda" % "2.6.0-RC1",
-  "com.github.tototoshi" %% "slick-joda-mapper" % "2.3.0"
+  "com.github.tototoshi" %% "slick-joda-mapper" % "2.3.0",
+  "org.pac4j" %% "play-pac4j" % "6.0.0-RC1"
 
 
 )
