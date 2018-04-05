@@ -37,7 +37,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
-
+    val token = CSRF.getToken.getOrElse("NONE")
     val userExist = for {
       user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
     } yield user
@@ -45,7 +45,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     userExist.future.flatMap(student =>{
       student match{
         case Some(newStudent) => Future.successful(if(checkPasswordValidation(req.body.password,newStudent.password))
-          Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->newStudent.nickname),"authToken"->CSRF.getToken) else Ok(Json.obj("status"->"OK","Authenticated"->false,"nickname"->"NONE","authToken"->"NONE")))
+          Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->newStudent.nickname,"authToken"->Json.toJsFieldJsValueWrapper(token))) else Ok(Json.obj("status"->"OK","Authenticated"->false,"nickname"->"NONE","authToken"->Json.toJsFieldJsValueWrapper(token))))
         case other => Future.successful(Ok(Json.obj("status"->"NOT_FOUND","error"->"user does not exist")))
       }
     })
