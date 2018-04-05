@@ -36,13 +36,14 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 
 
 
-  val token = UUID.randomUUID()
-  println(token)
+
   def login = Action.async(validateJson[LoginRequest]){ implicit req =>
     // get the nickname and password from frontend
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
+    val tokenLogin = UUID.randomUUID()
+    println(tokenLogin)
     val token = CSRF.getToken.getOrElse("NONE")
     println(token)
     val userExist = for {
