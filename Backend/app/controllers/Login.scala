@@ -8,7 +8,7 @@ import models.KingstonStudent
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.mvc.{AbstractController, ControllerComponents, Result}
+import play.api.mvc.{AbstractController, ControllerComponents}
 import utils.FutureO
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -61,7 +61,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 
     userExist.future.flatMap {
       case Some(newStudent) => Future.successful(if (checkPasswordValidation(req.body.password, newStudent.password)){
-                                                        Ok(Json.obj("someValue"->checkAuth(authInPlace,createOrUpdateTokenLogin).foreach(result => result.body).toString))
+                                                        Ok(Json.obj("someValue"->checkAuth(authInPlace,createOrUpdateTokenLogin).foreach(result=> result).toString))
                                                 }else
                                                   Ok(Json.obj("status" -> "OK",
                                                               "Authenticated" -> false,
@@ -82,11 +82,11 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     foundStudent
   }
 
-  def checkAuth(auth:FutureO[KingstonStudent],updatedToken:Future[Int]): Future[Result] ={
+  def checkAuth(auth:FutureO[KingstonStudent],updatedToken:Future[Int]): Future[Any] ={
 
     auth.future.flatMap{
-      case Some(authentication) => Future.successful(Ok("Something in here"))
-      case other =>Future.successful(Ok(createOrUpdateToken(updatedToken).toString))
+      case Some(authentication) => Future.successful(s"$authentication")
+      case other =>Future.successful(createOrUpdateToken(updatedToken).toString)
     }
   }
 
