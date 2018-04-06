@@ -26,7 +26,7 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
     }
   // then run query insert into database
     private def insertStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
-      kingstonStudentRepositoryImpl.add(kingstonStudent)
+      kingstonStudentRepositoryImpl.insert(kingstonStudent)
     }
 
 

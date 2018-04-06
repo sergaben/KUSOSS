@@ -23,9 +23,8 @@ class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseCon
     def expirationTimeOfUser = column[Option[DateTime]]("Expiration_time_of_user")
     def subject= column[String]("subject")
     def typeOfStudy = column[String]("typeOfStudy")
-
-
-    def * = (nickname,email,password,fromKingston,expirationTimeOfUser,subject,typeOfStudy) <> ((KingstonStudent.apply _).tupled, KingstonStudent.unapply _)
+    def loginToken = column[Option[String]]("login_token")
+    def * = (nickname,email,password,fromKingston,expirationTimeOfUser,subject,typeOfStudy,loginToken) <> ((KingstonStudent.apply _).tupled, KingstonStudent.unapply _)
   }
 
 

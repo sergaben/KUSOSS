@@ -4,7 +4,7 @@ import org.joda.time.DateTime
 import play.api.libs.json._
 
 // simple case class for a student
-case class KingstonStudent(nickname:String,email:String,password:String,fromKingston:Boolean,expirationTimeOfUser:Option[DateTime], subject:String,typeOfStudy:String) {}
+case class KingstonStudent(nickname:String,email:String,password:String,fromKingston:Boolean,expirationTimeOfUser:Option[DateTime], subject:String,typeOfStudy:String,loginToken:Option[String]) {}
 
 // companion object of KingstonStudent
 object KingstonStudent{
@@ -23,8 +23,9 @@ object KingstonStudent{
       val expirationTimeOfUSer = (json \ "Expiration_time_of_user").asOpt[DateTime]
       val subject = (json \ "subject").as[String]
       val typeOfStudy = (json \ "typeOfStudy").as[String]
+      val loginToken = (json \ "login_token").asOpt[String]
       // The line below returns a KingstonStudent object
-      JsSuccess(KingstonStudent(nickname, email,password,fromKingston,expirationTimeOfUSer, subject, typeOfStudy))
+      JsSuccess(KingstonStudent(nickname, email,password,fromKingston,expirationTimeOfUSer, subject, typeOfStudy,loginToken))
     }
 
     def writes(student: KingstonStudent): JsValue = {
@@ -37,6 +38,7 @@ object KingstonStudent{
         "Expiration_time_of_user"-> Json.toJson(student.expirationTimeOfUser), // TODO - FIX THE DATE ISSUE
         "subject" -> JsString(student.subject),
         "typeOfStudy" -> JsString(student.typeOfStudy),
+        "login_token"->Json.toJson(student.loginToken)
       )
       //The line below returns a json object
       JsObject(studentAsList)

@@ -4,11 +4,11 @@ import java.util.UUID
 
 import database.KingstonStudentRepositoryImpl
 import javax.inject.Inject
+import models.KingstonStudent
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.mvc.{AbstractController, ControllerComponents}
-import play.filters.csrf.CSRF
+import play.api.mvc.{AbstractController, ControllerComponents, Result}
 import utils.FutureO
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,17 +42,36 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
-    val tokenLogin = UUID.randomUUID()
-    println(tokenLogin)
-    val token = CSRF.getToken.getOrElse("NONE")
-    println(token)
+    val tokenLoginAsString:String = UUID.randomUUID().toString
+    val tokenLoginAsOption:Option[String] = Option(tokenLoginAsString)
+
     val userExist = for {
       user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
+
     } yield user
+
+    val authInPlace = for {
+      auth <- FutureO(kingstonStudentRepositoryImpl.auth(tokenLoginAsString))
+    } yield auth
 //    ,"authToken"->Json.toJsFieldJsValueWrapper(token)
+
+    val createOrUpdateTokenLogin = for {
+      token <- kingstonStudentRepositoryImpl.updateToken(req.body.nickname,tokenLoginAsOption)
+    }yield token
+
     userExist.future.flatMap {
-      case Some(newStudent) => Future.successful(if (checkPasswordValidation(req.body.password, newStudent.password))
-        Ok(Json.obj("status" -> "OK", "authenticated" -> true, "nickname" -> newStudent.nickname)) else Ok(Json.obj("status" -> "OK", "Authenticated" -> false, "nickname" -> "NONE")))
+      case Some(newStudent) => Future.successful(if (checkPasswordValidation(req.body.password, newStudent.password)){
+                                                        Ok(Json.obj("someValue"->checkAuth(authInPlace,createOrUpdateTokenLogin).foreach(result => result.body).toString))
+                                                }else
+                                                  Ok(Json.obj("status" -> "OK",
+                                                              "Authenticated" -> false,
+                                                              "nickname" -> "NONE")))
+//        Ok(Json.obj("status" -> "OK", "authenticated" -> true,
+//                    "nickname" -> newStudent.nickname))
+//                    else
+//                    Ok(Json.obj("status" -> "OK",
+//                                "Authenticated" -> false,
+//                                "nickname" -> "NONE")))
       case other => Future.successful(Ok(Json.obj("status" -> "NOT_FOUND", "error" -> "user does not exist")))
     }
 
@@ -61,5 +80,22 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   def checkPasswordValidation(passwordFromFrontEnd:String,passwordFromDatabase:String): Boolean ={
     val foundStudent = BCrypt.checkpw(passwordFromFrontEnd,passwordFromDatabase)
     foundStudent
+  }
+
+  def checkAuth(auth:FutureO[KingstonStudent],updatedToken:Future[Int]): Future[Result] ={
+
+    auth.future.flatMap{
+      case Some(authentication) => Future.successful(Ok("Something in here"))
+      case other =>Future.successful(Ok(createOrUpdateToken(updatedToken).toString))
+    }
+  }
+
+  def createOrUpdateToken(checkIfTokenWasUpdated:Future[Int]): Int={
+    val updated = for{
+      token <- checkIfTokenWasUpdated
+    }yield token
+    val newToken = updated.foreach( updatedToken => if(updatedToken>0) updatedToken else -1)
+    newToken.toString.toInt
+
   }
 }

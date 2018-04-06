@@ -16,7 +16,7 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
 
   private val KStudents = kingstonStudentSchema.Kstudents
 
-  override def add(kingstonStudent: KingstonStudent) = {
+  override def insert(kingstonStudent: KingstonStudent) = {
     val inserts = KStudents += kingstonStudent
     val seqOfQuery = DBIO.seq(inserts)
     db.run(seqOfQuery)
@@ -25,6 +25,11 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
   override def update(kingstonStudent: KingstonStudent) = ???
 
   override def delete(kingstonStudent: KingstonStudent) = ???
+
+  override def updateToken(nickname:String, loginToken:Option[String]): Future[Int] = {
+    val q = for { s <- KStudents if s.nickname === nickname } yield s.loginToken
+    db.run(q.update(loginToken))
+  }
 
   override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result)
 
@@ -38,4 +43,8 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     db.run(query)
   }
 
+  override def auth(loginToken:String):Future[Option[KingstonStudent]] = {
+    val query = KStudents.filter(_.loginToken === loginToken).result.headOption
+    db.run(query)
+  }
 }
