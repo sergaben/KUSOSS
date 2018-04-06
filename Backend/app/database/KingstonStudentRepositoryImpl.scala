@@ -1,7 +1,7 @@
 package database
 
-import javax.inject.Inject
 import database.Schemas.KingstonStudentSchema
+import javax.inject.Inject
 import models.Intefaces.IKingstonStudentRepository
 import models.KingstonStudent
 import org.joda.time.DateTime
@@ -26,22 +26,18 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
 
   override def delete(kingstonStudent: KingstonStudent) = ???
 
-  override def updateOrInsertToken(nickname: String,email:String,password:String,fromKingston:Boolean,expirationTimeOfUser:Option[DateTime],subject:String,typeOfStudy:String,loginToken:Option[String]): DBIO[Int] = {
-    for{
+  override def updateOrInsertToken(nickname: String,email:String,password:String,fromKingston:Boolean,expirationTimeOfUser:Option[DateTime],subject:String,typeOfStudy:String,loginToken:Option[String]): Future[Int] = {
+    val getResult = for{
       existing <- KStudents.filter(_.nickname === nickname).result.headOption
       row      = existing.map(_.copy(loginToken=loginToken)) getOrElse KingstonStudent(nickname,email,password,fromKingston,expirationTimeOfUser,subject,typeOfStudy,loginToken)
       result <- KStudents.insertOrUpdate(row)
     } yield result
+    db.run(getResult)
   }
-
-  override def runUpdateOrInsertToken(affectedRows: DBIO[Int]):Future[Int] = {
-    db.run(affectedRows)
-  }
-
   override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result)
 
   override def getByNickname(nickname: String):Future[Option[KingstonStudent]] = {
-    val q = KStudents.filter(_.nickname === nickname).result.headOption
+    val q = KStudents.filter(_.nickname === nickname ).result.headOption
     db.run(q)
   }
 
@@ -54,4 +50,5 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     val query = KStudents.filter(_.loginToken === loginToken).result.headOption
     db.run(query)
   }
+
 }

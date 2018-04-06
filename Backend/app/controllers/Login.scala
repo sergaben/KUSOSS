@@ -44,6 +44,8 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // if it matches then send true otherwise send false
     val tokenLoginAsString:String = UUID.randomUUID().toString
     val tokenLoginAsOption:Option[String] = Option(tokenLoginAsString)
+    println(tokenLoginAsOption.getOrElse("No Token"))
+    println(tokenLoginAsString)
 
 //    val userExist = for {
 //      user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
@@ -54,27 +56,49 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //      userWithPass <- firstResult.getOrElse(Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->"NONE")))
 //      userAuthenticated = checkPasswordValidation(req.body.password,userWithPass.password)
 //    }
-    kingstonStudentRepositoryImpl.getByNickname(req.body.nickname).flatMap{
-      case Some(newStudent) =>Future.successful(
-        if(checkPasswordValidation(req.body.password, newStudent.password)){
-          val query = kingstonStudentRepositoryImpl.updateOrInsertToken(
-            newStudent.nickname, newStudent.email, newStudent.password, newStudent.fromKingston, newStudent.expirationTimeOfUser, newStudent.subject, newStudent.typeOfStudy, tokenLoginAsOption
+    getFuture(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname)){ checkStudent =>
+      if(checkPasswordValidation(req.body.password, checkStudent.password)){
+        val finalStudent = for{
+          updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(
+            checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.fromKingston, checkStudent.expirationTimeOfUser, checkStudent.subject, checkStudent.typeOfStudy, tokenLoginAsOption
           )
-          kingstonStudentRepositoryImpl.runUpdateOrInsertToken(query).foreach(updated => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->tokenLoginAsString,"response"->updated))).asInstanceOf[Result]
-//          val result = for {
-//            affectedRows <-
-//            )
-//          } yield affectedRows
-        }else{
-          Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE"))
+        }yield updatedStudent
+        finalStudent.flatMap{
+          case 0 => Future.successful{Ok(Json.obj("status"->"OK","Authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->0))}
+          case n => Future.successful{Ok(Json.obj("status"->"OK","Authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->n))}
         }
-      )
-//        .map{
-//          case 0 => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->tokenLoginAsString))
-//          case n => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->n))
-//        }
-      case other => Future.successful(Ok(Json.obj("status" -> "NOT_FOUND", "error" -> "user does not exist")))
+      }else{
+        Future.successful{Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE"))}
+      }
     }
+//    kingstonStudentRepositoryImpl.getByNickname(req.body.nickname).flatMap{
+//      case Some(checkStudent) =>Future.successful(
+//        if(checkPasswordValidation(req.body.password, checkStudent.password)){
+//          val finalStudent = for{
+//          updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(
+//            checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.fromKingston, checkStudent.expirationTimeOfUser, checkStudent.subject, checkStudent.typeOfStudy, tokenLoginAsOption
+//          )
+//          }yield updatedStudent
+//
+//          finalStudent.flatMap{
+//            case 0 => Future.successful(Ok(Json.obj("status"->"OK","Authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->0)))
+//            case n => Future.successful(Ok(Json.obj("status"->"OK","Authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->n)))
+//          }
+////          .flatMap{
+////            case 0 => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->tokenLoginAsString,"response"->0))
+////            case n => Future.successful(Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->n)))
+////          }
+//        }else{
+//          Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE"))
+//        }
+//      )
+////        .map{
+////          case 0 => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->tokenLoginAsString,"response"->updated))
+////          case n => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->n))
+////        }
+//      case other => Future.successful(Ok(Json.obj("status" -> "NOT_FOUND", "error" -> "user does not exist")))
+//    }
+
 //    val authInPlace = for {
 //      auth <- FutureO(kingstonStudentRepositoryImpl.auth(tokenLoginAsString))
 //    } yield auth
@@ -120,6 +144,15 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
 //      case other => Future.successful(Ok(Json.obj("status" -> "NOT_FOUND", "error" -> "user does not exist")))
 //    }
 
+  }
+
+  def getFuture[T](futureOptionBlock: Future[Option[T]])(foundBlock: (T => Future[Result])): Future[Result] = {
+    futureOptionBlock.flatMap {
+      case Some(found) =>
+        foundBlock(found)
+      case None =>
+        Future.successful(NotFound)
+    }
   }
 
   def checkPasswordValidation(passwordFromFrontEnd:String,passwordFromDatabase:String): Boolean ={
