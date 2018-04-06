@@ -1,10 +1,10 @@
 package database
 
 import javax.inject.Inject
-
 import database.Schemas.KingstonStudentSchema
 import models.Intefaces.IKingstonStudentRepository
 import models.KingstonStudent
+import org.joda.time.DateTime
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -26,9 +26,16 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
 
   override def delete(kingstonStudent: KingstonStudent) = ???
 
-  override def updateToken(nickname:String, loginToken:Option[String]): Future[Int] = {
-    val q = for { s <- KStudents if s.nickname === nickname } yield s.loginToken
-    db.run(q.update(loginToken))
+  override def updateOrInsertToken(nickname: String,email:String,password:String,fromKingston:Boolean,expirationTimeOfUser:Option[DateTime],subject:String,typeOfStudy:String,loginToken:Option[String]): DBIO[Int] = {
+    for{
+      existing <- KStudents.filter(_.nickname === nickname).result.headOption
+      row      = existing.map(_.copy(loginToken=loginToken)) getOrElse KingstonStudent(nickname,email,password,fromKingston,expirationTimeOfUser,subject,typeOfStudy,loginToken)
+      result <- KStudents.insertOrUpdate(row)
+    } yield result
+  }
+
+  override def runUpdateOrInsertToken(affectedRows: DBIO[Int]):Future[Int] = {
+    db.run(affectedRows)
   }
 
   override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result)

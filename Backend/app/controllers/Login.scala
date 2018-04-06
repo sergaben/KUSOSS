@@ -8,7 +8,7 @@ import models.KingstonStudent
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, ControllerComponents, Result}
 import utils.FutureO
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,35 +45,80 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     val tokenLoginAsString:String = UUID.randomUUID().toString
     val tokenLoginAsOption:Option[String] = Option(tokenLoginAsString)
 
-    val userExist = for {
-      user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
-
-    } yield user
-
-    val authInPlace = for {
-      auth <- FutureO(kingstonStudentRepositoryImpl.auth(tokenLoginAsString))
-    } yield auth
-//    ,"authToken"->Json.toJsFieldJsValueWrapper(token)
-
-    val createOrUpdateTokenLogin = for {
-      token <- kingstonStudentRepositoryImpl.updateToken(req.body.nickname,tokenLoginAsOption)
-    }yield token
-
-    userExist.future.flatMap {
-      case Some(newStudent) => Future.successful(if (checkPasswordValidation(req.body.password, newStudent.password)){
-                                                        Ok(Json.obj("someValue"->checkAuth(authInPlace,createOrUpdateTokenLogin).foreach(result=> result).toString))
-                                                }else
-                                                  Ok(Json.obj("status" -> "OK",
-                                                              "Authenticated" -> false,
-                                                              "nickname" -> "NONE")))
-//        Ok(Json.obj("status" -> "OK", "authenticated" -> true,
-//                    "nickname" -> newStudent.nickname))
-//                    else
-//                    Ok(Json.obj("status" -> "OK",
-//                                "Authenticated" -> false,
-//                                "nickname" -> "NONE")))
+//    val userExist = for {
+//      user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
+//
+//    } yield user
+//    val loginCompleted:Future[Result] = for{
+//      firstResult <- kingstonStudentRepositoryImpl.getByNickname(req.body.nickname)
+//      userWithPass <- firstResult.getOrElse(Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->"NONE")))
+//      userAuthenticated = checkPasswordValidation(req.body.password,userWithPass.password)
+//    }
+    kingstonStudentRepositoryImpl.getByNickname(req.body.nickname).flatMap{
+      case Some(newStudent) =>Future.successful(
+        if(checkPasswordValidation(req.body.password, newStudent.password)){
+          val query = kingstonStudentRepositoryImpl.updateOrInsertToken(
+            newStudent.nickname, newStudent.email, newStudent.password, newStudent.fromKingston, newStudent.expirationTimeOfUser, newStudent.subject, newStudent.typeOfStudy, tokenLoginAsOption
+          )
+          kingstonStudentRepositoryImpl.runUpdateOrInsertToken(query).foreach(updated => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->tokenLoginAsString,"response"->updated))).asInstanceOf[Result]
+//          val result = for {
+//            affectedRows <-
+//            )
+//          } yield affectedRows
+        }else{
+          Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE"))
+        }
+      )
+//        .map{
+//          case 0 => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->tokenLoginAsString))
+//          case n => Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE","token"->n))
+//        }
       case other => Future.successful(Ok(Json.obj("status" -> "NOT_FOUND", "error" -> "user does not exist")))
     }
+//    val authInPlace = for {
+//      auth <- FutureO(kingstonStudentRepositoryImpl.auth(tokenLoginAsString))
+//    } yield auth
+////    ,"authToken"->Json.toJsFieldJsValueWrapper(token)
+//
+//    val createOrUpdateTokenLogin = for {
+//      token <- kingstonStudentRepositoryImpl.updateToken(req.body.nickname,tokenLoginAsOption)
+//    }yield token
+
+//    userExist.future.flatMap {
+//      case Some(newStudent) =>
+//        Future.successful(
+//          if (checkPasswordValidation(req.body.password, newStudent.password)) {
+//
+//            val result = for {
+//              affectedRows <- kingstonStudentRepositoryImpl.runUpdateOrInsertToken(
+//                kingstonStudentRepositoryImpl.updateOrInsertToken(
+//                  newStudent.nickname, newStudent.email, newStudent.password, newStudent.fromKingston, newStudent.expirationTimeOfUser, newStudent.subject, newStudent.typeOfStudy, tokenLoginAsOption
+//                )
+//              )
+//            } yield affectedRows
+//
+////            result.flatMap{
+////              case 0 => Future.successful(Ok(Json.obj("status" -> "OK", "authenticated" -> true,
+////                "nickname" -> newStudent.nickname)))
+////              case n => Future.successful(Ok(Json.obj("status" -> "OK", "authenticated" -> true, "data" -> n)))
+////            }
+//          }else
+//            Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE"))
+//        )
+////        Ok(Json.obj("status" -> "OK", "authenticated" -> true,
+////                    "nickname" -> newStudent.nickname))
+////                    else
+////                    Ok(Json.obj("status" -> "OK",
+////                                "Authenticated" -> false,
+////                                "nickname" -> "NONE")))
+////        rowsAffected match{
+////          case 0 => KStudents += KingstonStudent(nickname,email,password,fromKingston,expirationTimeOfUser,subject,typeOfStudy,loginToken)
+////          case 1 => DBIO.successful(1)
+////          case other => DBIO.failed(new RuntimeException(
+////            s"Expected 0 or 1 change, not $other for $nickname , $email ,$password, $fromKingston , $expirationTimeOfUser, $subject, $typeOfStudy"))
+////        }
+//      case other => Future.successful(Ok(Json.obj("status" -> "NOT_FOUND", "error" -> "user does not exist")))
+//    }
 
   }
 
