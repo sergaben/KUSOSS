@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
   // https://mvnrepository.com/artifact/postgresql/postgresql
   "org.postgresql" % "postgresql" % "42.1.3",
   "com.typesafe.play" %% "play-slick" % "3.0.1",
-  "com.typesafe.slick" %% "slick" % "3.2.1",
+  "com.typesafe.slick" %% "slick" % "3.2.2",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
   "com.typesafe.slick" %% "slick-hikaricp" % "3.2.1",
   "org.webjars" % "flot" % "0.8.3",
