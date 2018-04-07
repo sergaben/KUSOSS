@@ -16,7 +16,7 @@ class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseCon
   import profile.api._
 
   class kingstonStudentTable (tag:Tag) extends Table[KingstonStudent](tag,"Ku_student"){
-    def id = column[Int]("id_student",O.PrimaryKey,O.AutoInc)
+    def id = column[Long]("id_student",O.PrimaryKey,O.AutoInc)
     def nickname = column [String]("nickname")
     def email = column[String]("email")
     def password = column[String]("password")

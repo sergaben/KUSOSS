@@ -27,6 +27,7 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
   override def delete(kingstonStudent: KingstonStudent) = ???
 
   override def updateOrInsertToken(nickname: String,email:String,password:String,fromKingston:Boolean,expirationTimeOfUser:Option[DateTime],subject:String,typeOfStudy:String,loginToken:Option[String]): Future[Int] = {
+    sqlu"insert into Ku_student values (${})"
     val getResult = for{
       existing <- KStudents.filter(_.nickname === nickname).result.headOption
       row      = existing.map(_.copy(loginToken=loginToken)) getOrElse KingstonStudent(nickname,email,password,fromKingston,expirationTimeOfUser,subject,typeOfStudy,loginToken)
