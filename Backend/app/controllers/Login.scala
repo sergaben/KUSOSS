@@ -151,7 +151,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       case Some(found) =>
         foundBlock(found)
       case None =>
-        Future.successful(NotFound("user does not exist"))
+        Future.successful(Ok(Json.obj("status"->"OK","error"->"USER NOT FOUND")))
     }
   }
 
