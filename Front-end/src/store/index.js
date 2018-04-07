@@ -11,7 +11,7 @@ export const createStore = () => {
     middleware.push(logger);
   }
 
-  return _createStore(rootReducer, applyMiddleware.apply(null, middleware));
+  return _createStore(rootReducer, applyMiddleware.apply(null, middleware),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 };
 
 export default createStore;

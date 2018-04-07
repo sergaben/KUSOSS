@@ -1,10 +1,7 @@
 package database.Schemas
 
 import javax.inject.Inject
-
-import com.github.tototoshi.slick.PostgresJodaSupport._
 import models.KingstonStudent
-import org.joda.time.DateTime
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -16,16 +13,14 @@ class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseCon
   import profile.api._
 
   class kingstonStudentTable (tag:Tag) extends Table[KingstonStudent](tag,"Ku_student"){
-    def id = column[Long]("id_student",O.PrimaryKey,O.AutoInc)
+    def id = column[Option[Int]]("id_student",O.PrimaryKey,O.AutoInc)
     def nickname = column [String]("nickname")
     def email = column[String]("email")
     def password = column[String]("password")
-    def fromKingston = column[Boolean]("from_Kingston")
-    def expirationTimeOfUser = column[Option[DateTime]]("Expiration_time_of_user")
     def subject= column[String]("subject")
     def typeOfStudy = column[String]("typeOfStudy")
     def loginToken = column[Option[String]]("login_token")
-    def * = (nickname,email,password,fromKingston,expirationTimeOfUser,subject,typeOfStudy,loginToken) <> ((KingstonStudent.apply _).tupled, KingstonStudent.unapply _)
+    def * = (id,nickname,email,password,subject,typeOfStudy,loginToken) <> ((KingstonStudent.apply _).tupled, KingstonStudent.unapply _)
   }
 
 

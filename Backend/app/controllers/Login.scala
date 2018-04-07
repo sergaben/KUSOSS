@@ -60,7 +60,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       if(checkPasswordValidation(req.body.password, checkStudent.password)){
         val finalStudent = for{
           updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(
-            checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.fromKingston, checkStudent.expirationTimeOfUser, checkStudent.subject, checkStudent.typeOfStudy, tokenLoginAsOption
+            checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy, tokenLoginAsOption
           )
         }yield updatedStudent
         finalStudent.flatMap{

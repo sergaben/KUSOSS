@@ -5,9 +5,6 @@ import LandingPageMaterialUI from '../../components/LandingPage/landingPageMater
 import Axios from '../../util/axiosFunction';
 
 class App extends Component {
-  componentDidMoun(){
-    Axios('get',true,'');
-  }
   render() {
     return (
       <div id="app-container" className={`${styles.appContainer}`}>

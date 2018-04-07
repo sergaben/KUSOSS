@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import Header from './Header/Header';
 import { AppBar, MuiThemeProvider} from 'material-ui';
 import { Grid, Row, Col } from 'react-flexbox-grid';
@@ -9,10 +10,25 @@ import FeedTimeLine from './FeedTimeLine/FeedTimeLine';
 import ProfileViewer from './ProfileViewer/ProfileViewer';
 import MainChat from './Chat/MainChat';
 
-class MainPage extends Component {
+//TODO - find a way to not let unauthorized user see the main page
 
+class MainPage extends Component {
+    constructor(props){
+        super(props);
+    }
+    componentWillReceiveProps(nextProps){
+        // const { nickname } = this.props;
+        if(this.props === nextProps ){
+            browserHistory.push({
+                pathname: '/',
+            });
+        }
+        // }else{
+        //     this.setState({nickname:nickname});
+        // }
+    }
     render(){
-        const { something } = this.props;
+        const { nickname } = this.props;
         let gridStyle = {
             padding:0
         }
@@ -22,13 +38,12 @@ class MainPage extends Component {
         return(
             <div>
                 <Grid fluid style={gridStyle}>
-                    <Header titleHeader="KUSSOS" show={false}/>
-                    {console.log(something)}
+                    <Header titleHeader={nickname} show={false}/>
                 </Grid>
                 <Grid fluid>
                     <Row center="lg" center="xs" center="sm" center="md">
                         <Col xs={12} sm={6} md={6} lg={7}>
-                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles}/>
+                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles} username={nickname}/>
                         </Col>
                     </Row>
                     <Row>
@@ -52,6 +67,12 @@ class MainPage extends Component {
             </div>  
         )
     }
+
+    // loginPage = () =>{
+    //     if(this.state.nickname === undefined){
+            
+    //     }
+    // }
 }
 
 export default MainPage;

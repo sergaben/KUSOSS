@@ -4,22 +4,25 @@ import {FlatButton, Dialog } from 'material-ui';
 import { TextField } from 'redux-form-material-ui';
 import { browserHistory } from 'react-router';
 import Axios from '../../../util/axiosFunction';
+
+
 class LoginDialog extends Component{
         constructor(){
             super();
             this.state = {
                 nickname:'',
                 password:'',
-                matchPassword:'',   
+                matchPassword:'',
+                error:'',
+                authed:false
             }
         }
-        
         onChange = (e) =>{
             const state = this.state;
+            // if(e.target.data === )
             state[e.target.name] = e.target.value;
             this.setState(state);
         }
-       
         onSubmit= (e) =>{
             e.preventDefault();
             const { nickname,matchPassword} = this.state;
@@ -28,16 +31,20 @@ class LoginDialog extends Component{
             }
             // console.log(nickname);
             // console.log(matchPassword);
-            let response = Axios('post',true,'login',{nickname,matchPassword},headers);
-            // this.printResponse(response);
+            Axios('post',true,'login',{nickname,matchPassword},headers).then((response) => {
+                console.log(response);
+                if(response.data.status === "OK" && response.data.authenticated === true){
+                    // this.mainPage(response.data.nickname);
+                    this.setState({...this.state,authed:true});
+                }else{
+                    this.setState({error:'invalid user credentials'});
+                }
+            })
+
             const { resetForm } = this.props;
-            // resetForm();
-            // this.mainPage(response);
+
         }
-        
-        // printResponse = (response) =>{
-        //     console.log(response);
-        // }
+
 
         render(){
             const { open, close,reset } = this.props;
@@ -54,13 +61,6 @@ class LoginDialog extends Component{
                 password:'',
                 matchPassword:'',   
             }
-            // const kuStudent = {
-            //     "nickname":"Sergio",
-            //     "password":"fjadkfjklsd",
-            //     "email":"fasdf@Fadsfsd.com",
-            //     "subject":"fjksladfl",
-            //     "typeOfStudy":"fasfafsfasdfsdf"
-            // }
             return(
                 <Dialog
                     title="Log In"
@@ -74,6 +74,7 @@ class LoginDialog extends Component{
                             <Field
                                 style={fieldStyle}
                                 name="nickname"
+                                errorText = {this.state.error !== undefined ? this.state.error : ''}
                                 component={TextField}
                                 hintText="Nickname"   
                                 floatingLabelText="Nickname"
@@ -116,8 +117,6 @@ class LoginDialog extends Component{
                                 primary={true}
                                 disabled={false}
                                 type="submit"
-                                // onClick={this.mainPage}
-                                // onClick={(e)=>(Axios('POST',true,'login',kuStudent))}
                             />
                             <FlatButton
                                 label="Reset"
@@ -130,12 +129,10 @@ class LoginDialog extends Component{
                 </Dialog>
             )
         }
-
         mainPage = (response) =>{
-            console.log(response);
             browserHistory.push({
                 pathname: '/main',
-                state:{something: response}
+                state:{nickname: response}
             });
         }
 

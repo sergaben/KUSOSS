@@ -1,4 +1,4 @@
-import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, browserHistory, Redirect } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom'

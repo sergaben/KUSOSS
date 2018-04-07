@@ -131,7 +131,6 @@ class LoginDialog extends Component{
                                 hintText = "Subject"
                                 dataSource = {this.state.subjectFromAPI}
                                 filter = {AutoComplete.fuzzyFilter}
-                                // onUpdateInput = {this.handleUpdateInput}
                                 floatingLabelText = "Subject*"
                                 fullWidth = {true}
                                 onUpdateInput = {this.handleUpdateInputSubject}

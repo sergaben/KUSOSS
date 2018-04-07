@@ -8,14 +8,10 @@ function generateURL(prodMode, url){
 }
 
 export default function(type,mode,url,data = {},headers = {}){
-    axios({
+    return axios({
         method:type,
         url:generateURL(mode,url),
         data,
         headers,
-    }).then((response)=>{
-        response;
-    }).catch((error)=>{
-        error;
-    })
+    });
 }

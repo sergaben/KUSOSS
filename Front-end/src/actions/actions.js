@@ -1,4 +1,4 @@
-import { RESET_VALUES } from './types';
+import { RESET_VALUES, AUTHORIZATION } from './types';
 const resetValues = (nickname,matchPassword,password) =>{
     const undefinedValues = {nickname:'',matchPassword:'',password:''}
     return{
@@ -6,5 +6,6 @@ const resetValues = (nickname,matchPassword,password) =>{
         payload:undefinedValues
     }
 }
+
 
 export default resetValues;
