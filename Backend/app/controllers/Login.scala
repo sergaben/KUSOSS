@@ -64,11 +64,11 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
           )
         }yield updatedStudent
         finalStudent.flatMap{
-          case 0 => Future.successful{Ok(Json.obj("status"->"OK","Authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->0))}
-          case n => Future.successful{Ok(Json.obj("status"->"OK","Authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->n))}
+          case 0 => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->0))}
+          case n => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->n))}
         }
       }else{
-        Future.successful{Ok(Json.obj("status" -> "OK","Authenticated" -> false,"nickname" -> "NONE"))}
+        Future.successful{Ok(Json.obj("status" -> "OK","authenticated" -> false,"nickname" -> "NONE"))}
       }
     }
 //    kingstonStudentRepositoryImpl.getByNickname(req.body.nickname).flatMap{
