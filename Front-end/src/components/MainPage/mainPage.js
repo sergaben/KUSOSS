@@ -6,7 +6,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import ImageProfile from '../../../public/images/ProfileImages/tiger.jpg';
 import styles from './mainPage.css';
 import Links from './Links/Links';
-import FeedTimeLine from './FeedTimeLine/FeedTimeLine';
+import FeedTimeLine from './InputFeedTimeLine/InputFeedTimeLine';
 import ProfileViewer from './ProfileViewer/ProfileViewer';
 import MainChat from './Chat/MainChat';
 
@@ -16,19 +16,23 @@ class MainPage extends Component {
     constructor(props){
         super(props);
     }
-    componentWillReceiveProps(nextProps){
-        // const { nickname } = this.props;
-        if(this.props === nextProps ){
+    componentWillMount(){
+        if(localStorage.getItem("token") === null){
             browserHistory.push({
                 pathname: '/',
             });
         }
-        // }else{
-        //     this.setState({nickname:nickname});
-        // }
+    }
+    firstLetterUpperCase = (word) =>{
+        let wordToLowerCase = word.toLowerCase();
+        return wordToLowerCase.charAt(0).toUpperCase() + wordToLowerCase.slice(1);
     }
     render(){
-        const { nickname } = this.props;
+      
+       const nickname = this.firstLetterUpperCase(this.props.location.state.nickname);
+       const subject = this.firstLetterUpperCase(this.props.location.state.subject);
+       console.log(subject);
+        console.log(nickname);
         let gridStyle = {
             padding:0
         }
@@ -38,12 +42,12 @@ class MainPage extends Component {
         return(
             <div>
                 <Grid fluid style={gridStyle}>
-                    <Header titleHeader={nickname} show={false}/>
+                    <Header titleHeader="KUSSOS" show={false}/>
                 </Grid>
                 <Grid fluid>
                     <Row center="lg" center="xs" center="sm" center="md">
                         <Col xs={12} sm={6} md={6} lg={7}>
-                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles} username={nickname}/>
+                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles} username={nickname} subject={subject}/>
                         </Col>
                     </Row>
                     <Row>

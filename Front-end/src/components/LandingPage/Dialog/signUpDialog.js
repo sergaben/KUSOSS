@@ -51,8 +51,12 @@ class LoginDialog extends Component{
         onSubmit = (e) =>{
             e.preventDefault();
             const { nickname,email,password,subject,typeOfStudy} = this.state;
-            let from_Kingston = true;
-            Axios('post',true,'signup',{ nickname, email, password,subject,typeOfStudy,from_Kingston});
+            console.log(nickname);
+            Axios('post',true,'signup',{ nickname, email, password,subject,typeOfStudy}).then((response)=>{
+                console.log(response);
+            }).catch((errors)=>{
+                console.log(errors);
+            });
         }
         handleUpdateInputSubject = (inputValue) =>{
             const self = this;
@@ -67,15 +71,15 @@ class LoginDialog extends Component{
             });
         }
         render(){
-            const { handleSubmit, open, close } = this.props;
-            const { nickname,email,password,subjectFromAPI,typeOfStudyArray } = this.state;
+            const { handleSubmit, open, close }=this.props;
+            const { nickname,email,password,subjectFromAPI,typeOfStudyArray }=this.state;
             // console.log(subject);
-            const formStyle = {
+            const formStyle={
                 marginTop:'3%',
                 marginRight:'10%',
                 marginLeft:'10%'
             }
-            const fieldStyle = {
+            const fieldStyle={
                 width:'100%'
             }
             return(
@@ -125,15 +129,15 @@ class LoginDialog extends Component{
                         </div>
                         <div>
                             <Field
-                                style = {fieldStyle}
+                                style={fieldStyle}
                                 name="subject"
                                 component={AutoComplete}
-                                hintText = "Subject"
-                                dataSource = {this.state.subjectFromAPI}
-                                filter = {AutoComplete.fuzzyFilter}
-                                floatingLabelText = "Subject*"
-                                fullWidth = {true}
-                                onUpdateInput = {this.handleUpdateInputSubject}
+                                hintText="Subject"
+                                dataSource={this.state.subjectFromAPI}
+                                filter={AutoComplete.fuzzyFilter}
+                                floatingLabelText="Subject*"
+                                fullWidth={true}
+                                onUpdateInput={this.handleUpdateInputSubject}
                                 required
                             />
                             
@@ -145,10 +149,10 @@ class LoginDialog extends Component{
                                 component={AutoComplete}
                                 hintText="Type of Study"
                                 floatingLabelText="Type of Study*"
-                                filter = {AutoComplete.fuzzyFilter}
-                                dataSource = {this.state.typeOfStudyArray}
-                                fullWidth = {true}
-                                onUpdateInput = {this.handleUpdateInputTypeOfStudy}
+                                filter={AutoComplete.fuzzyFilter}
+                                dataSource={this.state.typeOfStudyArray}
+                                fullWidth={true}
+                                onUpdateInput={this.handleUpdateInputTypeOfStudy}
                                 required
                             >      
                             </Field>
@@ -178,7 +182,7 @@ class LoginDialog extends Component{
             )
         }
 }
-LoginDialog= reduxForm({
+LoginDialog=reduxForm({
     form:'logInForm'
 })(LoginDialog) 
 

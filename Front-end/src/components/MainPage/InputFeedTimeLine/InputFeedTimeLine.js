@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { EditorState } from 'draft-js';
 import styles from '../mainPage.css';
 import Editor from 'draft-js-editor';
+import { RaisedButton, MuiThemeProvider } from 'material-ui';
 import 'draft-js/dist/Draft.css';
 
 class FeedTimeLine extends Component {
@@ -16,7 +17,11 @@ class FeedTimeLine extends Component {
         this.setState({editorState});
     }
     render(){
+        const style = {
+            margin: 12,
+          };
         return(
+            <MuiThemeProvider>
             <div id="content">
                 <h1>Write a post</h1>
                 <div className={styles.editor}>
@@ -25,11 +30,11 @@ class FeedTimeLine extends Component {
                         editorState={this.state.editorState}
                         onChange={this._onChange}
                     />
-                </div>
-                <div>
                     
-                </div>
+                </div> 
             </div>
+            <RaisedButton label="Publish" secondary={true} style={style}/>
+            </MuiThemeProvider>
         )
     }
 }

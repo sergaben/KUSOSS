@@ -26,6 +26,7 @@ class LoginDialog extends Component{
         onSubmit= (e) =>{
             e.preventDefault();
             const { nickname,matchPassword} = this.state;
+            console.log(nickname);
             const headers = {
                 'Content-Type':'application/json'
             }
@@ -35,10 +36,13 @@ class LoginDialog extends Component{
                 console.log(response);
                 if(response.data.status === "OK" && response.data.authenticated === true){
                     // this.mainPage(response.data.nickname);
-                    this.setState({...this.state,authed:true});
+                   localStorage.setItem("token",response.data.token);
+                   this.mainPage(response);
                 }else{
                     this.setState({error:'invalid user credentials'});
                 }
+            }).catch((error)=>{
+                console.log(error);
             })
 
             const { resetForm } = this.props;
@@ -132,7 +136,10 @@ class LoginDialog extends Component{
         mainPage = (response) =>{
             browserHistory.push({
                 pathname: '/main',
-                state:{nickname: response}
+                state:{
+                    nickname: response.data.nickname,
+                    subject: response.data.subject        
+                    }
             });
         }
 
