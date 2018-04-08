@@ -33,7 +33,7 @@ object KingstonStudent{
         "id_student" -> Json.toJson(student.id),
         "nickname" -> JsString(student.nickname),
         "email" -> JsString(student.email),
-        "password" -> JsString(student.password), // TODO - FIX THE DATE ISSUE
+        "password" -> JsString(student.password),
         "subject" -> JsString(student.subject),
         "typeOfStudy" -> JsString(student.typeOfStudy),
         "login_token"->Json.toJson(student.loginToken)

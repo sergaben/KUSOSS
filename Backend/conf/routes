@@ -11,6 +11,8 @@ POST    /signup                  controllers.SignUp.signup
 POST    /login                   controllers.Login.login
 #Getting courses from databases and converting them into scala objects
 GET     /getCourses              controllers.getCoursesController.getCourses
+# Log out user
+POST    /logout                  controllers.LogOut.logout
 #Getting subjects from database and converting them into scala objects
 GET     /getSubjectsNamesAsJson      controllers.getSubjectsController.getSubjectsNamesAsJson
 # Map static resources from the /public folder to the /assets URL path
