@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
-  private case class LoginRequest(nickname:String,password:String)
+   case class LoginRequest(nickname:String,password:String)
 
   implicit val LoginRequestReads: Reads[LoginRequest] = (
     (JsPath \ "nickname").read[String] and

@@ -6,6 +6,7 @@ import models.KingstonStudent
 import org.mindrot.jbcrypt.BCrypt
 import play.api.data.Forms._
 import play.api.data._
+import play.api.i18n.Messages
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -52,7 +53,7 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
     */
     private def signUpFormAsJson[A]()(implicit request: Request[A]):Result = {
       def failure(badForm: Form[KingstonStudent]) = {
-        implicit val messages = messagesApi.preferred(request)
+        implicit val messages: Messages = messagesApi.preferred(request)
         BadRequest(badForm.errorsAsJson)
       }
 
