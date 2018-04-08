@@ -1,5 +1,7 @@
 package database
 
+import java.util.UUID
+
 import database.Schemas.KingstonStudentSchema
 import javax.inject.Inject
 import models.Intefaces.IKingstonStudentRepository
@@ -26,10 +28,10 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
   override def delete(kingstonStudent: KingstonStudent) = ???
 
   override def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:Option[String]): Future[Int] = {
-//    sqlu"insert into Ku_student values (${})"
+    val tokenLoginAsOption:Option[String] = Option(UUID.randomUUID().toString)
     val getResult = for{
-      existing <- KStudents.filter(_.nickname === nickname).result.headOption
-      row      = existing.map(_.copy(loginToken=loginToken)) getOrElse KingstonStudent(id,nickname,email,password,subject,typeOfStudy,loginToken)
+      existing <- KStudents.filter(_.loginToken === loginToken).result.headOption
+      row      = existing.map(_.copy(loginToken=loginToken)) getOrElse KingstonStudent(id,nickname,email,password,subject,typeOfStudy,tokenLoginAsOption)
       result <- KStudents.insertOrUpdate(row)
     } yield result
     db.run(getResult)

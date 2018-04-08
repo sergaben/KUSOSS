@@ -1,7 +1,5 @@
 package controllers
 
-import java.util.UUID
-
 import database.KingstonStudentRepositoryImpl
 import javax.inject.Inject
 import models.KingstonStudent
@@ -42,10 +40,9 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
     // get the nickname and password from database
     // check that the password matched the one in the database
     // if it matches then send true otherwise send false
-    val tokenLoginAsString:String = UUID.randomUUID().toString
-    val tokenLoginAsOption:Option[String] = Option(tokenLoginAsString)
-    println(tokenLoginAsOption.getOrElse("No Token"))
-    println(tokenLoginAsString)
+
+//    println(tokenLoginAsOption.getOrElse("No Token"))
+//    println(tokenLoginAsString)
 
 //    val userExist = for {
 //      user <- FutureO(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname))
@@ -60,12 +57,12 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
       if(checkPasswordValidation(req.body.password, checkStudent.password)){
         val finalStudent = for{
           updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(
-            checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy, tokenLoginAsOption
+            checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy, checkStudent.loginToken
           )
         }yield updatedStudent
         finalStudent.flatMap{
-          case 0 => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->0))}
-          case n => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->tokenLoginAsString,"data"->n))}
+          case 0 => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->checkStudent.loginToken,"data"->0))}
+          case n => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->checkStudent.loginToken,"data"->n))}
         }
       }else{
         Future.successful{Ok(Json.obj("status" -> "OK","authenticated" -> false,"nickname" -> "NONE"))}
