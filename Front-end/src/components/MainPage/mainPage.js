@@ -15,6 +15,10 @@ import MainChat from './Chat/MainChat';
 class MainPage extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            nickname:'',
+            subject:''
+        }
     }
     componentWillMount(){
         if(localStorage.getItem("token") === null){
@@ -28,9 +32,15 @@ class MainPage extends Component {
         return wordToLowerCase.charAt(0).toUpperCase() + wordToLowerCase.slice(1);
     }
     render(){
-      
-       const nickname = this.firstLetterUpperCase(localStorage.getItem("nickname"));
-       const subject = this.firstLetterUpperCase(localStorage.getItem("subject"));
+        let nickname;
+        let subject;
+      if(localStorage.length < 3){
+        nickname = this.state.nickname;
+        subject = this.state.subject;
+      }else{
+        this.setState({nickname:this.firstLetterUpperCase(localStorage.getItem("nickname")),subject:this.firstLetterUpperCase(localStorage.getItem("subject"))});
+      }
+       
        console.log(subject);
         console.log(nickname);
         let gridStyle = {
@@ -47,7 +57,7 @@ class MainPage extends Component {
                 <Grid fluid>
                     <Row center="lg" center="xs" center="sm" center="md">
                         <Col xs={12} sm={6} md={6} lg={7}>
-                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles} username={(nickname === null) ? undefined : nickname} subject={(subject === null) ? undefined : subject}/>
+                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles} username={this.state.nickname} subject={this.state.subject}/>
                         </Col>
                     </Row>
                     <Row>
