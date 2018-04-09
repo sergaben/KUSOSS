@@ -30,7 +30,7 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
   override def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:Option[String]): Future[Int] = {
     val tokenLoginAsOption:Option[String] = Option(UUID.randomUUID().toString)
     val getResult = for{
-      existing <- KStudents.filter(_.nickname === nickname).result.headOption
+      existing <- KStudents.filter(_.loginToken === loginToken).result.headOption
       row      = existing.map(_.copy(loginToken=loginToken)) getOrElse KingstonStudent(id,nickname,email,password,subject,typeOfStudy,tokenLoginAsOption)
       result <- KStudents.insertOrUpdate(row)
     } yield result
