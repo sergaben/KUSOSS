@@ -67,7 +67,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
       case Some(found) =>
         foundBlock(found)
       case None =>
-        Future.successful(Ok(Json.obj("status"->"OK","updated"->true)))
+        Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true)))
     }
   }
 
