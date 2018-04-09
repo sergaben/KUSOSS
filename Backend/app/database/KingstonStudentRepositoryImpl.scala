@@ -29,12 +29,14 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
 
   override def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,tokenToBeInserted:Option[String]): Future[Int] = {
     val tokenLoginAsOption:Option[String] = Option(UUID.randomUUID().toString)
+    println(tokenLoginAsOption.getOrElse("NoToken"))
     val getResult = for{
       existing <- KStudents.filter(_.nickname === nickname).result.headOption // this returns a kingston student or none
       row      = existing.map(_.copy(loginToken = tokenToBeInserted)) getOrElse KingstonStudent(id,nickname,email,password,subject,typeOfStudy,tokenLoginAsOption) // this returns a kingston student with their corresponding token or create a new kingston student with a new token
       checkIfStudentHaveToken:Option[String] = Option(row.loginToken.getOrElse(tokenLoginAsOption).toString) // this gets the token from the previous row if there is no token we create a new one
       a = Console.println(checkIfStudentHaveToken.getOrElse("Something"))
       finalRow:KingstonStudent = row.copy(loginToken = checkIfStudentHaveToken) // this creates a new kingston student with the token saved in the previous variable
+      b = Console.println(finalRow)
       result <- KStudents.insertOrUpdate(finalRow)// this insert or updates the row in the database
     } yield result
     db.run(getResult)
