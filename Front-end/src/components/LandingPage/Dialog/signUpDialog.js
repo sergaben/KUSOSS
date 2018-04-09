@@ -36,7 +36,7 @@ class LoginDialog extends Component{
                 let responseAsArray = response.data.map(function(obj){
                     return obj.name;
                 })
-                console.log(responseAsArray);
+                // console.log(responseAsArray);
                 this.setState(()=>{
                     return{
                         subjectFromAPI:responseAsArray
@@ -54,10 +54,10 @@ class LoginDialog extends Component{
         onSubmit = (e) =>{
             e.preventDefault();
             const { nickname,email,password,subject,typeOfStudy} = this.state;
-            console.log(nickname);
+            // console.log(nickname);
             Axios('post',true,'signup',{ nickname, email, password,subject,typeOfStudy}).then((response)=>{
                 if(response.data.status === "OK" && response.data.signup === true){
-                    console.log(response.status);
+                    // console.log(response.status);
                     this.setState(()=>{
                         return{
                             ...this.state,
@@ -87,7 +87,7 @@ class LoginDialog extends Component{
         render(){
             const { handleSubmit, open, close }=this.props;
             const { nickname,email,password,subjectFromAPI,typeOfStudyArray, signUpSuccess }=this.state;
-            console.log(signUpSuccess);
+            // console.log(signUpSuccess);
             // console.log(subject);
             const formStyle={
                 marginTop:'3%',

@@ -10,7 +10,7 @@ class LoginDialog extends Component{
         constructor(){
             super();
             this.state = {
-                nickname:'',
+                username:'',
                 password:'',
                 matchPassword:'',
                 error:'',
@@ -25,14 +25,14 @@ class LoginDialog extends Component{
         }
         onSubmit= (e) =>{
             e.preventDefault();
-            const { nickname,matchPassword} = this.state;
-            console.log(nickname);
+            const { username,matchPassword} = this.state;
+            console.log(username);
             const headers = {
                 'Content-Type':'application/json'
             }
             // console.log(nickname);
             // console.log(matchPassword);
-            Axios('post',true,'login',{nickname,matchPassword},headers).then((response) => {
+            Axios('post',true,'login',{username,matchPassword},headers).then((response) => {
                 console.log(response);
                 if(response.data.status === "OK" && response.data.authenticated === true){
                     // this.mainPage(response.data.nickname);
@@ -79,7 +79,7 @@ class LoginDialog extends Component{
                         <div>
                             <Field
                                 style={fieldStyle}
-                                name="nickname"
+                                name="username"
                                 errorText = {this.state.error !== undefined ? this.state.error : ''}
                                 component={TextField}
                                 hintText="Nickname"   
