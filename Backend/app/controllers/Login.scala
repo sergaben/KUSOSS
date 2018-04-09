@@ -73,7 +73,6 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
 
     }
   }
-
   private def checkPasswordValidation(passwordFromFrontEnd:String,passwordFromDatabase:String): Boolean ={
     val foundStudent = BCrypt.checkpw(passwordFromFrontEnd,passwordFromDatabase)
     foundStudent
