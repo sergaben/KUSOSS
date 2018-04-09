@@ -22,17 +22,17 @@ class FeedTimeLine extends Component {
           };
         return(
             <MuiThemeProvider>
-            <div id="content">
-                <h1>Write a post</h1>
-                <div className={styles.editor}>
-                    <Editor
-                        placeholder="Share your thoughts :D"
-                        editorState={this.state.editorState}
-                        onChange={this._onChange}
-                    />
-                    
-                </div> 
-            </div>
+                <div id="content">
+                    <h1>Write a post</h1>
+                    <div className={styles.editor}>
+                        <Editor
+                            placeholder="Share your thoughts :D"
+                            editorState={this.state.editorState}
+                            onChange={this._onChange}
+                        />
+                        
+                    </div> 
+                </div>
             <RaisedButton label="Publish" secondary={true} style={style}/>
             </MuiThemeProvider>
         )
