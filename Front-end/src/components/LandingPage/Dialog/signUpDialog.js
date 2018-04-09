@@ -21,7 +21,10 @@ class LoginDialog extends Component{
                     "FOUNDATION"
                 ],
                 subject:'',
-                typeOfStudy:''
+                typeOfStudy:'',
+                error:false,
+                signUpSuccess:'',
+                errorMessage:''
             }
         }
         componentDidMount(){
@@ -53,6 +56,17 @@ class LoginDialog extends Component{
             const { nickname,email,password,subject,typeOfStudy} = this.state;
             console.log(nickname);
             Axios('post',true,'signup',{ nickname, email, password,subject,typeOfStudy}).then((response)=>{
+                if(response.data.status === "OK" && response.data.signup === true){
+                    console.log(response.status);
+                    this.setState(()=>{
+                        return{
+                            ...this.state,
+                            signUpSuccess:'You have successfullfy sign up'
+                        }
+                    });
+                }else{
+                    // TODO - handle email and username duplication errors
+                }
                 console.log(response);
             }).catch((errors)=>{
                 console.log(errors);
@@ -72,7 +86,8 @@ class LoginDialog extends Component{
         }
         render(){
             const { handleSubmit, open, close }=this.props;
-            const { nickname,email,password,subjectFromAPI,typeOfStudyArray }=this.state;
+            const { nickname,email,password,subjectFromAPI,typeOfStudyArray, signUpSuccess }=this.state;
+            console.log(signUpSuccess);
             // console.log(subject);
             const formStyle={
                 marginTop:'3%',
@@ -81,6 +96,9 @@ class LoginDialog extends Component{
             }
             const fieldStyle={
                 width:'100%'
+            }
+            const successSignUp = {
+                color: 'green'
             }
             return(
                 
@@ -92,6 +110,7 @@ class LoginDialog extends Component{
                     onRequestClose={close}
                 >
                     <form onSubmit={this.onSubmit} style={formStyle}>
+                    {(this.state.signUpSuccess !== null) ? <p style={successSignUp}>{this.state.signUpSuccess}</p> : <p></p>}
                         <div>
                             <Field
                                 style={fieldStyle}
@@ -164,7 +183,7 @@ class LoginDialog extends Component{
                                 onClick={close}
                             />
                             <FlatButton
-                                label="Submit"
+                                label="Sign Up"
                                 primary={true}
                                 disabled={false}
                                 type="submit"

@@ -117,7 +117,7 @@ class LoginDialog extends Component{
                                 onClick={close}
                             />
                             <FlatButton
-                                label="Submit"
+                                label="Log In"
                                 primary={true}
                                 disabled={false}
                                 type="submit"
