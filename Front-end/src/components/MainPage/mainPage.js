@@ -20,8 +20,8 @@ class MainPage extends Component {
             subject:''
         }
     }
-    componentWillMount(props){
-        if(localStorage.length < 3 && localStorage.getItem("token") === null){
+    componentWillMount(){
+        if(localStorage.getItem("token") === null){
             browserHistory.push({
                 pathname: '/',
             });
