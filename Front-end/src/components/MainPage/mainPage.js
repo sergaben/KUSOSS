@@ -38,7 +38,7 @@ class MainPage extends Component {
         nickname = this.state.nickname;
         subject = this.state.subject;
       }else{
-        this.setState({nickname:this.firstLetterUpperCase(localStorage.getItem("nickname")),subject:this.firstLetterUpperCase(localStorage.getItem("subject"))});
+        this.setState(()=>{nickname:this.firstLetterUpperCase(localStorage.getItem("nickname")),subject:this.firstLetterUpperCase(localStorage.getItem("subject"))});
       }
        
        console.log(subject);
