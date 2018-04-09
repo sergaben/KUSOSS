@@ -37,6 +37,8 @@ class LoginDialog extends Component{
                 if(response.data.status === "OK" && response.data.authenticated === true){
                     // this.mainPage(response.data.nickname);
                    localStorage.setItem("token",response.data.token);
+                   localStorage.setItem("nickname",response.data.nickname);
+                   localStorage.setItem("subject",response.data.subject);
                    this.mainPage(response);
                 }else{
                     this.setState({error:'invalid user credentials'});

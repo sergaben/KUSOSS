@@ -29,8 +29,8 @@ class MainPage extends Component {
     }
     render(){
       
-       const nickname = this.firstLetterUpperCase(this.props.location.state.nickname);
-       const subject = this.firstLetterUpperCase(this.props.location.state.subject);
+       const nickname = this.firstLetterUpperCase(localStorage.getItem("nickname"));
+       const subject = this.firstLetterUpperCase(localStorage.getItem("subject"));
        console.log(subject);
         console.log(nickname);
         let gridStyle = {
@@ -47,7 +47,7 @@ class MainPage extends Component {
                 <Grid fluid>
                     <Row center="lg" center="xs" center="sm" center="md">
                         <Col xs={12} sm={6} md={6} lg={7}>
-                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles} username={nickname} subject={subject}/>
+                               <ProfileViewer srcImage={ImageProfile} sizeImage={150} styleUI={styles} username={(nickname === null) ? undefined : nickname} subject={(subject === null) ? undefined : subject}/>
                         </Col>
                     </Row>
                     <Row>
