@@ -41,7 +41,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
             checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy,checkStudent.loginToken
           )
         }yield updatedStudent
-        getFutureToCheckIfUserExists(finalStudent){ updatedStudent:KingstonStudent =>
+        getFutureToUpser(finalStudent){ updatedStudent:KingstonStudent =>
             Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken))}
         }
 //        finalStudent.flatMap{
@@ -62,7 +62,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
         Future.successful(Ok(Json.obj("status"->"OK","error"->"USER NOT FOUND")))
     }
   }
-  private def getFutureToUpserT[T](futureOptionBlock: Future[Option[T]])(foundBlock: (T => Future[Result])): Future[Result] = {
+  private def getFutureToUpser[T](futureOptionBlock: Future[Option[T]])(foundBlock: (T => Future[Result])): Future[Result] = {
     futureOptionBlock.flatMap {
       case Some(found) =>
         foundBlock(found)
