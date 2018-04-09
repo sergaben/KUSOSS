@@ -27,11 +27,11 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
 
   override def delete(kingstonStudent: KingstonStudent) = ???
 
-  override def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:Option[String]): Future[Int] = {
+  override def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String): Future[Int] = {
     val tokenLoginAsOption:Option[String] = Option(UUID.randomUUID().toString)
     val getResult = for{
       existing <- KStudents.filter(_.nickname === nickname).result.headOption
-      row      = existing.map(_.copy(loginToken=tokenLoginAsOption)) getOrElse KingstonStudent(id,nickname,email,password,subject,typeOfStudy,tokenLoginAsOption)
+      row      = existing.map(_.copy(loginToken = tokenLoginAsOption)) getOrElse KingstonStudent(id,nickname,email,password,subject,typeOfStudy,tokenLoginAsOption)
       result <- KStudents.insertOrUpdate(row)
     } yield result
     db.run(getResult)
