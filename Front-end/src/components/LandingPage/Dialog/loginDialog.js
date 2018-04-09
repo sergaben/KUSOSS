@@ -137,11 +137,11 @@ class LoginDialog extends Component{
         }
         mainPage = (response) =>{
             browserHistory.push({
-                pathname: '/main',
-                state:{
-                    nickname: response.data.nickname,
-                    subject: response.data.subject        
-                    }
+                pathname: '/main'
+                // state:{
+                //     nickname: response.data.nickname,
+                //     subject: response.data.subject        
+                //     }
             });
         }
 

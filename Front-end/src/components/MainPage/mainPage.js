@@ -20,11 +20,20 @@ class MainPage extends Component {
             subject:''
         }
     }
-    componentWillMount(){
-        if(localStorage.getItem("token") === null){
+    componentWillMount(props){
+        if(localStorage.length < 3){
             browserHistory.push({
                 pathname: '/',
             });
+        }else{
+            const nickname = this.firstLetterUpperCase(localStorage.getItem("nickname"));
+            const subject = this.firstLetterUpperCase(localStorage.getItem("subject"));
+            this.setState(()=>{
+                return {
+                    nickname:nickname,
+                    subject:subject
+                }
+            })
         }
     }
     firstLetterUpperCase = (word) =>{
@@ -32,17 +41,6 @@ class MainPage extends Component {
         return wordToLowerCase.charAt(0).toUpperCase() + wordToLowerCase.slice(1);
     }
     render(){
-        let nickname;
-        let subject;
-      if(localStorage.length < 3){
-        nickname = this.state.nickname;
-        subject = this.state.subject;
-      }else{
-        this.setState(()=>{nickname:this.firstLetterUpperCase(localStorage.getItem("nickname")),subject:this.firstLetterUpperCase(localStorage.getItem("subject"))});
-      }
-       
-       console.log(subject);
-        console.log(nickname);
         let gridStyle = {
             padding:0
         }
