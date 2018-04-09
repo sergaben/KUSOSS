@@ -26,7 +26,7 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
       "password"->nonEmptyText,
       "subject"->nonEmptyText,
       "typeOfStudy"->nonEmptyText,
-      "loginToken"->text
+      "loginToken"->optional(text)
     )(KingstonStudent.apply)(KingstonStudent.unapply)
   )
 

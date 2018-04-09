@@ -4,7 +4,7 @@ import org.joda.time.DateTime
 import play.api.libs.json._
 
 // simple case class for a student
-case class KingstonStudent(id:Option[Int],nickname:String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:String) {}
+case class KingstonStudent(id:Option[Int],nickname:String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:Option[String]) {}
 
 // companion object of KingstonStudent
 object KingstonStudent{
@@ -22,7 +22,7 @@ object KingstonStudent{
       val password = (json \ "password").as[String]
       val subject = (json \ "subject").as[String]
       val typeOfStudy = (json \ "typeOfStudy").as[String]
-      val loginToken = (json \ "login_token").as[String]
+      val loginToken = (json \ "login_token").asOpt[String]
       // The line below returns a KingstonStudent object
       JsSuccess(KingstonStudent(id,nickname, email,password, subject, typeOfStudy,loginToken))
     }
