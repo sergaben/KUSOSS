@@ -10,7 +10,7 @@ import play.api.mvc.{AbstractController, Action, ControllerComponents, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
+class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
    case class LoginRequest(username:String,password:String)
