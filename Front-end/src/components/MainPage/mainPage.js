@@ -21,7 +21,7 @@ class MainPage extends Component {
         }
     }
     componentWillMount(props){
-        if(localStorage.length < 3){
+        if(localStorage.length < 3 && localStorage.getItem("token") === null){
             browserHistory.push({
                 pathname: '/',
             });
