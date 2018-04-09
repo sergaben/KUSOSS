@@ -12,16 +12,16 @@ import scala.concurrent.{ExecutionContext, Future}
 class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
-   case class LoginRequest(nickname:String,password:String)
+   case class LoginRequest(username:String,password:String)
 
   implicit val LoginRequestReads: Reads[LoginRequest] = (
-    (JsPath \ "nickname").read[String] and
+    (JsPath \ "username").read[String] and
       (JsPath \ "matchPassword").read[String]
     )(LoginRequest.apply _)
 
   implicit val LoginRequestWrites = new Writes[LoginRequest] {
     def writes(loginRequest: LoginRequest): JsObject = Json.obj(
-      "nickname" -> loginRequest.nickname,
+      "username" -> loginRequest.username,
       "matchPassword" -> loginRequest.password
     )
   }
@@ -32,7 +32,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: Ki
   // DONE - add authentication token in login request and send it as json
 
   def login: Action[LoginRequest] = Action.async(validateJson[LoginRequest]){ implicit req =>
-    getFuture(kingstonStudentRepositoryImpl.getByNickname(req.body.nickname)){ checkStudent =>
+    getFuture(kingstonStudentRepositoryImpl.getByNickname(req.body.username)){ checkStudent =>
       if(checkPasswordValidation(req.body.password, checkStudent.password)){
         val finalStudent = for{
           updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(
