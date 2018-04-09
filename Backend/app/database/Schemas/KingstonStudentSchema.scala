@@ -19,7 +19,7 @@ class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseCon
     def password = column[String]("password")
     def subject= column[String]("subject")
     def typeOfStudy = column[String]("typeOfStudy")
-    def loginToken = column[Option[String]]("login_token")
+    def loginToken = column[String]("login_token")
     def * = (id,nickname,email,password,subject,typeOfStudy,loginToken) <> ((KingstonStudent.apply _).tupled, KingstonStudent.unapply _)
   }
 
