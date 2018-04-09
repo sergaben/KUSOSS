@@ -41,7 +41,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
             checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy,checkStudent.loginToken
           )
         }yield updatedStudent
-        getFutureToUpser(finalStudent){ updatedStudent:KingstonStudent =>
+        getFutureToUpser(finalStudent,req.body.username){ updatedStudent:KingstonStudent =>
             Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken))}
         }
 //        finalStudent.flatMap{
@@ -49,7 +49,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
 //          case n => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->checkStudent.loginToken,"data"->n))}
 //        }
       }else{
-        Future.successful{Ok(Json.obj("status" -> "OK","authenticated" -> false,"nickname" -> "NONE"))}
+        Future.successful{Ok(Json.obj("status" -> "OK","authenticated" -> false))}
       }
     }
   }
@@ -62,12 +62,15 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
         Future.successful(Ok(Json.obj("status"->"OK","error"->"USER NOT FOUND")))
     }
   }
-  private def getFutureToUpser[T](futureOptionBlock: Future[Option[T]])(foundBlock: (T => Future[Result])): Future[Result] = {
+  private def getFutureToUpser[T](futureOptionBlock: Future[Option[T]],nickname:String)(foundBlock: (T => Future[Result])): Future[Result] = {
     futureOptionBlock.flatMap {
       case Some(found) =>
         foundBlock(found)
       case None =>
-        Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true)))
+        getFutureToCheckIfUserExists(kingstonStudentRepositoryImpl.getByNickname(nickname)){updatedUser =>{
+          Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedUser.nickname,"subject"->updatedUser.subject,"token"->updatedUser.loginToken)))
+        }}
+
     }
   }
 
