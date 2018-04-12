@@ -1,6 +1,5 @@
 package models
 
-import org.joda.time.DateTime
 import play.api.libs.json._
 
 // simple case class for a student
@@ -11,8 +10,6 @@ object KingstonStudent{
   //This object is going to be used to format the class to json or from json to the class
   implicit object KingstonStudentFormat extends Format[KingstonStudent] {
 
-    implicit val dateTimeWriter: Writes[DateTime] = JodaWrites.jodaDateWrites("dd/MM/yyyy HH:mm:ss")
-    implicit val dateTimeJsReader: Reads[DateTime] = JodaReads.jodaDateReads("yyyyMMddHHmmss")
 
     def reads(json: JsValue): JsResult[KingstonStudent] = {
       // the Vals below hold all the parameters for the KingstonStudent class
