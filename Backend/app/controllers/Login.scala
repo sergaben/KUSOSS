@@ -62,6 +62,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
         Future.successful(Ok(Json.obj("status"->"OK","error"->"USER NOT FOUND")))
     }
   }
+
   private def getFutureToUpser[T](futureOptionBlock: Future[Option[T]],nickname:String)(foundBlock: (T => Future[Result])): Future[Result] = {
     futureOptionBlock.flatMap {
       case Some(found) =>
@@ -73,6 +74,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
 
     }
   }
+
   private def checkPasswordValidation(passwordFromFrontEnd:String,passwordFromDatabase:String): Boolean ={
     val foundStudent = BCrypt.checkpw(passwordFromFrontEnd,passwordFromDatabase)
     foundStudent

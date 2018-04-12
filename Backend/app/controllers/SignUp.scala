@@ -37,10 +37,6 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
       signUpFormAsJson()
     }
 
-  /**
-    *
-    * @param kingstonStudent The student object to be inserted
-    */
     private def insertStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
       kingstonStudentRepositoryImpl.insert(kingstonStudent)
     }
@@ -62,7 +58,7 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
         val kStudentWithHashedPassword = input.copy(password = hashedPassword)
         println(kStudentWithHashedPassword)
         insertStudentIntoDatabase(kStudentWithHashedPassword)
-        Ok(Json.obj("status"->"OK","signup"->true))
+        Ok(Json.obj("status"->"OK","successful"->true))
       }
       userForm.bindFromRequest().fold(failure,success)
     }
