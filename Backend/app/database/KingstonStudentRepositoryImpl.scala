@@ -20,7 +20,7 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
   override def insert(kingstonStudent: KingstonStudent) = {
     val inserts = KStudents += kingstonStudent
     val seqOfQuery = DBIO.seq(inserts)
-    db.run(seqOfQuery)
+    db.run(seqOfQuery.transactionally)
   }
 
   override def update(kingstonStudent: KingstonStudent) = ???
@@ -38,10 +38,10 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
       finalRow = row.copy(loginToken = assignNewToken) // this creates a new kingston student with the token saved in the previous variable
       result <- KStudents.returning(KStudents).insertOrUpdate(finalRow)// this insert or updates the row in the database
     } yield result
-    db.run(getResult)
+    db.run(getResult.transactionally)
   }
 
-  override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result)
+  override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result.transactionally)
 
   override def getByNickname(nickname: String):Future[Option[KingstonStudent]] = {
     val q = KStudents.filter(_.nickname === nickname ).result.headOption
