@@ -38,14 +38,14 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
       finalRow = row.copy(loginToken = assignNewToken) // this creates a new kingston student with the token saved in the previous variable
       result <- KStudents.returning(KStudents).insertOrUpdate(finalRow)// this insert or updates the row in the database
     } yield result
-    db.run(getResult.transactionally)
+    db.run(getResult)
   }
 
-  override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result.transactionally)
+  override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result)
 
   override def getByNickname(nickname: String):Future[Option[KingstonStudent]] = {
     val q = KStudents.filter(_.nickname === nickname ).result.headOption
-    db.run(q.transactionally)
+    db.run(q)
   }
 
   override def getByEmail(email: String): Future[Option[KingstonStudent]] = {
