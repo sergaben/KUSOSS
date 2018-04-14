@@ -17,13 +17,13 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
 
   implicit val LoginRequestReads: Reads[LoginRequest] = (
     (JsPath \ "username").read[String] and
-      (JsPath \ "matchPassword").read[String]
+      (JsPath \ "password").read[String]
     )(LoginRequest.apply _)
 
   implicit val LoginRequestWrites = new Writes[LoginRequest] {
     def writes(loginRequest: LoginRequest): JsObject = Json.obj(
       "username" -> loginRequest.username,
-      "matchPassword" -> loginRequest.password
+      "password" -> loginRequest.password
     )
   }
 
