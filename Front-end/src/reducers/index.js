@@ -1,7 +1,11 @@
 import { routerReducer as routing } from 'react-router-redux'
 import { combineReducers } from 'redux'
-import { reducer as reduxFormReducer } from 'redux-form'
-import { RESET_VALUES } from '../actions/types';
+import signUpReducer from '../reducers/signUpDialogReducer';
+import subjectReducer from './subjectsReducer';
+import logInReducer from './logInDialogReducer';
+import reduxForm from './reduxForm';
+import {reducer as formReducer} from 'redux-form';
+import actionTypes from '../constants/actionTypes';
 
 //Reducers
 //1. Reducers are pure functions
@@ -9,15 +13,8 @@ import { RESET_VALUES } from '../actions/types';
 //3. 
 export default combineReducers({
   routing,
-  form:reduxFormReducer.plugin({
-    logInForm:(state,action)=>{
-      switch(action.type){
-        case RESET_VALUES:
-          state.nickname = action
-          return undefined;
-        default:
-          return state;
-      }
-    }
-  })
+  form:formReducer,
+  signUpReducer,
+  subjectReducer,
+  logInReducer
 })

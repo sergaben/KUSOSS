@@ -12,6 +12,7 @@ import { TextCard1, TextCard2, TextCard3, TextCard4 } from '../../util/dummyData
 
 
 
+
 class LandingPageMaterialUI extends Component{
     state = {
         openLogIn:false,

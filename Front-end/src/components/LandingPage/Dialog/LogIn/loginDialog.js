@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import { Field,reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 import {FlatButton, Dialog } from 'material-ui';
 import { TextField } from 'redux-form-material-ui';
+import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
-import Axios from '../../../util/axiosFunction';
+import { logIn } from '../../../../actions/logInDialogActions';
+import Axios from '../../../../util/axiosFunction';
 
 
 class LoginDialog extends Component{
@@ -12,48 +15,26 @@ class LoginDialog extends Component{
             this.state = {
                 username:'',
                 password:'',
-                matchPassword:'',
                 error:'',
-                authed:false
             }
         }
-        onChange = (e) =>{
-            const state = this.state;
-            // if(e.target.data === )
-            state[e.target.name] = e.target.value;
-            this.setState(state);
-        }
-        onSubmit= (e) =>{
-            e.preventDefault();
-            const { username,matchPassword} = this.state;
-            console.log(username);
-            const headers = {
-                'Content-Type':'application/json'
-            }
-            // console.log(nickname);
-            // console.log(matchPassword);
-            Axios('post',true,'login',{username,matchPassword},headers).then((response) => {
-                console.log(response);
-                if(response.data.status === "OK" && response.data.authenticated === true){
-                    // this.mainPage(response.data.nickname);
-                   localStorage.setItem("token",response.data.token);
-                   localStorage.setItem("nickname",response.data.nickname);
-                   localStorage.setItem("subject",response.data.subject);
-                   this.mainPage(response);
+        handleOnSubmit = ({username,password}) =>{
+            this.props.logIn(username,password).then(()=>{
+               
+                if(this.props.logInData.status === "OK" && this.props.logInData.authenticated === true){
+                   localStorage.setItem("token",this.props.logInData.token);
+                   localStorage.setItem("nickname",this.props.logInData.nickname);
+                   localStorage.setItem("subject",this.props.logInData.subject);
+                   this.mainPage();
                 }else{
                     this.setState({error:'invalid user credentials'});
                 }
             }).catch((error)=>{
                 console.log(error);
-            })
-
-            const { resetForm } = this.props;
-
+            });
         }
-
-
         render(){
-            const { open, close,reset } = this.props;
+            const { open, close,reset, handleSubmit } = this.props;
             const formStyle = {
                 marginTop:'3%',
                 marginRight:'10%',
@@ -62,20 +43,14 @@ class LoginDialog extends Component{
             const fieldStyle = {
                 width:'100%'
             }
-            const newstate = {
-                nickname:'',
-                password:'',
-                matchPassword:'',   
-            }
             return(
                 <Dialog
                     title="Log In"
-                    //actions={actionsLogIn}
                     modal={false}
                     open={open}
                     onRequestClose={close}
                 >
-                    <form onSubmit={this.onSubmit} style={formStyle}>
+                    <form onSubmit={handleSubmit(this.handleOnSubmit)} style={formStyle}>
                         <div>
                             <Field
                                 style={fieldStyle}
@@ -84,7 +59,6 @@ class LoginDialog extends Component{
                                 component={TextField}
                                 hintText="Nickname"   
                                 floatingLabelText="Nickname"
-                                onChange={this.onChange}
                                 required
                                 />
                         </div>
@@ -96,25 +70,12 @@ class LoginDialog extends Component{
                                 type="password"
                                 hintText="Password"
                                 floatingLabelText="Password"
-                                onChange={this.onChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <Field 
-                                style={fieldStyle}
-                                name="matchPassword"
-                                component={TextField}
-                                type="password"
-                                hintText="Password"
-                                floatingLabelText="Re-enter Password"
-                                onChange={this.onChange}
                                 required
                             />
                         </div>
                         <div>
                             <FlatButton
-                                label="Cancel"
+                                label="Close"
                                 primary={true}
                                 onClick={close}
                             />
@@ -125,32 +86,34 @@ class LoginDialog extends Component{
                                 type="submit"
                             />
                             <FlatButton
-                                label="Reset"
+                                label="Clear values"
                                 secondary={true}
                                 disabled={false}
-                                onClick={()=>this.printResponse}
+                                onClick={reset}
                             />
                         </div>
                     </form>
                 </Dialog>
             )
         }
-        mainPage = (response) =>{
+        mainPage = () =>{
             browserHistory.push({
                 pathname: '/main'
-                // state:{
-                //     nickname: response.data.nickname,
-                //     subject: response.data.subject        
-                //     }
             });
         }
 
 }
+const mapStateToProps = ({logInReducer}) =>({
+    logInData:logInReducer.data
+});
 
+const mapDispatchToProps = (dispatch) =>bindActionCreators({logIn},dispatch);
 
+LoginDialog= connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoginDialog) 
 
-LoginDialog= reduxForm({
+export default reduxForm({
     form:'logInForm'
-})(LoginDialog) 
-
-export default LoginDialog;
+})(LoginDialog);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, BottomNavigation, BottomNavigationItem, FontIcon} from 'material-ui';
-import LoginDialog from '../Dialog/loginDialog';
-import SignUpDialog from '../Dialog/signUpDialog';
+import LoginDialog from '../Dialog/LogIn/loginDialog';
+import SignUpDialog from '../Dialog/SignUp/signUpDialog';
 
 class SignUpLogInHeader extends Component {
 
@@ -41,8 +41,9 @@ class SignUpLogInHeader extends Component {
                         onClick={handleOpenSignUpFunction}
                     />
                     <LoginDialog open={openLogInState} close={handleCloseLogInFunction}/>
-                    <SignUpDialog open={openSignUpState} close={handleCloseSignUpFunction}/>
+                    <SignUpDialog open={openSignUpState} close={handleCloseSignUpFunction} visible={false}/>
                 </BottomNavigation>
+                
             </MuiThemeProvider>
         )
     }
