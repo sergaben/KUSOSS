@@ -12,7 +12,7 @@ POST    /login                   controllers.Login.login
 # Log out user
 POST    /logout                  controllers.LogOut.logout
 # Insert post into database
-POST    /createPost              controllers.Post.savePost
+POST    /savePost              controllers.Post.savePost
 #Getting subjects from database and converting them into scala objects
 GET     /getSubjectsNamesAsJson      controllers.getSubjectsController.getSubjectsNamesAsJson
 # Map static resources from the /public folder to the /assets URL path
