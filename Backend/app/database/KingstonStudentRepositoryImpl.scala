@@ -23,7 +23,11 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     db.run(seqOfQuery.transactionally)
   }
 
-  override def update(kingstonStudent: KingstonStudent) = ???
+  override def updateTokenToNull(nickname:String ) = {
+    val query = for { k <- KStudents if k.nickname === nickname } yield k.loginToken
+    val updateAction = query.update(None)
+    db.run(updateAction)
+  }
 
   override def delete(kingstonStudent: KingstonStudent) = ???
 
