@@ -42,7 +42,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
           )
         }yield updatedStudent
         getFutureToUpsert(finalStudent,req.body.username){ updatedStudent:KingstonStudent =>
-            Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString),"id"->updatedStudent.id)}
+            Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString),"id"->updatedStudent.id.getOrElse(1))}
         }
 //        finalStudent.flatMap{
 //          case 0 => ))}
@@ -69,7 +69,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
         foundBlock(found)
       case None =>
         getFutureToCheckIfUserExists(kingstonStudentRepositoryImpl.getByNickname(nickname)){updatedUser =>{
-          Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedUser.nickname,"subject"->updatedUser.subject,"token"->updatedUser.loginToken.getOrElse("token").toString,"id"->updatedUser.id)))
+          Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedUser.nickname,"subject"->updatedUser.subject,"token"->updatedUser.loginToken.getOrElse("token").toString,"id"->updatedUser.id.getOrElse(1))))
         }}
 
     }
