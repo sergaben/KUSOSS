@@ -6,7 +6,6 @@ import { TextField } from 'redux-form-material-ui';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import { logIn } from '../../../../actions/logInDialogActions';
-import Axios from '../../../../util/axiosFunction';
 
 
 class LoginDialog extends Component{
@@ -18,6 +17,7 @@ class LoginDialog extends Component{
                 error:'',
             }
         }
+        
         handleOnSubmit = ({username,password}) =>{
             this.props.logIn(username,password).then(()=>{
                
@@ -33,6 +33,7 @@ class LoginDialog extends Component{
                 console.log(error);
             });
         }
+        
         render(){
             const { open, close,reset, handleSubmit } = this.props;
             const formStyle = {
@@ -55,7 +56,7 @@ class LoginDialog extends Component{
                             <Field
                                 style={fieldStyle}
                                 name="username"
-                                errorText = {this.state.error !== undefined ? this.state.error : ''}
+                                errorText={this.state.error !== undefined ? this.state.error : ''}
                                 component={TextField}
                                 hintText="Nickname"   
                                 floatingLabelText="Nickname"
@@ -96,6 +97,7 @@ class LoginDialog extends Component{
                 </Dialog>
             )
         }
+        
         mainPage = () =>{
             browserHistory.push({
                 pathname: '/main'
@@ -103,11 +105,12 @@ class LoginDialog extends Component{
         }
 
 }
-const mapStateToProps = ({logInReducer}) =>({
+
+const mapStateToProps=({logInReducer}) =>({
     logInData:logInReducer.data
 });
 
-const mapDispatchToProps = (dispatch) =>bindActionCreators({logIn},dispatch);
+const mapDispatchToProps=(dispatch) =>bindActionCreators({logIn},dispatch);
 
 LoginDialog= connect(
     mapStateToProps,

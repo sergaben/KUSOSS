@@ -3,7 +3,8 @@ export default{
         LOGIN:'login',
         SIGN_UP:'sign_up',
         SIGN_UP_SUCCESS:'sign_up_success',
-        SING_UP_ERROR:'sign_up_error'
+        SING_UP_ERROR:'sign_up_error',
+        LOGOUT:'logout'
     },
 
     FORM:{

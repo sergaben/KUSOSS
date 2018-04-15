@@ -73,7 +73,7 @@ class LandingPageMaterialUI extends Component{
                         <Col xs={12} sm={6} md={6} lg={4}  style={colPaddingStyle}>
                             <CustomCard titleHeader="Useful Links" overlayHeader={<CardTitle title="Save useful links relevant for your future course" />} 
                                         srcImage={usefulLinks} altImage="imageFour" cardTitle="View resources that are useful to your career and will help you improve in your studies"
-                                        cardInsideText={TextCard3} />
+                                        cardInsideText={TextCard4} />
                         </Col>
                     </Row>
                 </Grid>

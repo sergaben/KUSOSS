@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import Header from './Header/Header';
-import { AppBar, MuiThemeProvider} from 'material-ui';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import ImageProfile from '../../../public/images/ProfileImages/tiger.jpg';
 import styles from './mainPage.css';
@@ -79,12 +78,6 @@ class MainPage extends Component {
             </div>  
         )
     }
-
-    // loginPage = () =>{
-    //     if(this.state.nickname === undefined){
-            
-    //     }
-    // }
 }
 
 export default MainPage;

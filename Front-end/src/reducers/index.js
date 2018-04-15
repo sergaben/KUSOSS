@@ -3,9 +3,8 @@ import { combineReducers } from 'redux'
 import signUpReducer from '../reducers/signUpDialogReducer';
 import subjectReducer from './subjectsReducer';
 import logInReducer from './logInDialogReducer';
-import reduxForm from './reduxForm';
+import logOutReducer from './logOutReducer';
 import {reducer as formReducer} from 'redux-form';
-import actionTypes from '../constants/actionTypes';
 
 //Reducers
 //1. Reducers are pure functions
@@ -16,5 +15,6 @@ export default combineReducers({
   form:formReducer,
   signUpReducer,
   subjectReducer,
-  logInReducer
+  logInReducer,
+  logOutReducer
 })

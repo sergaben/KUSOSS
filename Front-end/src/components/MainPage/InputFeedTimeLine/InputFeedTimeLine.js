@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { EditorState } from 'draft-js';
+import { EditorState,convertToRaw,ContentState,Editor,RichUtils} from 'draft-js';
+import '../../../../node_modules/draft-js/dist/Draft.css';
 import styles from '../mainPage.css';
-import Editor from 'draft-js-editor';
 import { RaisedButton, MuiThemeProvider } from 'material-ui';
-import 'draft-js/dist/Draft.css';
+// import 'draft-js/dist/Draft.css';
 
 class FeedTimeLine extends Component {
     constructor(props){
@@ -13,27 +13,39 @@ class FeedTimeLine extends Component {
         };
         
     }
-    _onChange = (editorState) => {
+    onChange = (editorState) => {
         this.setState({editorState});
     }
+    handleKeyCommand= (command,editorState) =>{
+        const newState = RichUtils.handleKeyCommand(editorState,command);
+        if(newState){
+            this._onChange(newState);
+            return 'handled';
+        }
+        return 'not-handled';
+    }
     render(){
+        const { editorState } = this.state;
         const style = {
             margin: 12,
           };
+        const raw = convertToRaw(editorState.getCurrentContent());
+        console.log(raw);
         return(
             <MuiThemeProvider>
                 <div id="content">
-                    <h1>Write a post</h1>
+                    
                     <div className={styles.editor}>
                         <Editor
-                            placeholder="Share your thoughts :D"
-                            editorState={this.state.editorState}
-                            onChange={this._onChange}
+                            placeholder="type something"
+                            editorState={editorState}
+                            onChange={(editorState)=>{this.onChange(editorState)}}
+                            handleKeyCommand={this.handleKeyCommand}
                         />
-                        
                     </div> 
+                    <RaisedButton label="Publish" secondary={true} style={style}/>
                 </div>
-            <RaisedButton label="Publish" secondary={true} style={style}/>
+                
             </MuiThemeProvider>
         )
     }

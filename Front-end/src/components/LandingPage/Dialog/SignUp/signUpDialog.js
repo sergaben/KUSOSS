@@ -79,7 +79,7 @@ class SignUpDialog extends Component{
                         this.setState({
                             ...this.state,
                             successful: false,
-                            errorsForServer:[{
+                            errorsFromServer:[{
                                 body:`There is somethig wrong with the data you supplied, maybe nickname or email is taken`,
                                 time:new Date()
                             }],
@@ -122,7 +122,7 @@ class SignUpDialog extends Component{
                     onRequestClose={close}
                 >
                 {visible && successful && (<Messages messages={messagesForForm}/>) }
-                {visible && !successful && (<Errors errors={messagesForForm}/>)}
+                {visible && !successful && (<Errors errors={errorsFromServer}/>)}
                     <form onSubmit={handleSubmit(this.handleOnSubmit)} style={formStyle}>
                     
                         <div>
@@ -225,9 +225,6 @@ class SignUpDialog extends Component{
 const mapStateProps = ({signUpReducer, subjectReducer}) => ({
     signUpData: signUpReducer.data,
     subjects: subjectReducer.data
-    // successful:signUpReducer.data.successful,
-    // errors:signUpReducer.errors,
-    // messages:signUpReducer.messages
 });
 
 const mapDispatchToProps = (dispatch) =>bindActionCreators({getSubjects,signUp},dispatch);

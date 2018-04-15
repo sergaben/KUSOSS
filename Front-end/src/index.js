@@ -1,4 +1,4 @@
-import { Router, Route, browserHistory, Redirect } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom'
@@ -18,6 +18,7 @@ ReactDOM.render(
     <Router history={history}>
       <Route path="/" component={App}/>
       <Route path="/main" component={MainPage}/>
+      <Route path="/chat" component={Chat}/>
     </Router>
   </Provider>,
   document.getElementById('root')
