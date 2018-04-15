@@ -1,5 +1,5 @@
 package database
-import database.Schemas.KingstonStudentSchema
+import database.Schemas.{KingstonStudentSchema, PostSchema}
 import javax.inject.Inject
 import models.Intefaces.IPostRepository
 import models.Post
@@ -13,10 +13,18 @@ import scala.concurrent.{ExecutionContext, Future}
   * @author sergaben on 13/04/2018.
   *
   */
-class PostRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfigProvider,kingstonStudentSchema: KingstonStudentSchema)
+class PostRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfigProvider,postSchema: PostSchema)
                                   (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with IPostRepository{
 
-  override def add(post: Post): Future[Unit] = ???
+  import profile.api._
+
+  private val posts = postSchema.posts
+
+  override def add(post: Post): Future[Unit] = {
+    val inserts = posts += post
+    val seqOfQuery = DBIO.seq(inserts)
+    db.run(seqOfQuery.transactionally)
+  }
 
   override def update(post: Post): Future[Unit] = ???
 
