@@ -28,12 +28,13 @@ class LogOut @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
   private def validateJson[A:Reads] = parse.json.validate(
     _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
   )
+
   def logout: Action[LogoutRequest] = Action.async(validateJson[LogoutRequest]){ implicit req =>
     kingstonStudentRepositoryImpl.updateTokenToNull(req.body.username).flatMap{ updated =>
       if(updated>0){
-        Future.successful(Ok(Json.toJson("status"->"OK","logout"->true)))
+        Future.successful(Ok(Json.obj("status"->"OK","logout"->true)))
       }else{
-        Future.successful(Ok(Json.toJson("status"->"OK","logout"->false)))
+        Future.successful(Ok(Json.obj("status"->"OK","logout"->false)))
       }
     }
   }
