@@ -15,7 +15,7 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 class LogOut @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
-  //TODO - Add logout functionality, checking the current token and if is in the database update it to null and do the same with the local storage in frontend
+  //DONE - Add logout functionality, checking the current token and if is in the database update it to null and do the same with the local storage in frontend
   case class LogoutRequest(username:String)
 
   implicit val LogoutRequestReads: Reads[LogoutRequest] = (JsPath \ "username").read[String].map(LogoutRequest.apply _)

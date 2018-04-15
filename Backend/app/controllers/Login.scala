@@ -41,8 +41,8 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
             checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy,checkStudent.loginToken
           )
         }yield updatedStudent
-        getFutureToUpser(finalStudent,req.body.username){ updatedStudent:KingstonStudent =>
-            Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString))}
+        getFutureToUpsert(finalStudent,req.body.username){ updatedStudent:KingstonStudent =>
+            Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString),"id"->updatedStudent.id)}
         }
 //        finalStudent.flatMap{
 //          case 0 => ))}
@@ -63,13 +63,13 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
     }
   }
 
-  private def getFutureToUpser[T](futureOptionBlock: Future[Option[T]],nickname:String)(foundBlock: (T => Future[Result])): Future[Result] = {
+  private def getFutureToUpsert[T](futureOptionBlock: Future[Option[T]],nickname:String)(foundBlock: (T => Future[Result])): Future[Result] = {
     futureOptionBlock.flatMap {
       case Some(found) =>
         foundBlock(found)
       case None =>
         getFutureToCheckIfUserExists(kingstonStudentRepositoryImpl.getByNickname(nickname)){updatedUser =>{
-          Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedUser.nickname,"subject"->updatedUser.subject,"token"->updatedUser.loginToken.getOrElse("token").toString)))
+          Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedUser.nickname,"subject"->updatedUser.subject,"token"->updatedUser.loginToken.getOrElse("token").toString,"id"->updatedUser.id)))
         }}
 
     }
