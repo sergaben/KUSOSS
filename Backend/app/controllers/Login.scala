@@ -42,7 +42,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
           )
         }yield updatedStudent
         getFutureToUpsert(finalStudent,req.body.username){ updatedStudent:KingstonStudent =>
-            Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString),"id"->updatedStudent.id.getOrElse(1).toString)}
+            Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString,"id"->updatedStudent.id.getOrElse(1).toString))}
         }
 //        finalStudent.flatMap{
 //          case 0 => ))}
