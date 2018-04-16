@@ -17,7 +17,7 @@ class Post @Inject()(cc:ControllerComponents,postRepositoryImpl: PostRepositoryI
                     (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
   def savePost: Action[AnyContent] = Action.async{ implicit req =>
-    println(req.body.asJson)
+    println(req.body)
     Future.successful(Ok(Json.obj("Status"->"OK")))
   }
 }
