@@ -11,7 +11,7 @@ import scala.concurrent.Future
   *
   */
 trait IPostRepository {
-  def add(post:Post):Future[Unit]
+  def add(post:Post):Future[Option[Int]]
   def update(post:Post):Future[Unit]
   def delete(post:Post):Future[Unit]
   def getAll():Future[Seq[Post]]

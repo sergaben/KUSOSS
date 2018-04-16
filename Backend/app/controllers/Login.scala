@@ -34,7 +34,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
 
   def login: Action[LoginRequest] = Action.async(validateJson[LoginRequest]){ implicit req =>
     getFutureToCheckIfUserExists(kingstonStudentRepositoryImpl.getByNickname(req.body.username)){ checkStudent =>
-      println(req.body.username)
+//      println(req.body.username)
       if(checkPasswordValidation(req.body.password, checkStudent.password)){
         val finalStudent = for{
           updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(

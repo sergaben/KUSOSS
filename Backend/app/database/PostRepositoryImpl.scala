@@ -20,10 +20,12 @@ class PostRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfig
 
   private val posts = postSchema.posts
 
-  override def add(post: Post): Future[Unit] = {
-    val inserts = posts += post
-    val seqOfQuery = DBIO.seq(inserts)
-    db.run(seqOfQuery.transactionally)
+
+
+  override def add(post: Post): Future[Option[Int]] = {
+    val insertQuery =  posts returning posts.map(_.id) += post
+//    val seqOfQuery = DBIO.seq(inserts)
+    db.run(insertQuery.transactionally)
   }
 
   override def update(post: Post): Future[Unit] = ???
