@@ -23,8 +23,7 @@ class SavePost @Inject()(cc:ControllerComponents, postRepositoryImpl: PostReposi
     val postFromFrontEnd = req.body
     println(postFromFrontEnd)
     getFutureToSavePost(postRepositoryImpl.add(postFromFrontEnd)){
-      case 0 => Future.successful(Ok(Json.obj("Status"->"OK","saved"->true,"inserted"->0)))
-      case n => Future.successful(Ok(Json.obj("Status"->"OK","saved"->true,"inserted"->n)))
+      case n => Future.successful(Ok(Json.obj("status"->"OK","saved"->true,"inserted"->n)))
     }
 
   }
