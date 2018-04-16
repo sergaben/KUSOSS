@@ -1,6 +1,6 @@
 package controllers
 
-import database.{KingstonStudentRepositoryImpl, PostRepositoryImpl}
+import database.PostRepositoryImpl
 import javax.inject.Inject
 import models.Post
 import play.api.libs.json.Json
@@ -16,14 +16,13 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 
 
-
-
 class SavePost @Inject()(cc:ControllerComponents, postRepositoryImpl: PostRepositoryImpl)
                         (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
   def savePost = Action.async(parse.json[Post]) {implicit req =>
     val postFromFrontEnd = req.body
     println(postFromFrontEnd)
-    Future.successful(Ok(Json.obj("Status"->"OK")))
+    postRepositoryImpl.add(postFromFrontEnd)
+    Future.successful(Ok(Json.obj("Status"->"OK","saved"->true)))
   }
 }
