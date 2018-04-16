@@ -11,8 +11,8 @@ object Post{
   //This object is going to be used to format the class to json or from json to the class
   implicit object PostFormat extends Format[Post] {
 
-    implicit val dateTimeWriter : Writes[DateTime] = JodaWrites.jodaDateWrites("YYYY-MM-DD HH:mm:ss")
-    implicit val dateTimeJsReader = JodaReads.jodaDateReads("YYYY-MM-DD HH:mm:ss")
+    implicit val dateTimeWriter : Writes[DateTime] = JodaWrites.jodaDateWrites("DD-MM-YYYY HH:mm:ss")
+    implicit val dateTimeJsReader = JodaReads.jodaDateReads("DD-MM-YYYY HH:mm:ss")
 
     def reads(json: JsValue): JsResult[Post] = {
       // the Vals below hold all the parameters for the KingstonStudent class
