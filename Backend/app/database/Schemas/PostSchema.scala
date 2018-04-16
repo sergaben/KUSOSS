@@ -28,10 +28,10 @@ class PostSchema @Inject()(protected val dbConfigProvider:DatabaseConfigProvider
 
   class PostTable (tag:Tag) extends Table[Post](tag, "Post"){
     def id = column[Option[Int]]("id",O.PrimaryKey,O.AutoInc)
-    def content = column[String]("Content")
-    def createdAt = column[DateTime]("Created_at")
-    def createdBy = column[Int]("Created_by")
-    def creatorNickname = column[String]("Creator_nickname")
+    def content = column[String]("content")
+    def createdAt = column[DateTime]("created_at")
+    def createdBy = column[Int]("created_by")
+    def creatorNickname = column[String]("creator_nickname")
     def relatedSubject = column[String]("related_subject")
     def * =(id,content,createdAt,createdBy,creatorNickname,relatedSubject) <> ((Post.apply _).tupled, Post.unapply _)
   }
