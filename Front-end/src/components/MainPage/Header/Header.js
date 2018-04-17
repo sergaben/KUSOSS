@@ -8,11 +8,11 @@ class Header extends Component{
     
     handleOnlogout = () =>{
         const username = localStorage.getItem("nickname");
-        console.log(username);
+
         this.props.logOut(username).then(()=>{
-            console.log(this.props.logOutData);
+
             if(this.props.logOutData.data.status === "OK" && this.props.logOutData.data.logout === true){
-                console.log("inside of logout true");
+
                 localStorage.clear();
                 browserHistory.push({
                     pathname: '/'

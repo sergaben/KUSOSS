@@ -1,10 +1,11 @@
 package database
-import database.Schemas.{KingstonStudentSchema, PostSchema}
+import database.Schemas.PostSchema
 import javax.inject.Inject
 import models.Intefaces.IPostRepository
 import models.Post
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
+import slick.basic.DatabasePublisher
+import slick.jdbc.{JdbcProfile, ResultSetConcurrency, ResultSetType}
 
 import scala.concurrent.{ExecutionContext, Future}
 /**
@@ -32,7 +33,18 @@ class PostRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfig
 
   override def delete(post: Post): Future[Unit] = ???
 
-  override def getAll(): Future[Seq[Post]] = ???
+  override def getAllPostsBySubject(subject:String): DatabasePublisher[Post] = {
+    val q = posts.filter(_.relatedSubject === subject)
+    db.stream(
+      q
+        .result
+        .withStatementParameters(
+          rsType = ResultSetType.ForwardOnly,
+          rsConcurrency = ResultSetConcurrency.ReadOnly,
+          fetchSize = 10)
+        .transactionally
+    )
+  }
 
   override def getById(id: Int): Future[Option[Post]] = ???
 }

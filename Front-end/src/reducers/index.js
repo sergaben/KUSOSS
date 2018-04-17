@@ -4,6 +4,8 @@ import signUpReducer from '../reducers/signUpDialogReducer';
 import subjectReducer from './subjectsReducer';
 import logInReducer from './logInDialogReducer';
 import logOutReducer from './logOutReducer';
+import savePostReducer from './savePostReducer';
+import getPostsReducer from './getPostsReducer';
 import {reducer as formReducer} from 'redux-form';
 
 //Reducers
@@ -16,5 +18,7 @@ export default combineReducers({
   signUpReducer,
   subjectReducer,
   logInReducer,
-  logOutReducer
+  logOutReducer,
+  savePostReducer,
+  getPostsReducer
 })

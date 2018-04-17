@@ -77,6 +77,7 @@ class LandingPageMaterialUI extends Component{
                         </Col>
                     </Row>
                 </Grid>
+                
         </div>   
         )
 

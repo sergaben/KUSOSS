@@ -25,6 +25,7 @@ class LoginDialog extends Component{
                    localStorage.setItem("token",this.props.logInData.token);
                    localStorage.setItem("nickname",this.props.logInData.nickname);
                    localStorage.setItem("subject",this.props.logInData.subject);
+                   localStorage.setItem("id",this.props.logInData.id);
                    this.mainPage();
                 }else{
                     this.setState({error:'invalid user credentials'});

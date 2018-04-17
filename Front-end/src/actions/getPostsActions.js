@@ -1,16 +1,16 @@
 import Axios from '../util/axiosFunction';
 import actionTypes from '../constants/actionTypes';
 
-export function logOut(username){
+export function getPosts(subject){
     return(dispatch)=>{
         const headers = {
             'Content-Type':'application/json'
         }
-        let request = Axios('post',true,'logout',{username},headers);
+        let request = Axios('get',true,'getPosts',{subject},headers);
 
         request.then((response)=>{
             dispatch({
-                type:actionTypes.USER.LOGOUT,
+                type:actionTypes.USER.GET_POSTS,
                 payload:response
             })
         });

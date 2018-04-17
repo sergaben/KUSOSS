@@ -5,9 +5,13 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import ImageProfile from '../../../public/images/ProfileImages/tiger.jpg';
 import styles from './mainPage.css';
 import Links from './Links/Links';
-import FeedTimeLine from './InputFeedTimeLine/InputFeedTimeLine';
+import Feed from './Feed/index';
 import ProfileViewer from './ProfileViewer/ProfileViewer';
 import MainChat from './Chat/MainChat';
+import Alert from 'react-s-alert';
+import '../../../node_modules/react-s-alert/dist/s-alert-default.css';
+import '../../../node_modules/react-s-alert/dist/s-alert-css-effects/genie.css';
+
 
 //TODO - find a way to not let unauthorized user see the main page
 
@@ -44,12 +48,14 @@ class MainPage extends Component {
             padding:0
         }
         let componentStyle = {
-            backgroundColor: '#C1CDCD'
+            backgroundColor: '#5ebdb2'
          }
         return(
             <div>
+                
                 <Grid fluid style={gridStyle}>
                     <Header titleHeader="KUSSOS" show={false}/>
+                    
                 </Grid>
                 <Grid fluid>
                     <Row center="lg" center="xs" center="sm" center="md">
@@ -65,7 +71,7 @@ class MainPage extends Component {
                         </Col>
                         <Col xs={12} sm={5} md={5} lg={5}>
                             <div style={componentStyle} className={styles.feed}>
-                                <FeedTimeLine/>
+                                <Feed/>
                             </div>
                         </Col>
                         <Col xs={12} sm={4} md={4} lg={4}>
@@ -75,6 +81,7 @@ class MainPage extends Component {
                         </Col>
                     </Row>
                 </Grid>
+                <Alert stack={{limit:3}}/> 
             </div>  
         )
     }
