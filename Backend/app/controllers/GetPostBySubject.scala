@@ -39,7 +39,7 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
   )
 
 
-  def getPosts: Action[GetPostsRequest] = Action.async(validateJson[GetPostsRequest]){ implicit req=>
+  def getPosts: Action[GetPostsRequest] = Action.async(parse.json[GetPostsRequest]){ implicit req=>
     println(req.body.subject)
     val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(req.body.subject))
     postSource.runForeach(post => println(post.toString))(materializer)
