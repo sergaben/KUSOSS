@@ -26,6 +26,7 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
   implicit val materializer = ActorMaterializer()
 
   def getPosts: Action[AnyContent] = Action.async{ implicit req=>
+    println(req.body.asText.getOrElse("no subject"))
     val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(req.body.asText.getOrElse("no subject")))
     postSource.runForeach(post => println(post.toString))(materializer)
     Future.successful(Ok(Json.obj("status"->"OK","stream"->"OK")))
