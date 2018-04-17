@@ -9,7 +9,7 @@ import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Source
 import database.PostRepositoryImpl
 import javax.inject.Inject
-import play.api.libs.json.Json
+import play.api.libs.json._
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -25,11 +25,24 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
   implicit val system = ActorSystem("QuickStart")
   implicit val materializer = ActorMaterializer()
 
-  def getPosts: Action[AnyContent] = Action.async{ implicit req=>
-    println(req.body)
-    val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(req.body.asText.getOrElse("no subject")))
+  case class GetPostsRequest(subject:String)
+
+  implicit val GetPostsRequestReads: Reads[GetPostsRequest] = (JsPath \ "subject").read[String].map(GetPostsRequest.apply _)
+
+  implicit val GetPostsRequestWrites = new Writes[GetPostsRequest] {
+    def writes(getPostsRequest: GetPostsRequest): JsObject = Json.obj(
+      "subject" -> getPostsRequest.subject
+    )
+  }
+  private def validateJson[A:Reads] = parse.json.validate(
+    _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
+  )
+
+
+  def getPosts: Action[GetPostsRequest] = Action.async(validateJson[GetPostsRequest]){ implicit req=>
+    println(req.body.subject)
+    val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(req.body.subject))
     postSource.runForeach(post => println(post.toString))(materializer)
     Future.successful(Ok(Json.obj("status"->"OK","stream"->"OK")))
-
   }
 }
