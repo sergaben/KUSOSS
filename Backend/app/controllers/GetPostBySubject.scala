@@ -34,10 +34,6 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
       "subject" -> getPostsRequest.subject
     )
   }
-  private def validateJson[A:Reads] = parse.json.validate(
-    _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
-  )
-
 
   def getPosts: Action[GetPostsRequest] = Action.async(parse.json[GetPostsRequest]){ implicit req=>
     println(req.body.subject)
