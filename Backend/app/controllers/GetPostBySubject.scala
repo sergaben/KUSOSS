@@ -42,7 +42,7 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
   def getPosts: Action[GetPostsRequest] = Action.async(validateJson[GetPostsRequest]){ implicit req=>
     println(req.body.subject)
     val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(req.body.subject))
-    postSource.runForeach(post => println(post.toString))(materializer)
+    postSource.runForeach(post => println(Json.toJson(post)))(materializer)
     Future.successful(Ok(Json.obj("status"->"OK","stream"->"OK")))
   }
 }
