@@ -14,7 +14,7 @@ POST    /logout                  controllers.LogOut.logout
 # Insert post into database
 POST    /savePost              controllers.SavePost.savePost
 # Get posts from databse as stream
-POST     /getPosts               controllers.GetPostBySubject.getPosts
+GET     /getPosts:subject              controllers.GetPostBySubject.getPosts(subject)
 # Getting subjects from database and converting them into scala objects
 GET     /getSubjectsNamesAsJson      controllers.getSubjectsController.getSubjectsNamesAsJson
 # Map static resources from the /public folder to the /assets URL path
