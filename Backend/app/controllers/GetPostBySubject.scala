@@ -50,7 +50,6 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
 //    println(req.body.subject)
     println(subject)
     val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(subject))
-    postSource.runForeach(post => println(Json.toJson(post)))(materializer)
-    Future.successful(Ok.chunked(postSource via EventSource.flow[Post]).as(ContentTypes.EVENT_STREAM))
+    Future.successful(Ok.chunked(postSource via EventSource.flow[Post].limit(50)).as(ContentTypes.EVENT_STREAM))
   }
 }
