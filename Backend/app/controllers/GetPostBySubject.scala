@@ -46,10 +46,10 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
   )
 
 
-  def getPosts(subject:String): Action[GetPostsRequest] = Action.async(validateJson[GetPostsRequest]){ implicit req=>
-    println(req.body.subject)
+  def getPosts(subject:String): Action[AnyContent] = Action.async{ implicit req=>
+//    println(req.body.subject)
     println(subject)
-    val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(req.body.subject))
+    val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(subject))
     postSource.runForeach(post => println(Json.toJson(post)))(materializer)
     Future.successful(Ok.chunked(postSource via EventSource.flow[Post]).as(ContentTypes.EVENT_STREAM))
   }
