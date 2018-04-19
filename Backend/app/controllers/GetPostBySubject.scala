@@ -4,7 +4,7 @@ package controllers
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.Source
+import akka.stream.scaladsl.{Sink, Source}
 import database.PostRepositoryImpl
 import javax.inject.Inject
 import models.Post
@@ -15,6 +15,7 @@ import play.api.libs.json._
 import play.api.mvc.WebSocket.MessageFlowTransformer
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 
+import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
@@ -47,7 +48,11 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
   def getPosts(subject:String): Action[AnyContent] = Action.async{ implicit req=>
 //    println(req.body.subject)
     println(subject)
+//    val finite = Duration("2 seconds")
+//    val fd = Some(finite).collect{case d:FiniteDuration => d}
+//    val source = Source.tick(initialDelay = 2.second, interval = 2.second , tick = "tick")
     val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(subject))
-    Future.successful(Ok.chunked(postSource via EventSource.flow[Post].limit(50)).as(ContentTypes.EVENT_STREAM))
+    val postFlow = postSource via EventSource.flow[Post]
+    Future.successful(Ok.chunked(postFlow).as(ContentTypes.EVENT_STREAM))
   }
 }
