@@ -41,7 +41,7 @@ class PostRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfig
         .withStatementParameters(
           rsType = ResultSetType.ForwardOnly,
           rsConcurrency = ResultSetConcurrency.ReadOnly,
-          fetchSize = 10)
+          fetchSize = 2)
         .transactionally
     )
   }

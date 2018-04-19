@@ -3,8 +3,6 @@ package controllers
 
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpEntity.ChunkStreamPart
-import akka.http.scaladsl.model.{HttpEntity, HttpResponse, MediaTypes}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Source
 import database.PostRepositoryImpl
