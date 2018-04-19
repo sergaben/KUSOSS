@@ -43,7 +43,7 @@ class PostRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfig
           rsConcurrency = ResultSetConcurrency.ReadOnly,
           fetchSize = 1)
         .transactionally
-    )
+    ).mapResult(row=>row)
   }
 
   override def getById(id: Int): Future[Option[Post]] = ???
