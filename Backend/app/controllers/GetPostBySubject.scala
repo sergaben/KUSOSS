@@ -52,7 +52,7 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
 //    val fd = Some(finite).collect{case d:FiniteDuration => d}
 
     val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(subject))
-    val sourceWithTick = Source.tick(1.second, 1.second , 0)
+    val sourceWithTick = Source.tick(3.second, 3.second , 0)
     val postFlow = postSource.zip(sourceWithTick).map(_._1) via EventSource.flow[Post]
     println(postFlow.getClass)
     Future.successful(Ok.chunked(postFlow).as(ContentTypes.EVENT_STREAM))
