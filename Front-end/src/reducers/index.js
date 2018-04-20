@@ -6,6 +6,7 @@ import logInReducer from './logInDialogReducer';
 import logOutReducer from './logOutReducer';
 import savePostReducer from './savePostReducer';
 import getPostsReducer from './getPostsReducer';
+import addPostReducer from './addPostReducer.js';
 import {reducer as formReducer} from 'redux-form';
 
 //Reducers
@@ -20,5 +21,6 @@ export default combineReducers({
   logInReducer,
   logOutReducer,
   savePostReducer,
-  getPostsReducer
+  getPostsReducer,
+  addPostReducer
 })

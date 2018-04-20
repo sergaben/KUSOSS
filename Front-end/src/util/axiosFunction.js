@@ -8,6 +8,7 @@ function generateURL(prodMode, url){
 }
 
 export default function(type,mode,url,data = {},headers = {}){
+    console.log(data);
     return axios({
         method:type,
         url:generateURL(mode,url),

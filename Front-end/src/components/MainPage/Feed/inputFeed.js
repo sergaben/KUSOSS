@@ -32,7 +32,7 @@ class InputFeed extends Component {
         const related_subject = localStorage.getItem("subject");
         // console.log(content, createdAt, createdBy, creatorNickname, relatedSubject);
         this.props.savePost(content,created_at,created_by,creator_nickname,related_subject).then(()=>{
-            console.log(this.props.inputFeedData);
+            // console.log(this.props.inputFeedData);
             if(this.props.inputFeedData.data.status === "OK" && this.props.inputFeedData.data.saved === true){
                 Alert.success('Your post has been published',{
                     position:'bottom',
@@ -41,7 +41,9 @@ class InputFeed extends Component {
                     timeout:2000,
                     offset:0
                 })
+                this.setState({editorState:EditorState.createEmpty()});
             }
+            
         });
 
     }

@@ -6,8 +6,8 @@ const initialState = {};
 
 export default function(state = initialState, action = {}){
     switch(action.type){
-        case actionTypes.SSE.MESSAGE:
-            return action.post;
+        case actionTypes.USER.ADD_POST:
+            return action.postArray;
         default:
             return state;
     }

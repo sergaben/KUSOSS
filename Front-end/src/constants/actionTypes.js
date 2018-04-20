@@ -6,7 +6,8 @@ export default{
         SING_UP_ERROR:'sign_up_error',
         LOGOUT:'logout',
         SAVE_POST:'save_post',
-        GET_POSTS:'get_posts'
+        GET_POSTS:'get_posts',
+        ADD_POST:'add_post'
     },
 
     FORM:{
@@ -14,6 +15,14 @@ export default{
     },
 
     SUBJECTS: {
-        GET_SUBJECTS:'get_subjects',        
+        GET_SUBJECTS:'get_subjects'   
+    },
+    SSE:{
+        CONNECT:'connect',
+        OPEN:'open',
+        MESSAGE:'message',
+        CLOSE:'close'
+
     }
+
 }
