@@ -1,22 +1,16 @@
 import actionTypes from '../constants/actionTypes';
+import closeConnection from '../actions/closeSSEConnectionAction';
 let sse;
 let ids=[];
 let reconnection;
 export function establishConnection(url){
     return(dispatch)=>{
             sse = new EventSource(url);
-            sse.onmessage = (event) =>dispatch(gettingPosts(event.data))
+            console.log(sse);
+            return {
+                type:actionTypes.SSE.CONNECT,
+                sse:sse
+            }
+           
     }
-}
-
-export function gettingPosts(post){
-    let postAsJson = convertToJson(post);
-    return{
-        type:actionTypes.SSE.MESSAGE,
-        post:postAsJson
-    }
-}
-
-function convertToJson(post){
-    return JSON.parse(post);
 }

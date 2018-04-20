@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { AppBar, MuiThemeProvider,RaisedButton, FlatButton } from 'material-ui';
 import { logOut } from '../../../actions/logOutActions';
+import { closeConnection } from '../../../actions/closeSSEConnectionAction';
 import { browserHistory } from 'react-router';
 class Header extends Component{
     
@@ -12,11 +13,11 @@ class Header extends Component{
         this.props.logOut(username).then(()=>{
 
             if(this.props.logOutData.data.status === "OK" && this.props.logOutData.data.logout === true){
-
                 localStorage.clear();
                 browserHistory.push({
                     pathname: '/'
                 });
+
             }
         })
     }

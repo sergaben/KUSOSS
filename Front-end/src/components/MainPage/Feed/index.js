@@ -8,7 +8,7 @@ class Feed extends Component{
         return(
             <div>
                 <InputFeed/>
-                <BodyFeed/>
+                <BodyFeed sse={this.props.sse}/>
             </div>
         )
     }

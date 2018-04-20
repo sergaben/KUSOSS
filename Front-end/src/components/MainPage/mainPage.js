@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 import Header from './Header/Header';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import ImageProfile from '../../../public/images/ProfileImages/tiger.jpg';
@@ -11,9 +12,10 @@ import MainChat from './Chat/MainChat';
 import Alert from 'react-s-alert';
 import '../../../node_modules/react-s-alert/dist/s-alert-default.css';
 import '../../../node_modules/react-s-alert/dist/s-alert-css-effects/genie.css';
+import { establishConnection } from '../../actions/establishSSEConnectionAction';
 
 
-//TODO - find a way to not let unauthorized user see the main page
+//DONE - find a way to not let unauthorized user see the main page
 
 class MainPage extends Component {
     constructor(props){
@@ -31,6 +33,7 @@ class MainPage extends Component {
         }else{
             const nickname = this.firstLetterUpperCase(localStorage.getItem("nickname"));
             const subject = this.firstLetterUpperCase(localStorage.getItem("subject"));
+
             this.setState(()=>{
                 return {
                     nickname:nickname,
@@ -50,11 +53,12 @@ class MainPage extends Component {
         let componentStyle = {
             backgroundColor: '#5ebdb2'
          }
+        //  console.log(this.props.sse);
         return(
             <div>
                 
                 <Grid fluid style={gridStyle}>
-                    <Header titleHeader="KUSSOS" show={false}/>
+                    <Header titleHeader="KUSSOS" show={false} />
                     
                 </Grid>
                 <Grid fluid>
@@ -86,5 +90,4 @@ class MainPage extends Component {
         )
     }
 }
-
-export default MainPage;
+export default connect()(MainPage);

@@ -23,15 +23,16 @@ class PostBody extends Component{
     render(){
         
         const { post } = this.props;
-        console.log();
-        if (_.isEmpty(post)){ 
+        let postAsJson = JSON.parse(post);
+        console.log(postAsJson);
+        if (_.isEmpty(postAsJson)){ 
             return <div/>
         }else{
             return(
                 <div className={styles.posts}>
-                    <h3>{post.creator_nickname}</h3>
-                    {Parser(post.content)}
-                    <p>{_.capitalize(post.related_subject)}</p>
+                    <h3 style={{'marginBottom':'20px'}}>Nickname: {postAsJson.creator_nickname}</h3>
+                    <div style={{"padding": "20px","backgroundColor": "white","textAlign":"justify"}}>{Parser(postAsJson.content)}</div>
+                    <h4 style={{"marginTop":"20px"}}>Subject: {_.capitalize(postAsJson.related_subject)}</h4>
                 </div>
                 
             )

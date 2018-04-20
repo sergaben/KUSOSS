@@ -7,6 +7,8 @@ import logOutReducer from './logOutReducer';
 import savePostReducer from './savePostReducer';
 import getPostsReducer from './getPostsReducer';
 import addPostReducer from './addPostReducer.js';
+import establishSSEConnectionReducer from './establishSSEConnectionReducer';
+import closeSSEConnectionReducer from './closeSSEConnectionReducer';
 import {reducer as formReducer} from 'redux-form';
 
 //Reducers
@@ -22,5 +24,7 @@ export default combineReducers({
   logOutReducer,
   savePostReducer,
   getPostsReducer,
+  establishSSEConnectionReducer,
+  closeSSEConnectionReducer,
   addPostReducer
 })

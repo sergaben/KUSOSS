@@ -18,3 +18,7 @@ export function logOut(username){
         return request;
     }
 }
+
+export function closeConnection(sse){
+    sse.close();
+}
