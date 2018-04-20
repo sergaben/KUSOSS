@@ -13,5 +13,4 @@ trait IKingstonStudentRepository {
   def getAll():Future[Seq[KingstonStudent]]
   def getByNickname(nickname:String):Future[Option[KingstonStudent]]
   def getByEmail(email:String):Future[Option[KingstonStudent]]
-  def auth(loginToken:String):Future[Option[KingstonStudent]]
 }

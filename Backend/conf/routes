@@ -16,7 +16,7 @@ POST    /savePost              controllers.SavePost.savePost
 # Get posts from databse as stream
 GET     /getPosts           controllers.GetPostBySubject.getPosts(subject: String)
 # Getting subjects from database and converting them into scala objects
-GET     /getSubjectsNamesAsJson      controllers.getSubjectsController.getSubjectsNamesAsJson
+GET     /getSubjectsNamesAsJson      controllers.GetSubjects.getSubjectsNamesAsJson
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 

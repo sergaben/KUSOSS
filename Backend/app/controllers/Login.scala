@@ -34,7 +34,6 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
 
   def login: Action[LoginRequest] = Action.async(validateJson[LoginRequest]){ implicit req =>
     getFutureToCheckIfUserExists(kingstonStudentRepositoryImpl.getByNickname(req.body.username)){ checkStudent =>
-//      println(req.body.username)
       if(checkPasswordValidation(req.body.password, checkStudent.password)){
         val finalStudent = for{
           updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(
@@ -44,10 +43,6 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
         getFutureToUpsert(finalStudent,req.body.username){ updatedStudent:KingstonStudent =>
             Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString,"id"->updatedStudent.id.getOrElse(1).toString))}
         }
-//        finalStudent.flatMap{
-//          case 0 => ))}
-//          case n => Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->checkStudent.nickname,"subject"->checkStudent.subject,"token"->checkStudent.loginToken,"data"->n))}
-//        }
       }else{
         Future.successful{Ok(Json.obj("status" -> "OK","authenticated" -> false))}
       }

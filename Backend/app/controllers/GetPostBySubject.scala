@@ -4,7 +4,7 @@ package controllers
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Sink, Source}
+import akka.stream.scaladsl.Source
 import database.PostRepositoryImpl
 import javax.inject.Inject
 import models.Post
@@ -16,7 +16,7 @@ import play.api.mvc.WebSocket.MessageFlowTransformer
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 
 import scala.concurrent.duration._
-import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
   *
@@ -27,10 +27,11 @@ import scala.concurrent.{ExecutionContext, Future, Promise}
 class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: PostRepositoryImpl)
                                 (implicit executionContext:ExecutionContext) extends AbstractController(cc) {
   implicit val postFormat = Post.PostFormat
-  implicit val system = ActorSystem("QuickStart")
+  implicit val system = ActorSystem("newSystem")
   implicit val materializer = ActorMaterializer()
   implicit val messageFlowTransformer = MessageFlowTransformer.jsonMessageFlowTransformer[Post,Post]
   implicit val postEvents : EventDataExtractor[Post] = EventDataExtractor(postFormat.writes(_).toString())
+
   case class GetPostsRequest(subject:String)
 
   implicit val GetPostsRequestReads: Reads[GetPostsRequest] = (JsPath \ "subject").read[String].map(GetPostsRequest.apply _)
@@ -40,21 +41,13 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepositoryImpl: Po
       "subject" -> getPostsRequest.subject
     )
   }
-  private def validateJson[A:Reads] = parse.json.validate(
-    _.validate[A].asEither.left.map(e => BadRequest(JsError.toJson(e)))
-  )
-
 
   def getPosts(subject:String): Action[AnyContent] = Action.async{ implicit req=>
-//    println(req.body.subject)
-    println(subject)
-//    val finite = Duration("2 seconds")
-//    val fd = Some(finite).collect{case d:FiniteDuration => d}
 
     val postSource = Source.fromPublisher(postRepositoryImpl.getAllPostsBySubject(subject))
     val sourceWithTick = Source.tick(3.second, 3.second , 0)
     val postFlow = postSource.zip(sourceWithTick).map(_._1) via EventSource.flow[Post]
-    println(postFlow.getClass)
+
     Future.successful(Ok.chunked(postFlow).as(ContentTypes.EVENT_STREAM))
   }
 

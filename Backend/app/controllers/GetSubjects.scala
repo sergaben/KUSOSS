@@ -9,8 +9,8 @@ import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponent
 import scala.concurrent.ExecutionContext
 
 
-class getSubjectsController @Inject()(cc:ControllerComponents, subjectRepositoryImpl: SubjectRepositoryImpl)
-                                     (implicit executionContext: ExecutionContext) extends AbstractController(cc) {
+class GetSubjects @Inject()(cc:ControllerComponents, subjectRepositoryImpl: SubjectRepositoryImpl)
+                           (implicit executionContext: ExecutionContext) extends AbstractController(cc) {
 
   //send Json data to front End
   def getSubjectsNamesAsJson: Action[AnyContent] = Action.async {

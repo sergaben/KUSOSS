@@ -57,9 +57,4 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     db.run(query)
   }
 
-  override def auth(loginToken:String):Future[Option[KingstonStudent]] = {
-    val query = KStudents.filter(_.loginToken === loginToken).result.headOption
-    db.run(query)
-  }
-
 }
