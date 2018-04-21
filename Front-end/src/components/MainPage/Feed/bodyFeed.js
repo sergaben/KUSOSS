@@ -9,9 +9,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PostBody from './postBody';
 import ReactEventSource from 'react-eventsource';
+import { uniqBy} from 'lodash';
+import _ from 'lodash';
 
 let valuesAlreadyPresent = false;
-let controlArray = [];
+
 
 class BodyFeed extends Component{
     constructor(props){
@@ -23,18 +25,21 @@ class BodyFeed extends Component{
     }  
     
     render(){
-        let date;
-        let dateMilliseconds;
-        date = new Date();
-        dateMilliseconds = date.getMilliseconds();
+        let postsArr = [];
         const subjectForSSE = localStorage.getItem("subject");
         const url =`https://kussos-backend.herokuapp.com/getPosts?subject=${subjectForSSE}`;
-        const renderPostBody = event => <PostBody post={event} key={dateMilliseconds}/>
+        const renderPostBody = event => <PostBody post={event} key={event.id}/>
 
             return(
                 <div>
                   <ReactEventSource url={url}>
-                    { events => events.map(renderPostBody)}
+                    { events => { 
+                        postsArr = [...postsArr, ...events];
+                        const test = postsArr.map((e) => JSON.parse(e));
+                        const posts = uniqBy(test, post => post.id);
+                        const reversePosts = _.reverse(posts);
+                        return reversePosts.map(renderPostBody)}
+                    }
                   </ReactEventSource>
                 </div>
     
