@@ -39,9 +39,9 @@ class PostRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfig
       q
         .result
         .withStatementParameters(
-          rsType = ResultSetType.ForwardOnly,
-          rsConcurrency = ResultSetConcurrency.ReadOnly,
-          fetchSize = 1)
+          rsType = ResultSetType.ForwardOnly, // meaning that it only reads rows in one direction https://www.cs.mun.ca/java-api-1.5/guide/jdbc/getstart/resultset.html
+          rsConcurrency = ResultSetConcurrency.ReadOnly, // avoids the update of the row https://docs.oracle.com/javase/tutorial/jdbc/basics/retrieving.html
+          fetchSize = 1) // how many rows to fetch from database https://stackoverflow.com/questions/1318354/what-does-statement-setfetchsizensize-method-really-do-in-sql-server-jdbc-driv
         .transactionally
     ).mapResult(row=>row)
   }
