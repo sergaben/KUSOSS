@@ -1,7 +1,6 @@
 package database
 import database.Schemas.PostSchema
 import javax.inject.Inject
-import models.Intefaces.IPostRepository
 import models.Post
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.basic.DatabasePublisher

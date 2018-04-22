@@ -12,7 +12,7 @@ object Post{
   implicit object PostFormat extends Format[Post] {
 
     implicit val dateTimeWriter : Writes[DateTime] = JodaWrites.jodaDateWrites("dd-MM-yyyy'T'HH:mm:ss.SSSZ")
-    implicit val dateTimeJsReader = JodaReads.jodaDateReads("dd-MM-yyyy HH:mm:ss")
+    implicit val dateTimeJsReader: Reads[DateTime] = JodaReads.jodaDateReads("dd-MM-yyyy HH:mm:ss")
 
     def reads(json: JsValue): JsResult[Post] = {
       // the Vals below hold all the parameters for the KingstonStudent class
