@@ -58,7 +58,7 @@ class MainPage extends Component {
             <div>
                 
                 <Grid fluid style={gridStyle}>
-                    <Header titleHeader="KUSSOS" show={false} />
+                    <Header titleHeader="KUSOSS" show={false} />
                     
                 </Grid>
                 <Grid fluid>
