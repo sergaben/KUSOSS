@@ -4,34 +4,33 @@ import java.util.UUID
 
 import database.Schemas.KingstonStudentSchema
 import javax.inject.Inject
-import models.Intefaces.IKingstonStudentRepository
 import models.KingstonStudent
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseConfigProvider,kingstonStudentSchema: KingstonStudentSchema)
-                                             (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with IKingstonStudentRepository{
+class KingstonStudentRepository @Inject()(protected val dbConfigProvider:DatabaseConfigProvider, kingstonStudentSchema: KingstonStudentSchema)
+                                         (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile]{
   import profile.api._
 
   private val KStudents = kingstonStudentSchema.Kstudents
 
-  override def insert(kingstonStudent: KingstonStudent) = {
+   def insert(kingstonStudent: KingstonStudent): Future[Unit] = {
     val inserts = KStudents += kingstonStudent
     val seqOfQuery = DBIO.seq(inserts)
     db.run(seqOfQuery.transactionally)
   }
 
-  override def updateTokenToNull(nickname:String ) = {
+   def updateTokenToNull(nickname:String ): Future[Int] = {
     val query = for { k <- KStudents if k.nickname === nickname } yield k.loginToken
     val updateAction = query.update(None)
     db.run(updateAction)
   }
 
-  override def delete(kingstonStudent: KingstonStudent) = ???
+   def delete(kingstonStudent: KingstonStudent) = ???
 
-  override def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,tokenToBeInserted:Option[String]): Future[Option[KingstonStudent]] = {
+   def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,tokenToBeInserted:Option[String]): Future[Option[KingstonStudent]] = {
     val tokenLoginAsString:Option[String] = Option(UUID.randomUUID().toString)
 //    println(tokenLoginAsString.getOrElse("NoToken"))
     val getResult = for{
@@ -45,14 +44,14 @@ class KingstonStudentRepositoryImpl @Inject()(protected val dbConfigProvider:Dat
     db.run(getResult)
   }
 
-  override def getAll() : Future[Seq[KingstonStudent]]= db.run(KStudents.result)
+   def getAll: Future[Seq[KingstonStudent]]= db.run(KStudents.result)
 
-  override def getByNickname(nickname: String):Future[Option[KingstonStudent]] = {
+   def getByNickname(nickname: String):Future[Option[KingstonStudent]] = {
     val q = KStudents.filter(_.nickname === nickname ).result.headOption
     db.run(q)
   }
 
-  override def getByEmail(email: String): Future[Option[KingstonStudent]] = {
+   def getByEmail(email: String): Future[Option[KingstonStudent]] = {
     val query = KStudents.filter(_.email === email).result.headOption
     db.run(query)
   }

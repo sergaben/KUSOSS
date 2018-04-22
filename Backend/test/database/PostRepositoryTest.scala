@@ -8,7 +8,7 @@ import org.specs2.mutable.Specification
   * @author sergaben on 20/04/2018.
   *
   */
-class PostRepositoryImplTest extends Specification {
+class PostRepositoryTest extends Specification {
 
   "PostRepositoryImplTest" should {
     "update" in {

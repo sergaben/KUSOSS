@@ -1,6 +1,6 @@
 package controllers
 
-import database.KingstonStudentRepositoryImpl
+import database.KingstonStudentRepository
 import javax.inject.Inject
 import play.api.libs.json._
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
@@ -13,7 +13,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * @author sergaben on 08/04/2018.
   *
   */
-class LogOut @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
+class LogOut @Inject()(cc:ControllerComponents, kingstonStudentRepository: KingstonStudentRepository)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
   //DONE - Add logout functionality, checking the current token and if is in the database update it to null and do the same with the local storage in frontend
   case class LogoutRequest(username:String)
@@ -30,7 +30,7 @@ class LogOut @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
   )
 
   def logout: Action[LogoutRequest] = Action.async(validateJson[LogoutRequest]){ implicit req =>
-    kingstonStudentRepositoryImpl.updateTokenToNull(req.body.username).flatMap{ updated =>
+    kingstonStudentRepository.updateTokenToNull(req.body.username).flatMap{ updated =>
       if(updated>0){
         Future.successful(Ok(Json.obj("status"->"OK","logout"->true)))
       }else{

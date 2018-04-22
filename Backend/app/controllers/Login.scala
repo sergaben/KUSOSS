@@ -1,6 +1,6 @@
 package controllers
 
-import database.KingstonStudentRepositoryImpl
+import database.KingstonStudentRepository
 import javax.inject.Inject
 import models.KingstonStudent
 import org.mindrot.jbcrypt.BCrypt
@@ -10,7 +10,7 @@ import play.api.mvc.{AbstractController, Action, ControllerComponents, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
+class Login @Inject()(cc:ControllerComponents, kingstonStudentRepository: KingstonStudentRepository)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
    case class LoginRequest(username:String,password:String)
@@ -33,10 +33,10 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
   // DONE - add authentication token in login request and send it as json
 
   def login: Action[LoginRequest] = Action.async(validateJson[LoginRequest]){ implicit req =>
-    getFutureToCheckIfUserExists(kingstonStudentRepositoryImpl.getByNickname(req.body.username)){ checkStudent =>
+    getFutureToCheckIfUserExists(kingstonStudentRepository.getByNickname(req.body.username)){ checkStudent =>
       if(checkPasswordValidation(req.body.password, checkStudent.password)){
         val finalStudent = for{
-          updatedStudent <- kingstonStudentRepositoryImpl.updateOrInsertToken(
+          updatedStudent <- kingstonStudentRepository.updateOrInsertToken(
             checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy,checkStudent.loginToken
           )
         }yield updatedStudent
@@ -63,7 +63,7 @@ class Login @Inject()(cc:ControllerComponents,kingstonStudentRepositoryImpl: Kin
       case Some(found) =>
         foundBlock(found)
       case None =>
-        getFutureToCheckIfUserExists(kingstonStudentRepositoryImpl.getByNickname(nickname)){updatedUser =>{
+        getFutureToCheckIfUserExists(kingstonStudentRepository.getByNickname(nickname)){ updatedUser =>{
           Future.successful(Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedUser.nickname,"subject"->updatedUser.subject,"token"->updatedUser.loginToken.getOrElse("token").toString,"id"->updatedUser.id.getOrElse(1).toString)))
         }}
 

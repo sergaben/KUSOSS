@@ -1,6 +1,6 @@
 package controllers
 
-import database.KingstonStudentRepositoryImpl
+import database.KingstonStudentRepository
 import javax.inject.Inject
 import models.KingstonStudent
 import org.mindrot.jbcrypt.BCrypt
@@ -13,7 +13,7 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext
 
 
-class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: KingstonStudentRepositoryImpl)
+class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepository: KingstonStudentRepository)
                       (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
 
@@ -38,7 +38,7 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepositoryImpl: K
     }
 
     private def insertStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
-      kingstonStudentRepositoryImpl.insert(kingstonStudent)
+      kingstonStudentRepository.insert(kingstonStudent)
     }
 
   /**
