@@ -30,7 +30,6 @@ class SignUpDialog extends Component{
                 nickname:'',
                 email:'',
                 password:'',
-                reEnterPassword:'',
                 subjectFromAPI:[],
                 subject:'',
                 typeOfStudy:'',
@@ -51,7 +50,7 @@ class SignUpDialog extends Component{
             }); 
         }
         
-        handleOnSubmit = ({nickname,email,password, reEnterPassword,subject,typeOfStudy}) =>{
+        handleOnSubmit = ({nickname,email,password,subject,typeOfStudy}) =>{
 
             const { reset } = this.props;
             let error ={};
@@ -154,17 +153,6 @@ class SignUpDialog extends Component{
                                 type="password"
                                 label="Password"
                                 floatinglabel="Password*"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <Field 
-                                style={fieldStyle}
-                                name="reEnterPassword"
-                                component={renderTextField}
-                                type="password"
-                                label="Re-enter password"
-                                floatinglabel="Re-enter Password*"
                                 required
                             />
                         </div>
