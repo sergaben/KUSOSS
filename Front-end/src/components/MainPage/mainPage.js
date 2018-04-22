@@ -68,19 +68,9 @@ class MainPage extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={12} sm={3} md={3} lg={3}>
-                            <div style={componentStyle} className={styles.links}>
-                                <Links/>
-                            </div>
-                        </Col>
-                        <Col xs={12} sm={5} md={5} lg={5}>
+                        <Col xs={12} sm={6} md={6} lg={6} smOffset={3} mdOffset={3} lgOffset={3}>
                             <div style={componentStyle} className={styles.feed}>
                                 <Feed/>
-                            </div>
-                        </Col>
-                        <Col xs={12} sm={4} md={4} lg={4}>
-                            <div style={componentStyle} className={styles.chatList}>
-                                <MainChat/>
                             </div>
                         </Col>
                     </Row>
