@@ -1,9 +1,19 @@
 package models
 
+import java.util.UUID
+
 import play.api.libs.json._
 
 // simple case class for a student
-case class KingstonStudent(id:Option[Int],nickname:String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:Option[String]) {}
+case class KingstonStudent(id:Option[Int],nickname:String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:Option[String]) {
+
+   def createToken():String  ={
+     val tokenLoginAsString:String = UUID.randomUUID().toString
+     tokenLoginAsString
+   }
+
+
+}
 
 // companion object of KingstonStudent
 object KingstonStudent{

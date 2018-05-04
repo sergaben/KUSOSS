@@ -16,8 +16,7 @@ import scala.concurrent.ExecutionContext
   * @author sergaben on 11/04/2018.
   *
   */
-class PostSchema @Inject()(protected val dbConfigProvider:DatabaseConfigProvider)
-                          (implicit executionContext:ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
+class PostSchema @Inject()(protected val dbConfigProvider:DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
   implicit def dateTime =

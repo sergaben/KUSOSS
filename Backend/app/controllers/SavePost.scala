@@ -19,12 +19,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class SavePost @Inject()(cc:ControllerComponents, postRepository: PostRepository)
                         (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
-  def savePost = Action.async(parse.json[Post]) {implicit req =>
+  def savePost: Action[Post] = Action.async(parse.json[Post]) { implicit req =>
     val postFromFrontEnd = req.body
     println(postFromFrontEnd)
-    getFutureToSavePost(postRepository.add(postFromFrontEnd)){
-      case n => Future.successful(Ok(Json.obj("status"->"OK","saved"->true,"inserted"->n)))
-    }
+    getFutureToSavePost(postRepository.add(postFromFrontEnd))(n => Future.successful(Ok(Json.obj("status" -> "OK", "saved" -> true, "inserted" -> n))))
 
   }
   private def getFutureToSavePost[T](futureOptionBlock: Future[Option[T]])(foundBlock: (T => Future[Result])): Future[Result] = {

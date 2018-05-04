@@ -5,10 +5,7 @@ import models.KingstonStudent
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.ExecutionContext
-
-class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseConfigProvider)
-                                     (implicit executionContext:ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
+class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
 
@@ -25,8 +22,4 @@ class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseCon
 
 
   val Kstudents = TableQuery[kingstonStudentTable]
-
-
-
-
 }

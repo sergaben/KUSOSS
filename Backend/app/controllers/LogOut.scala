@@ -20,7 +20,9 @@ class LogOut @Inject()(cc:ControllerComponents, kingstonStudentRepository: Kings
 
   implicit val LogoutRequestReads: Reads[LogoutRequest] = (JsPath \ "username").read[String].map(LogoutRequest.apply _)
 
-  implicit val LogoutRequestWrites = new Writes[LogoutRequest] {
+  implicit val LogoutRequestWrites: Writes[LogoutRequest] {
+    def writes(logOutRequest: LogoutRequest): JsObject
+  } = new Writes[LogoutRequest] {
     def writes(logOutRequest: LogoutRequest): JsObject = Json.obj(
       "username" -> logOutRequest.username
     )

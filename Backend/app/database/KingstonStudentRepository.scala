@@ -11,26 +11,25 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 class KingstonStudentRepository @Inject()(protected val dbConfigProvider:DatabaseConfigProvider, kingstonStudentSchema: KingstonStudentSchema)
-                                         (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile]{
+                                         (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with  IKingstonStudentRepository {
   import profile.api._
 
   private val KStudents = kingstonStudentSchema.Kstudents
 
-   def insert(kingstonStudent: KingstonStudent): Future[Unit] = {
+   override def insert(kingstonStudent: KingstonStudent): Future[Unit] = {
     val inserts = KStudents += kingstonStudent
     val seqOfQuery = DBIO.seq(inserts)
     db.run(seqOfQuery.transactionally)
   }
 
-   def updateTokenToNull(nickname:String ): Future[Int] = {
+  override def updateTokenToNull(nickname:String ): Future[Int] = {
     val query = for { k <- KStudents if k.nickname === nickname } yield k.loginToken
     val updateAction = query.update(None)
     db.run(updateAction)
   }
 
-   def delete(kingstonStudent: KingstonStudent) = ???
 
-   def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,tokenToBeInserted:Option[String]): Future[Option[KingstonStudent]] = {
+  override def updateOrInsertToken(id:Option[Int],nickname: String,email:String,password:String,subject:String,typeOfStudy:String,tokenToBeInserted:Option[String]): Future[Option[KingstonStudent]] = {
     val tokenLoginAsString:Option[String] = Option(UUID.randomUUID().toString)
 //    println(tokenLoginAsString.getOrElse("NoToken"))
     val getResult = for{
@@ -44,14 +43,14 @@ class KingstonStudentRepository @Inject()(protected val dbConfigProvider:Databas
     db.run(getResult)
   }
 
-   def getAll: Future[Seq[KingstonStudent]]= db.run(KStudents.result)
+  override def getAll: Future[Seq[KingstonStudent]]= db.run(KStudents.result)
 
-   def getByNickname(nickname: String):Future[Option[KingstonStudent]] = {
+  override def getByNickname(nickname: String):Future[Option[KingstonStudent]] = {
     val q = KStudents.filter(_.nickname === nickname ).result.headOption
     db.run(q)
   }
 
-   def getByEmail(email: String): Future[Option[KingstonStudent]] = {
+  override def getByEmail(email: String): Future[Option[KingstonStudent]] = {
     val query = KStudents.filter(_.email === email).result.headOption
     db.run(query)
   }

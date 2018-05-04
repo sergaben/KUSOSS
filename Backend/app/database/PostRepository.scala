@@ -14,20 +14,18 @@ import scala.concurrent.{ExecutionContext, Future}
   *
   */
 class PostRepository @Inject()(protected val dbConfigProvider:DatabaseConfigProvider, postSchema: PostSchema)
-                              (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile]{
+                              (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with IPostRepository {
 
   import profile.api._
 
   private val posts = postSchema.posts
 
 
-   def add(post: Post): Future[Option[Int]] = {
+  override def add(post: Post): Future[Option[Int]] = {
     val insertQuery =  posts returning posts.map(_.id) += post
-//    val seqOfQuery = DBIO.seq(inserts)
     db.run(insertQuery.transactionally)
   }
-
-   def getAllPostsBySubject(subject:String): DatabasePublisher[Post] = {
+   override def getAllPostsBySubject(subject:String): DatabasePublisher[Post] = {
     val q = posts.filter(_.relatedSubject === subject)
     db.stream(
       q

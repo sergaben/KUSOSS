@@ -2,10 +2,7 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-
-# An example controller showing a sample home page
-GET     /                        controllers.HomeController.index
-# Trying connection register kstudents
+# registration for kstudents
 POST    /signup                  controllers.SignUp.signup
 # Log in users
 POST    /login                   controllers.Login.login

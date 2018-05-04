@@ -13,11 +13,9 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext
 
 
+
 class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepository: KingstonStudentRepository)
                       (implicit executionContext:ExecutionContext) extends AbstractController(cc){
-
-
-
   private val userForm: Form[KingstonStudent] = Form (
     mapping(
       "id" -> optional(number),
@@ -29,18 +27,12 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepository: Kings
       "loginToken"->optional(text)
     )(KingstonStudent.apply)(KingstonStudent.unapply)
   )
-
-
-
-//TODO - check if user is registered already checking the nickname and email
     def signup = Action{ implicit req =>
       signUpFormAsJson()
     }
-
     private def insertStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
       kingstonStudentRepository.insert(kingstonStudent)
     }
-
   /**
     *
     * @param request to be processed
@@ -62,6 +54,4 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepository: Kings
       }
       userForm.bindFromRequest().fold(failure,success)
     }
-
-
 }
