@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { EditorState,convertToRaw,ContentState,Editor,RichUtils,convertFromHTML} from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
-import '../../../../node_modules/draft-js/dist/Draft.css';
-import styles from '../mainPage.css';
+import '../../../../../node_modules/draft-js/dist/Draft.css';
+import styles from '../../mainPage.css';
 import _ from 'lodash';
 import Parser from 'html-react-parser';
+import DeletePostBody from './deletePostButton';
 
 let idOfPosts = [];
 
@@ -23,32 +24,29 @@ class PostBody extends Component{
         };
         
     }
-    // shouldComponentUpdate(nextProps,nextState){
-        
-    //     // let post = JSON.parse(nextProps.post);
-    //     console.log(idOfPosts);
-    //     if(idOfPosts.includes(post.id)){
-    //         // console.log(false);
-    //         return false;
-    //     }
-    //     // console.log(true);
-    //     return true;
-    // }
+    handleOnClick = () =>{
+        console.log("clicking working");
+    }
     render(){
         
         const { post } = this.props;
-        // let postAsJson = JSON.parse(post);
-        // idOfPosts.push(postAsJson.id);
-        // console.log(postAsJson);
-        // console.log(idOfPosts);
         if (_.isEmpty(post)){ 
             return <div/>
         }else{
+            // console.log(localStorage.getItem("id"));
+            // console.log(post.id);
             return(
                 <div className={styles.posts}>
                     <h3 style={{'marginBottom':'20px'}}>Nickname: {post.creator_nickname}</h3>
                     <div style={{"padding": "20px","backgroundColor": "white","textAlign":"justify"}}>{Parser(post.content)}</div>
-                    <h4 style={{"marginTop":"20px"}}>Subject: {_.capitalize(post.related_subject)}</h4>
+                    <div style={{"display":"flex"}}>
+                        <div style={{"width": "auto","marginRight": "60%"}}>
+                            <h4 style={{"marginTop":"20px"}}>Subject: {_.capitalize(post.related_subject)}</h4>    
+                        </div>
+                        <div style={{"width":"auto","marginTop":"2%"}}>
+                            {localStorage.getItem("nickname") === post.creator_nickname ? <DeletePostBody onClick={this.handleOnClick()}/> : <span/>}
+                        </div>
+                    </div>
                 </div>
                 
             )

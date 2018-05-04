@@ -7,7 +7,7 @@ import { RaisedButton, MuiThemeProvider } from 'material-ui';
 import { callingOnMessageSSE } from '../../../actions/getPostsActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import PostBody from './postBody';
+import PostBody from './Post/postBody';
 import ReactEventSource from 'react-eventsource';
 import { uniqBy} from 'lodash';
 import _ from 'lodash';
@@ -43,10 +43,7 @@ class BodyFeed extends Component{
                   </ReactEventSource>
                 </div>
     
-            )
-        
-        
-        
+            )  
     }
 }
 export default connect()(BodyFeed);
