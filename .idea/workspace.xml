@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80a788db-264e-4031-b565-d949262d59fb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/Front-end/package-lock.json" afterPath="$PROJECT_DIR$/Front-end/package-lock.json" />
-      <change beforePath="$PROJECT_DIR$/Front-end/package.json" afterPath="$PROJECT_DIR$/Front-end/package.json" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -224,12 +223,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1534339251466</updated>
-      <workItem from="1534339253014" duration="244000" />
+      <workItem from="1534339253014" duration="1224000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244000" />
+    <option name="totallyTimeSpent" value="1224000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
