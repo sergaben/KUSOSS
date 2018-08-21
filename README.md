@@ -7,5 +7,5 @@ This project was thought to be a tool to allow students to share their ideas and
 
 In the Front-end you can find the GUI of the project which was build using [ReactJS](https://reactjs.org/)
 
-In the Backend you can find the processes and services used to populate the GUI.
+In the Backend you can find the processes and services used to populate the GUI. To build the backend the chosen language was [Scala](https://www.scala-lang.org/)
 
