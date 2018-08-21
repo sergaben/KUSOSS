@@ -1,4 +1,4 @@
-# KUSOSS-final-year-project
+# KUSOSS
 
 Kingston University Social Online Space for Students.
 This project was thought to be a tool to allow students to share their ideas and knowledge with peers that were doing the same degree as them.
