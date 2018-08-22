@@ -1,13 +1,6 @@
-# React-OvoBoilerplate
+# Front-end
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+This project was boostrapped with [React-OvoBoilerplate](https://github.com/danielMensah/React-OvoBoilerplate)
 
-## Setups:
-* Clone project `git clone git@github.com:danielMensah/React-OvoBoilerplate.git`.
-* Install dependencies `npm install`.
-* Start application `npm start`.
-
-## Commands:
-* Start app `npm start`.
-* Build app `npm run build`.
-* Test app `npm run test`.
+This part of the repository is the GUI of the project.
+It has been developed in JavaScript using the help of [ReactJS](https://reactjs.org/) framework
