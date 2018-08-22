@@ -1,6 +1,6 @@
-# React-OvoBoilerplate
+# Front-end
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+This project was boostrapped with [React-OvoBoilerplate](https://github.com/danielMensah/React-OvoBoilerplate)
 
 # Front end
 
