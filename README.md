@@ -21,7 +21,7 @@ Backend | Frontend
 [Scala](https://www.scala-lang.org/download/) 2.12.2 |
 [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 8 |
 
- When you have all of this installed in your computer just clone this repo:
+ When you have all of this installed in your computer just clone this repo or fork it if you want:
  
  ```
   git clone https://github.com/sergaben/KUSOSS
