@@ -27,3 +27,11 @@ Backend | Frontend
   git clone https://github.com/sergaben/KUSOSS
   
  ```
+## Contributing
+
+if you feel that any bit of code could be improved, please start a issue so that the change can be discussed.
+Thank you
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details
