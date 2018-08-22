@@ -8,7 +8,7 @@ import org.specs2.mutable.Specification
   * @author sergaben on 20/04/2018.
   *
   */
-class KingstonStudentRepositoryTest extends Specification {
+class StudentRepositoryImplTest extends Specification {
 
   "KingstonStudentRepositoryImplTest" should {
     "insert" in {

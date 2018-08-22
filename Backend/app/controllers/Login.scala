@@ -1,8 +1,8 @@
 package controllers
 
-import database.KingstonStudentRepository
+import database.StudentRepositoryImpl
 import javax.inject.Inject
-import models.KingstonStudent
+import models.Student
 import org.mindrot.jbcrypt.BCrypt
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -10,7 +10,7 @@ import play.api.mvc.{AbstractController, Action, ControllerComponents, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class Login @Inject()(cc:ControllerComponents, kingstonStudentRepository: KingstonStudentRepository)
+class Login @Inject()(cc:ControllerComponents, kingstonStudentRepository: StudentRepositoryImpl)
                      (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
    case class LoginRequest(username:String,password:String)
@@ -40,7 +40,7 @@ class Login @Inject()(cc:ControllerComponents, kingstonStudentRepository: Kingst
             checkStudent.id,checkStudent.nickname, checkStudent.email, checkStudent.password, checkStudent.subject, checkStudent.typeOfStudy,checkStudent.loginToken
           )
         }yield updatedStudent
-        getFutureToUpsert(finalStudent,req.body.username){ updatedStudent:KingstonStudent =>
+        getFutureToUpsert(finalStudent,req.body.username){ updatedStudent:Student =>
             Future.successful{Ok(Json.obj("status"->"OK","authenticated"->true,"nickname"->updatedStudent.nickname,"subject"->updatedStudent.subject,"token"->updatedStudent.loginToken.getOrElse("token").toString,"id"->updatedStudent.id.getOrElse(1).toString))}
         }
       }else{

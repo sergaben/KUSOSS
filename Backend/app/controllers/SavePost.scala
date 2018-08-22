@@ -1,6 +1,6 @@
 package controllers
 
-import database.PostRepository
+import database.PostRepositoryImpl
 import javax.inject.Inject
 import models.Post
 import play.api.libs.json.Json
@@ -16,7 +16,7 @@ import scala.concurrent.{ExecutionContext, Future}
   */
 
 
-class SavePost @Inject()(cc:ControllerComponents, postRepository: PostRepository)
+class SavePost @Inject()(cc:ControllerComponents, postRepository: PostRepositoryImpl)
                         (implicit executionContext:ExecutionContext) extends AbstractController(cc){
 
   def savePost: Action[Post] = Action.async(parse.json[Post]) { implicit req =>

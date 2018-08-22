@@ -2,10 +2,11 @@ package controllers
 
 
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Source
-import database.PostRepository
+import database.PostRepositoryImpl
 import javax.inject.Inject
 import models.Post
 import play.api.http.ContentTypes
@@ -24,8 +25,11 @@ import scala.concurrent.{ExecutionContext, Future}
   * @author sergaben on 16/04/2018.
   *
   */
-class GetPostBySubject @Inject()(cc:ControllerComponents, postRepository: PostRepository,actorSystem:ActorSystem,actorMaterializer: ActorMaterializer)
-                                (implicit executionContext:ExecutionContext) extends AbstractController(cc) {
+class PostBySubject @Inject()(cc:ControllerComponents, postRepository: PostRepositoryImpl)
+                             (implicit executionContext:ExecutionContext) extends AbstractController(cc) {
+
+  implicit val actorSystem: ActorSystem = ActorSystem("newSystem")
+  implicit val actorMaterializer:ActorMaterializer = ActorMaterializer()
   implicit val postFormat: Post.PostFormat.type = Post.PostFormat
   implicit val messageFlowTransformer: MessageFlowTransformer[Post, Post] = MessageFlowTransformer.jsonMessageFlowTransformer[Post,Post]
   implicit val postEvents : EventDataExtractor[Post] = EventDataExtractor(postFormat.writes(_).toString())
@@ -44,8 +48,8 @@ class GetPostBySubject @Inject()(cc:ControllerComponents, postRepository: PostRe
 
   def getPosts(subject:String): Action[AnyContent] = Action.async{ implicit req=>
 
-    def postSource = Source.fromPublisher(postRepository.getAllPostsBySubject(subject))
-    val sourceWithTick = Source.tick(1.second, 1.second , 0)
+    def postSource : Source[Post,NotUsed] = Source.fromPublisher(postRepository.getAllPostsBySubject(subject))
+    val sourceWithTick = Source.tick(2.second, 2.second , 0)
     val postFlow = postSource.zip(sourceWithTick).map(_._1) via EventSource.flow[Post] //zip guarantees the order of the elements in the stream and waits until all the elements are available
 
     Future.successful(Ok.chunked(postFlow).as(ContentTypes.EVENT_STREAM))
