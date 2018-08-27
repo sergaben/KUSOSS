@@ -1,7 +1,7 @@
 package controllers
 
 import akka.stream.Materializer
-import database.SubjectRepository
+import database.SubjectRepositoryImpl
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import org.specs2.mutable.Specification
@@ -16,7 +16,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
   * @author sergaben on 20/04/2018.
   *
   */
-class GetSubjectsTest(cc:ControllerComponents, subjectRepositoryImpl: SubjectRepository) extends PlaySpec with GuiceOneAppPerSuite with Results {
+class SubjectControllerTest(cc:ControllerComponents, subjectRepositoryImpl: SubjectRepositoryImpl) extends PlaySpec with GuiceOneAppPerSuite with Results {
 
   "GetSubjectsTest" should {
     "getSubjectsNamesAsJson" in {
@@ -27,7 +27,7 @@ class GetSubjectsTest(cc:ControllerComponents, subjectRepositoryImpl: SubjectRep
         Ok(value)
       }
       val body = Json.obj("name"->"subjectName")
-      val controller = new GetSubjects(Helpers.stubControllerComponents(),subjectRepositoryImpl:SubjectRepository)
+      val controller = new SubjectController(Helpers.stubControllerComponents(),subjectRepositoryImpl:SubjectRepositoryImpl)
       val result = call(controller.getSubjectsNamesAsJson(),FakeRequest(GET,"/getSubjectsNamesAsJson ").withHeaders((CONTENT_TYPE,"application/json")).withJsonBody(body))
       contentAsJson(result) mustBe body
     }
