@@ -1,7 +1,7 @@
 package database.Schemas
 
 import javax.inject.Inject
-import models.KingstonStudent
+import models.Student
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
@@ -9,7 +9,7 @@ class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseCon
 
   import profile.api._
 
-  class kingstonStudentTable (tag:Tag) extends Table[KingstonStudent](tag,"Ku_student"){
+  class kingstonStudentTable (tag:Tag) extends Table[Student](tag,"Ku_student"){
     def id = column[Option[Int]]("id_student",O.PrimaryKey,O.AutoInc)
     def nickname = column [String]("nickname")
     def email = column[String]("email")
@@ -17,7 +17,7 @@ class KingstonStudentSchema @Inject()(protected val dbConfigProvider:DatabaseCon
     def subject= column[String]("subject")
     def typeOfStudy = column[String]("typeOfStudy")
     def loginToken = column[Option[String]]("login_token")
-    def * = (id,nickname,email,password,subject,typeOfStudy,loginToken) <> ((KingstonStudent.apply _).tupled, KingstonStudent.unapply _)
+    def * = (id,nickname,email,password,subject,typeOfStudy,loginToken) <> ((Student.apply _).tupled, Student.unapply _)
   }
 
 

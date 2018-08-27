@@ -5,7 +5,7 @@ import java.util.UUID
 import play.api.libs.json._
 
 // simple case class for a student
-case class KingstonStudent(id:Option[Int],nickname:String,email:String,password:String,subject:String,typeOfStudy:String,loginToken:Option[String]) {
+case class Student(id:Option[Int], nickname:String, email:String, password:String, subject:String, typeOfStudy:String, loginToken:Option[String]) {
 
    def createToken():String  ={
      val tokenLoginAsString:String = UUID.randomUUID().toString
@@ -16,12 +16,12 @@ case class KingstonStudent(id:Option[Int],nickname:String,email:String,password:
 }
 
 // companion object of KingstonStudent
-object KingstonStudent{
+object Student{
   //This object is going to be used to format the class to json or from json to the class
-  implicit object KingstonStudentFormat extends Format[KingstonStudent] {
+  implicit object KingstonStudentFormat extends Format[Student] {
 
 
-    def reads(json: JsValue): JsResult[KingstonStudent] = {
+    def reads(json: JsValue): JsResult[Student] = {
       // the Vals below hold all the parameters for the KingstonStudent class
       val id = (json \ "id_student").asOpt[Int]
       val nickname = (json \ "nickname").as[String]
@@ -31,10 +31,10 @@ object KingstonStudent{
       val typeOfStudy = (json \ "typeOfStudy").as[String]
       val loginToken = (json \ "login_token").asOpt[String]
       // The line below returns a KingstonStudent object
-      JsSuccess(KingstonStudent(id,nickname, email,password, subject, typeOfStudy,loginToken))
+      JsSuccess(Student(id,nickname, email,password, subject, typeOfStudy,loginToken))
     }
 
-    def writes(student: KingstonStudent): JsValue = {
+    def writes(student: Student): JsValue = {
       // the Seq below creates a json object
       val studentAsList = Seq(
         "id_student" -> Json.toJson(student.id),

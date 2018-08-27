@@ -1,8 +1,8 @@
 package controllers
 
-import database.KingstonStudentRepository
+import database.StudentRepositoryImpl
 import javax.inject.Inject
-import models.KingstonStudent
+import models.Student
 import org.mindrot.jbcrypt.BCrypt
 import play.api.data.Forms._
 import play.api.data._
@@ -14,9 +14,9 @@ import scala.concurrent.ExecutionContext
 
 
 
-class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepository: KingstonStudentRepository)
+class Signup @Inject()(cc:ControllerComponents, kingstonStudentRepository: StudentRepositoryImpl)
                       (implicit executionContext:ExecutionContext) extends AbstractController(cc){
-  private val userForm: Form[KingstonStudent] = Form (
+  private val userForm: Form[Student] = Form (
     mapping(
       "id" -> optional(number),
       "nickname"->nonEmptyText,
@@ -25,12 +25,12 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepository: Kings
       "subject"->nonEmptyText,
       "typeOfStudy"->nonEmptyText,
       "loginToken"->optional(text)
-    )(KingstonStudent.apply)(KingstonStudent.unapply)
+    )(Student.apply)(Student.unapply)
   )
     def signup = Action{ implicit req =>
       signUpFormAsJson()
     }
-    private def insertStudentIntoDatabase(kingstonStudent: KingstonStudent): Unit ={
+    private def insertStudentIntoDatabase(kingstonStudent: Student): Unit ={
       kingstonStudentRepository.insert(kingstonStudent)
     }
   /**
@@ -40,12 +40,12 @@ class SignUp @Inject()(cc:ControllerComponents, kingstonStudentRepository: Kings
     * @return a result of Json
     */
     private def signUpFormAsJson[A]()(implicit request: Request[A]):Result = {
-      def failure(badForm: Form[KingstonStudent]) = {
+      def failure(badForm: Form[Student]) = {
         implicit val messages: Messages = messagesApi.preferred(request)
         BadRequest(badForm.errorsAsJson)
       }
 
-      def success(input: KingstonStudent) = {
+      def success(input: Student) = {
         val hashedPassword = BCrypt.hashpw(input.password,BCrypt.gensalt())
         val kStudentWithHashedPassword = input.copy(password = hashedPassword)
         println(kStudentWithHashedPassword)

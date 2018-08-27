@@ -1,23 +1,18 @@
 package database
 
-import database.Schemas.SubjectSchema
-import javax.inject.Inject
 import models.Subject
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
+/**
+  *
+  * @project Backend
+  * @author sergaben on 23/04/2018.
+  *
+  */
+trait SubjectRepository {
 
-class SubjectRepository @Inject()(protected val dbConfigProvider:DatabaseConfigProvider, subjectSchema:SubjectSchema)
-                                 (implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] with ISubjectRepository {
+  def getAll:Future[Seq[Subject]]
+  def delete(subject: Subject):Future[Unit]
 
-  import profile.api._
-
-  private val subjects = subjectSchema.subjects
-
-
-   override def delete(subject: Subject)= ???
-
-   override def getAll:Future[Seq[Subject]] = db.run(subjects.result)
 }
