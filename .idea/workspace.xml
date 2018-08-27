@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="80a788db-264e-4031-b565-d949262d59fb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="80a788db-264e-4031-b565-d949262d59fb" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,20 +40,7 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="224">
-                <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -213,18 +197,17 @@
       <updated>1534339251466</updated>
       <workItem from="1534339253014" duration="1224000" />
       <workItem from="1535400802290" duration="264000" />
-      <workItem from="1535401176126" duration="18000" />
+      <workItem from="1535401176126" duration="265000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1506000" />
+    <option name="totallyTimeSpent" value="1753000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1618" height="877" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25609756" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25609756" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -240,7 +223,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Application Servers" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32885906" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32885906" />
       <window_info anchor="bottom" id="Tool Output" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" />
