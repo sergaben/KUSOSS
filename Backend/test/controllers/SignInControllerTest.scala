@@ -8,10 +8,10 @@ import org.specs2.mutable.Specification
   * @author sergaben on 20/04/2018.
   *
   */
-class SavePostTest extends Specification {
+class SignInControllerTest extends Specification {
 
-  "SavePostTest" should {
-    "savePost" in {
+  "LoginTest" should {
+    "login" in {
       ok
     }
 
