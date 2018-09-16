@@ -61,13 +61,4 @@ class PostController @Inject()(cc:ControllerComponents, postRepository: PostRepo
     }
     postSavedAsResult
 }
-
-//  private def getFutureToSavePost[T](futureOptionBlock: Future[Option[T]])(foundBlock: T => Future[Result]): Future[Result] = {
-//    futureOptionBlock.flatMap {
-//      case Some(found) =>
-//        foundBlock(found)
-//      case None =>
-//        Future.successful(Ok(Json.obj("status"->"OK","error"->"POST_NOT_SAVED")))
-//    }
-//  }
 }
