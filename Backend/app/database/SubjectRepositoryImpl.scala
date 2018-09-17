@@ -16,7 +16,6 @@ class SubjectRepositoryImpl @Inject()(protected val dbConfigProvider:DatabaseCon
 
   private val subjects = subjectSchema.subjects
 
-
    override def delete(subject: Subject): Future[Unit] = ???
 
    override def getAll:Future[Seq[Subject]] = db.run(subjects.result)
